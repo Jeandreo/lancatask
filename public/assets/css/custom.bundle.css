@@ -1,0 +1,12 @@
+[data-kt-app-layout=dark-sidebar] .app-sidebar {
+    background: linear-gradient(45deg, #0e081c, #291D47);
+    border-right: 0;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link .menu-icon, [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link .menu-icon .svg-icon, [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link .menu-icon i {
+    color: #f9f9f938;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
+    background-color: #08081a36;
+}
