@@ -1,3 +1,7 @@
+body {
+  font-family: "Jost", serif;
+}
+
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
     background: linear-gradient(45deg, #0e081c, #291D47);
     border-right: 0;

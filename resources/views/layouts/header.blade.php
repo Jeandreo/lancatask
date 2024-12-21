@@ -10,7 +10,7 @@
         </div>
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="index.html" class="d-lg-none">
-                <img alt="Logo" src="{{ asset('assets/media/logos/default-small.svg') }}" class="h-30px" />
+                <img alt="Logo" src="{{ asset('assets/media/images/default-small.svg') }}" class="h-30px" />
             </a>
         </div>
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
@@ -289,7 +289,7 @@
                         </div>
                         <div class="separator my-2"></div>
                         <div class="menu-item px-5">
-                            <a href="authentication/layouts/corporate/sign-in.html" class="menu-link px-5">Sair</a>
+                            <a href="{{ route('logout') }}" class="menu-link px-5">Sair</a>
                         </div>
                     </div>
                 </div>
