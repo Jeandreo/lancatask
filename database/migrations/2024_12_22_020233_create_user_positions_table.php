@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('users_positions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['Lançamento', 'Time'])->default('Lançamento');
-            $table->string('description');
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
             $table->boolean('status')->default(true);
             $table->foreignId('filed_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('user_positions');
     }
 };

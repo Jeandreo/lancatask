@@ -15,38 +15,30 @@
         <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper">
             <div id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
                 <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
-
-                    <!-- Início -->
                     <div class="menu-item">
-                        <a class="menu-link active" href="#">
+                        <a class="menu-link active" href="{{ route('dashboard.index') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-house fs-4"></i>
                             </span>
                             <span class="menu-title">Início</span>
                         </a>
                     </div>
-
-                    <!-- Lançamentos -->
                     <div class="menu-item">
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{ route('projects.index') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-rocket fs-4"></i>
                             </span>
                             <span class="menu-title">Lançamentos</span>
                         </a>
                     </div>
-
-                    <!-- Times -->
                     <div class="menu-item">
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{ route('users.index') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-users fs-4"></i>
                             </span>
-                            <span class="menu-title">Times</span>
+                            <span class="menu-title">Usuários</span>
                         </a>
                     </div>
-
-                    <!-- Agenda -->
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
@@ -55,8 +47,6 @@
                             <span class="menu-title">Agenda</span>
                         </a>
                     </div>
-
-                    <!-- Momentos -->
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
@@ -65,8 +55,6 @@
                             <span class="menu-title">Momentos</span>
                         </a>
                     </div>
-
-                    <!-- Tarefas -->
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
@@ -75,8 +63,6 @@
                             <span class="menu-title">Tarefas</span>
                         </a>
                     </div>
-
-                    <!-- Fornecedores -->
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
@@ -85,8 +71,6 @@
                             <span class="menu-title">Fornecedores</span>
                         </a>
                     </div>
-
-                    <!-- Filtros -->
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
@@ -95,8 +79,6 @@
                             <span class="menu-title">Filtros</span>
                         </a>
                     </div>
-
-                    <!-- Top Bar Sales -->
                     <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
@@ -105,7 +87,6 @@
                             <span class="menu-title">Top Bar Sales</span>
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>

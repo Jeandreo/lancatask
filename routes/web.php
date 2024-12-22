@@ -4,18 +4,19 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // AUTH
 Route::middleware(['auth'])->group(function () {
 
-    // DASHBOARD
+    // Dashboard
     Route::name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
     });
 
-    // CATEGORIES
-    Route::prefix('projetos')->group(function () {
+    // Lançamentos
+    Route::prefix('lancamentos')->group(function () {
         Route::name('projects.')->group(function () {
             Route::get('/', [ProjectController::class, 'index'])->name('index');
             Route::get('/adicionar', [ProjectController::class, 'create'])->name('create');
@@ -26,15 +27,15 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
-    // CATEGORIES
-    Route::prefix('tarefas')->group(function () {
-        Route::name('tasks.')->group(function () {
-            Route::get('/', [TaskController::class, 'index'])->name('index');
-            Route::get('/adicionar', [TaskController::class, 'create'])->name('create');
-            Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
-            Route::get('/desabilitar/{id}', [TaskController::class, 'destroy'])->name('destroy');
-            Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
+    // Usuários
+    Route::prefix('usuarios')->group(function () {
+        Route::name('users.')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/adicionar', [UserController::class, 'create'])->name('create');
+            Route::post('/adicionar', [UserController::class, 'store'])->name('store');
+            Route::get('/desabilitar/{id}', [UserController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
         });
     });
 

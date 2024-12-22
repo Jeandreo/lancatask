@@ -14,3 +14,7 @@ body {
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
     background-color: #08081a36;
 }
+
+.flatpickr {
+    cursor: pointer;
+}

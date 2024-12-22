@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
+use App\Models\User;
+use App\Models\UserPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProjectController extends Controller
+class UserController extends Controller
 {
     protected $request;
     private $repository;
 
-    public function __construct(Request $request, Project $content)
+    public function __construct(Request $request, User $content)
     {
 
         $this->request = $request;
@@ -31,7 +32,7 @@ class ProjectController extends Controller
         $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
-        return view('pages.projects.index')->with([
+        return view('pages.users.index')->with([
             'contents' => $contents,
         ]);
 
@@ -44,8 +45,14 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        
+        // Obtém dados
+        $positions = UserPosition::where('status', true)->get();
+
         // RENDER VIEW
-        return view('pages.projects.create');
+        return view('pages.users.create')->with([
+            'positions' => $positions,
+        ]);
     }
 
     /**
@@ -68,8 +75,8 @@ class ProjectController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('projects.index')
-                ->with('message', 'Projeto adicionado com sucesso.');
+                ->route('users.index')
+                ->with('message', 'Usuário adicionado com sucesso.');
 
     }
 
@@ -88,7 +95,7 @@ class ProjectController extends Controller
         if(!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
-        return view('pages.projects.edit')->with([
+        return view('pages.users.edit')->with([
             'content' => $content,
         ]);
     }
@@ -118,8 +125,8 @@ class ProjectController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('projects.index')
-            ->with('message', 'Projeto editado com sucesso.');
+            ->route('users.index')
+            ->with('message', 'Usuário editado com sucesso.');
 
     }
 
@@ -141,8 +148,8 @@ class ProjectController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('projects.index')
-            ->with('message', 'Projeto ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->route('users.index')
+            ->with('message', 'Usuário ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
 
     }
 }

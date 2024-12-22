@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('Page Title', 'Lançamentos & Projetos')
+@section('Page Title', 'Usuários')
 
 @section('content')
     <div class="card">
@@ -9,9 +9,8 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
-                        <th>Tipo</th>
-                        <th>Time</th>
-                        <th>Data</th>
+                        <th>Grupo</th>
+                        <th>Cargo</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -20,37 +19,16 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <a href="{{ route('projects.edit', $content->id) }}"
+                                <a href="{{ route('users.edit', $content->id) }}"
                                    class="text-gray-700 fw-bold text-hover-primary fs-6">
                                     {{ $content->name }}
                                 </a>
                             </td>
                             <td>
-                                @if ($content->type == 'Lançamento')
-                                <span class="badge badge-light-primary">
-                                    Lançamento
-                                </span>
-                                @else
-                                <span class="badge badge-light-info">
-                                    Time
-                                </span>
-                                @endif
+                                Grupo
                             </td>
                             <td>
-                                -
-                            </td>
-                            <td>
-                                @if ($content->start)
-                                <span class="badge badge-light">
-                                    {{ $content->start->format('d/m/Y') }}
-                                </span>
-                                @endif
-                                @if ($content->end)
-                                -
-                                <span class="badge badge-light">
-                                    {{ $content->end->format('d/m/Y') }}
-                                </span>
-                                @endif
+                                Cargo
                             </td>
                             <td>
                                 @if ($content->status == 1)
@@ -61,15 +39,15 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center icons-edit">
-                                    <a href="{{ route('projects.edit', $content->id) }}">
+                                    <a href="{{ route('users.edit', $content->id) }}">
                                         <i class="fas fa-edit" title="Editar"></i>
                                     </a>
                                     @if ($content->status == 1)
-                                        <a href="{{ route('projects.destroy', $content->id) }}">
+                                        <a href="{{ route('users.destroy', $content->id) }}">
                                             <i class="fas fa-times-circle" title="Desativar"></i>
                                         </a>
                                     @else
-                                        <a href="{{ route('projects.destroy', $content->id) }}">
+                                        <a href="{{ route('users.destroy', $content->id) }}">
                                             <i class="fas fa-redo" title="Reativar"></i>
                                         </a>
                                     @endif
@@ -82,7 +60,7 @@
         </div>
     </div>
     <div class="mt-5">
-        <a href="{{ route('projects.create') }}">
+        <a href="{{ route('users.create') }}">
             <label class="btn btn-primary btn-active-danger btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>
