@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -45,7 +46,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        
+
         // Obtém dados
         $positions = UserPosition::where('status', true)->get();
 
@@ -69,9 +70,15 @@ class UserController extends Controller
 
         // CREATED BY
         $data['created_by'] = Auth::id();
+        $data['password'] = Hash::make($data['password']);
 
         // SEND DATA
-        $this->repository->create($data);
+        $created = $this->repository->create($data);
+
+        // Salva foto
+        if (isset($data['photo']) && $data['photo']->isValid()) {
+            $data['photo']->storeAs('users/photos', $created->id . '.jpg', 'public');
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -94,9 +101,13 @@ class UserController extends Controller
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
 
+        // Obtém dados
+        $positions = UserPosition::where('status', true)->get();
+
         // GENERATES DISPLAY WITH DATA
         return view('pages.users.edit')->with([
             'content' => $content,
+            'positions' => $positions,
         ]);
     }
 
@@ -120,8 +131,20 @@ class UserController extends Controller
         // UPDATE BY
         $data['updated_by'] = Auth::id();
 
+        // Remove senha caso venha vazia
+        if(!$data['password']){
+            unset($data['password']);
+        } else {
+            $data['password'] = Hash::make($data['password']);
+        }
+
         // STORING NEW DATA
         $content->update($data);
+
+        // Salva foto
+        if (isset($data['photo']) && $data['photo']->isValid()) {
+            $data['photo']->storeAs('users/photos', $id . '.jpg', 'public');
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()

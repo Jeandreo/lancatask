@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -24,6 +25,9 @@ class User extends Authenticatable
         'email',
         'password',
         'status',
+        'filed_by',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -48,4 +52,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * The brands that belong to the subbrands.
+     */
+    public function position(): HasOne
+    {
+        return $this->hasOne(UserPosition::class, 'id', 'position_id');
+    }
+
 }

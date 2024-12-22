@@ -19,16 +19,20 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <a href="{{ route('users.edit', $content->id) }}"
-                                   class="text-gray-700 fw-bold text-hover-primary fs-6">
+                                <a href="{{ route('users.edit', $content->id) }}" class="text-gray-700 fw-bold text-hover-primary fs-6">
+                                    <img src="{{ asset('storage/users/photos/' . $content->id . '.jpg') }}" class="w-30px h-30px rounded me-2">
                                     {{ $content->name }}
                                 </a>
                             </td>
                             <td>
-                                Grupo
+                                <span class="badge badge-light-primary">
+                                    {{ $content->role }}
+                                </span>
                             </td>
                             <td>
-                                Cargo
+                                <span class="badge badge-light-info">
+                                    {{ $content->position->name }}
+                                </span>
                             </td>
                             <td>
                                 @if ($content->status == 1)

@@ -36,9 +36,54 @@ class DatabaseSeeder extends Seeder
         ]);
 
         UserPosition::create([
-            'name' => 'Gestor de Contas',
+            'name' => 'Analista de Marketing Digital',
             'created_by' => 1,
         ]);
-        
+
+        UserPosition::create([
+            'name' => 'Gerente de Projetos',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Especialista em SEO',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Designer Gráfico',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Redator',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Analista de Mídia Paga',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Desenvolvedor Web',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Videomaker',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Copywriter',
+            'created_by' => 1,
+        ]);
+
+        UserPosition::create([
+            'name' => 'Analista de Dados',
+            'created_by' => 1,
+        ]);
+
     }
 }
