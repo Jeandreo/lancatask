@@ -1,13 +1,13 @@
 /**
  * Função responsável por gerar as tabelas do website.
  * Obs.: Tabelas server site são configuradas na própria página.
- * 
+ *
  * Metronic:  https://preview.keenthemes.com/html/metronic/docs/forms/inputmask
  * Website:   https://datatables.net/
- * 
+ *
  * Esta função também possui um extensão para o input da paginação.
  * GitHub: https://datatables.net/plug-ins/pagination/input
- * 
+ *
  * ATENÇÃO: Baixamos o arquivo da extenção e realizamos alguns ajustes
  * de tradução e usabilidade que a versão nativa não possuia.
  * Local: "/public/assets/js/datatable-input.js"
@@ -43,14 +43,13 @@ function loadTables(seletor = '.datatables', items = 25, order = undefined) {
             "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
             "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
             '>',
-        pagingType: 'input',
     };
     table.DataTable(dataTableOptions);
 }
 
 /**
  * Função responsável por gerar calendários no Core.
- * 
+ *
  * Metronic:  https://preview.keenthemes.com/html/metronic/docs/forms/flatpickr
  * Website:   https://flatpickr.js.org/examples/
  */
@@ -60,12 +59,12 @@ function generateFlatpickr(options = null, calendarSelector = '.flatpickr') {
      * Define opções padrões para o calendário.
      */
     var defaultOptions = {
-        allowInput:true,
+        // allowInput:true,
         altInput: true,
         altFormat: "d/m/Y",
         dateFormat: "Y-m-d",
         locale: "pt",
-        // minDate: "today",
+        minDate: "today",
     };
 
     // Sobrescreve as opções personalizadas nas padrões

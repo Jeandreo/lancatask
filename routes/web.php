@@ -50,7 +50,6 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/prioridade', [TaskController::class, 'priority'])->name('priority');
             Route::put('/designado', [TaskController::class, 'designated'])->name('designated');
             Route::put('/status', [TaskController::class, 'status'])->name('status');
-            Route::put('/projeto', [TaskController::class, 'project'])->name('project');
             Route::put('/data', [TaskController::class, 'date'])->name('date');
             Route::put('/ordem', [TaskController::class, 'order'])->name('order');
             Route::post('/subtarefa', [TaskController::class, 'subtask'])->name('subtask');

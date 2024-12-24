@@ -4,7 +4,6 @@
 
 @section('custom-head')
 <script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 @endsection
 
 @section('content')
@@ -14,7 +13,7 @@
         <div class="card-body p-5">
             <div class="p-0 d-flex align-items-center justify-content-between fw-bold mb-2">
                 <div class="d-flex align-items-center ps-3 pe-5">
-                    <h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer show-tasks-fileds" data-project="{{ $module->id }}">{{ $module->name }}</h2>
+                    <h2 class="text-gray-700 fs-6 text-uppercase cursor-pointer" data-project="{{ $module->id }}">{{ $module->name }}</h2>
                 </div>
                 <div class="d-none d-md-flex align-items-center">
                     <div class="w-125px text-center text-gray-700 fs-7 text-uppercase">

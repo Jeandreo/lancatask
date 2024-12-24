@@ -148,7 +148,7 @@ button:focus {
 }
 
 .task-icons:hover {
-    width: 180px;
+    width: 120px;
     border-radius: 15px !important;
 }
 
@@ -410,4 +410,8 @@ input[type=text]:disabled {
 
 .text-success {
     color: #94cb09 !important;
+}
+
+.icons-table a {
+    margin-left: 5px;
 }

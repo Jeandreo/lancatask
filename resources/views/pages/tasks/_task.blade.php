@@ -7,10 +7,6 @@
                     <span class="show-task" data-task="{{ !$task->task_id ? $task->id : $task->task_id }}">
                         <i class="fa-solid fa-eye p-1 fs-5 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03"></i>
                     </span>
-                    <i class="fa-solid p-1 fa-list-check p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03 add-subtasks" data-task="{{ $task->id }}" data-project="{{ $task->project->id }}"></i>
-                    <span class="stand-by" data-task="{{ $task->id }}">
-                        <i class="fa-solid fa-hourglass-start p-1 fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
-                    </span>
                     <span class="tasks-destroy" data-task="{{ $task->id }}">
                         <i class="fa-solid p-1 fa-trash-alt fs-5 text-white ms-3 cursor-pointer zoom-hover zoom-hover-03"></i>
                     </span>
@@ -18,10 +14,7 @@
             </div>
             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
-                    <input type="text" class="text-gray-600 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 input-name" maxlength="80" value="{{ $task->name }}" name="name" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
-                    <div class="input-phrase" @if($task->phrase == '') style="display: none;" @endif>
-                        <input type="text" class="text-gray-500 fs-6 lh-1 fw-normal p-0 m-0 border-0 w-100 fs-7 d-flex task-phrase z-index-9 h-15px mt-n1" maxlength="255" name="phrase" value="{{ $task->phrase }}" @if($task->phrase == '') style="border-bottom: dashed 1px #bbbdcb63 !important;" @endif data-task="{{ $task->id }}">
-                    </div>
+                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">{{ $task->name }}</p>
                 </div>
             </div>
         </div>
@@ -75,14 +68,14 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-project" style="background: {{ $task->module->color }}">
+        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusModule->color }}">
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                <p class="text-white fw-bold m-0 text-center project-name">{{ $task->statusModule->name }}</p>
+                <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusModule->name }}</p>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
                     @foreach ($task->module->statuses as $status)
                     <div class="menu-item px-3 mb-2">
-                        <span data-task="{{ $task->id }}" data-project="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-modules" style="background: {{ $status->color }}; color: white">
-                        <span class="">{{ $status->name }}</span>
+                        <span data-task="{{ $task->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
+                            {{ $status->name }}
                         </span>
                     </div>
                     @endforeach

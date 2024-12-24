@@ -7,7 +7,7 @@
         <label class="form-label fw-bold required">Tipo:</label>
         <select class="form-select form-select-solid" name="type" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
-            <option value="Lançamento" @if(isset($content) && $content->type == 'Lançamento') selected @endif>Lançamento</option>
+            <option value="Lançamento" @if(!isset($content) || $content->type == 'Lançamento') selected @endif>Lançamento</option>
             <option value="Time" @if(isset($content) && $content->type == 'Time') selected @endif>Time</option>
         </select>
     </div>

@@ -1,6 +1,6 @@
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="225px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
-        <a href="index.html">
+        <a href="{{ route('dashboard.index') }}">
             <img alt="Logo" src="{{ asset('assets/media/images/logo-white.png') }}" class="h-40px app-sidebar-logo-default" />
             <img alt="Logo" src="{{ asset('assets/media/images/icon.png') }}" class="h-25px app-sidebar-logo-minimize mb-2" />
         </a>
@@ -44,49 +44,35 @@
                             <span class="menu-icon">
                                 <i class="fa-solid fa-calendar-days fs-4"></i>
                             </span>
-                            <span class="menu-title">Agenda</span>
+                            <span class="menu-title">Agenda
+                                <span class="badge badge-light-danger ms-2">Em Breve</span>
+                            </span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-list-check fs-4"></i>
-                            </span>
-                            <span class="menu-title">Momentos</span>
-                        </a>
+                        <div class="menu-content pt-8 pb-2 pe-0 d-flex justify-content-between align-items-center">
+                            <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">Lançamentos</span>
+                            <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
+                                +
+                            </a>
+                        </div>
                     </div>
-                    <div class="menu-item">
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-tasks fs-4"></i>
-                            </span>
-                            <span class="menu-title">Tarefas</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-handshake fs-4"></i>
-                            </span>
-                            <span class="menu-title">Fornecedores</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-filter fs-4"></i>
-                            </span>
-                            <span class="menu-title">Filtros</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a class="menu-link" href="#">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-chart-line fs-4"></i>
-                            </span>
-                            <span class="menu-title">Top Bar Sales</span>
-                        </a>
-                    </div>
+                    @foreach (projects() as $project)
+                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                            <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
+                                <span class="menu-icon">
+                                    <i class="ki-duotone ki-element-7 fs-3">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </span>
+                                <span class="menu-title">{{ Str::limit($project->name, 18) }}</span>
+                            </a>
+                        </div>
+                        @if (!$loop->last)
+                        <div class="separator separator-dashed mx-6" style="opacity: 0.15;"></div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>

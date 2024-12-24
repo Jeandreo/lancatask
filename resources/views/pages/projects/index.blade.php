@@ -60,7 +60,7 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="d-flex align-items-center icons-edit">
+                                <div class="d-flex align-items-center icons-table">
                                     <a href="{{ route('projects.edit', $content->id) }}">
                                         <i class="fas fa-edit" title="Editar"></i>
                                     </a>

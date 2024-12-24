@@ -24,7 +24,7 @@
           @endif
           <div class="not-separator" @if($subtask->separator == true) style="display: none;" @endif>
             <span class="task-priority d-none d-md-flex bg-white ps-4" data-task="{{ $subtask->id }}" style="z-index: 999;">
-              <i class="fa-solid fa-font-awesome p-2 
+              <i class="fa-solid fa-font-awesome p-2
                  @if ($subtask->priority == 0)
                  text-gray-300
                  @elseif($subtask->priority == 1)

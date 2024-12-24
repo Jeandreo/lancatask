@@ -58,8 +58,7 @@ class TaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        $data['created_by']     = Auth::id();
-        $data['designated_id']  = Auth::id();
+        $data['created_by'] = $data['designated_id'] = Auth::id();
 
         // SEND DATA
         $created = $this->repository->create($data);
@@ -408,31 +407,6 @@ class TaskController extends Controller
         return response()->json([
             "name" => $status->name,
             "color" => $status->color,
-        ], 200);
-
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function project(Request $request)
-    {
-
-        // UPDATE TASK STATUS
-        $content = Task::find($request->task_id);
-        $content->project_id = $request->project_id;
-        $content->save();
-
-        // STATUS
-        $project = Project::find($request->project_id);
-
-        // RETURN
-        return response()->json([
-            "name" => $project->name,
-            "color" => $project->color,
-            "statuses" => $project->statuses->toArray(),
         ], 200);
 
     }
