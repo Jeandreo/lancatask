@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Module;
 use App\Models\Project;
 use App\Models\Status;
 use App\Models\Task;
@@ -59,6 +60,10 @@ class TaskController extends Controller
 
         // CREATED BY
         $data['created_by'] = $data['designated_id'] = Auth::id();
+
+        // Obtém Módulo
+        $module = Module::find($data['module_id']);
+        $data['status_id'] = $module->statuses()->first()->id;
 
         // SEND DATA
         $created = $this->repository->create($data);
