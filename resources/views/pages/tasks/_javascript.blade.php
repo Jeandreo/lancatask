@@ -125,10 +125,13 @@
         e.preventDefault();
 
         // GET TITLE OF TASK
-        var inputName = $(this).find('[name="name"]');
-        var projectId = $(this).find('[name="project_id"]').val();
-        var moduleId = $(this).find('[name="module_id"]').val();
-        var date = $(this).find('[name="date"]').val();
+        var name        = $(this).find('[name="name"]').val();
+        var projectId   = $(this).find('[name="project_id"]').val();
+        var moduleId    = $(this).find('[name="module_id"]').val();
+        var date        = $(this).find('[name="date"]').val();
+
+        // CLEAN INPUT
+        $(this).find('[name="name"]').val('');
 
         // FIND WHERE INSERT
         var divNoTask = $(this).closest('.card-body').find('.no-tasks');
@@ -138,11 +141,11 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             url: "{{ route('tasks.store') }}",
-            data: {project_id: projectId, module_id: moduleId, date: date, name: inputName.val()},
+            data: {project_id: projectId, module_id: moduleId, date: date, name: name},
             success: function(data){
 
-                // CLEAN INPUT
-                inputName.val('');
+                // Esconde div sem tarefas
+                $('.no-tasks').hide();
 
                 // AJAX
                 $.ajax({

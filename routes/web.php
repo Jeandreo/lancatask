@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/desabilitar/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
+            Route::put('/barra-lateral', [UserController::class, 'sidebar'])->name('sidebar');
         });
     });
 

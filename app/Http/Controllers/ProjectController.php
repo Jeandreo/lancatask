@@ -71,7 +71,7 @@ class ProjectController extends Controller
 
         // Cria módulo inicial
         $createdModule = Module::create([
-            'name' => 'Primeiro Módulo',
+            'name' => 'Primeiro Módulo de ' . $created['name'],
             'project_id' => $created->id,
             'color' => '#348feb',
             'created_by' => Auth::id(),
@@ -129,6 +129,7 @@ class ProjectController extends Controller
         return view('pages.projects.show')->with([
             'project' => $project,
             'users' => $users,
+            'pageClean' => true,
         ]);
     }
 

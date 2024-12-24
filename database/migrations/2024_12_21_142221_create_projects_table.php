@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['Lançamento', 'Time'])->default('Lançamento');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->dateTime('start')->nullable();
             $table->dateTime('end')->nullable();
             $table->boolean('status')->default(true);

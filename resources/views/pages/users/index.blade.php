@@ -20,7 +20,7 @@
                         <tr>
                             <td>
                                 <a href="{{ route('users.edit', $content->id) }}" class="text-gray-700 fw-bold text-hover-primary fs-6">
-                                    <img src="{{ asset('storage/users/photos/' . $content->id . '.jpg') }}" class="w-30px h-30px rounded me-2">
+                                    <img src="{{ findImage('users/photos/' . $content->id . '.jpg') }}" class="w-30px h-30px rounded me-2">
                                     {{ $content->name }}
                                 </a>
                             </td>
@@ -42,7 +42,7 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="d-flex align-items-center icons-edit">
+                                <div class="d-flex align-items-center icons-table">
                                     <a href="{{ route('users.edit', $content->id) }}">
                                         <i class="fas fa-edit" title="Editar"></i>
                                     </a>

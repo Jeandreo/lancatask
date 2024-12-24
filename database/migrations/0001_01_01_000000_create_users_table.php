@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('sidebar')->default(true);
             $table->boolean('status')->default(true);
             $table->foreignId('filed_by')->nullable()->constrained('users');
             $table->foreignId('created_by')->constrained('users');
