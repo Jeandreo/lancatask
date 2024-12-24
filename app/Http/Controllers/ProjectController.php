@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Module;
 use App\Models\Project;
+use App\Models\Status;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,13 +67,69 @@ class ProjectController extends Controller
         $data['created_by'] = Auth::id();
 
         // SEND DATA
-        $this->repository->create($data);
+        $created = $this->repository->create($data);
+
+        // Cria módulo inicial
+        $createdModule = Module::create([
+            'name' => 'Primeiro Módulo',
+            'project_id' => $created->id,
+            'color' => '#348feb',
+            'created_by' => Auth::id(),
+        ]);
+
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $createdModule->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $createdModule->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $createdModule->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
 
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('projects.index')
+                ->route('projects.show', $created->id)
                 ->with('message', 'Projeto adicionado com sucesso.');
 
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+
+        // Obtém projeto
+        if(!$project = $this->repository->find($id)){
+            return redirect()->route('projects.index');
+        }
+
+        // GET USERS
+        $users = User::where('status', 1)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.projects.show')->with([
+            'project' => $project,
+            'users' => $users,
+        ]);
     }
 
     /**

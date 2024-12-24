@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Project extends Model
 {
@@ -32,11 +33,51 @@ class Project extends Model
         'updated_by',
     ];
 
+    // // /**
+    // //  * Get the brand associated with the user.
+    // //  */
+    // //  public function category(): HasOne
+    // // {
+    // //     return $this->HasOne(ProjectCategory::class, 'id', 'category_id');
+    // // }
+
     /**
-     * The brands that belong to the subbrands.
+     * Get the brand associated with the user.
      */
-    public function users(): HasMany
+     public function manager(): HasOne
     {
-        return $this->HasMany(User::class);
+        return $this->HasOne(User::class, 'id', 'manager_id');
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
+    public function tasks(): HasMany
+    {
+        return $this->HasMany(Task::class, 'project_id', 'id');
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
+     public function statuses(): HasMany
+    {
+        return $this->HasMany(Status::class, 'project_id', 'id');
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
+     public function modules(): HasMany
+    {
+        return $this->HasMany(Module::class, 'project_id', 'id');
     }
 }

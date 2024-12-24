@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -21,9 +22,52 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [ProjectController::class, 'index'])->name('index');
             Route::get('/adicionar', [ProjectController::class, 'create'])->name('create');
             Route::post('/adicionar', [ProjectController::class, 'store'])->name('store');
-            Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
+            Route::get('/visualizar/{id}', [ProjectController::class, 'show'])->name('show');
             Route::get('/editar/{id}', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [ProjectController::class, 'update'])->name('update');
+            Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
+        });
+    });
+
+    // TASKS
+    Route::prefix('tarefas')->group(function () {
+        Route::name('tasks.')->group(function () {
+            Route::post('/', [TaskController::class, 'index'])->name('index');
+            Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
+            Route::post('/visualizando', [TaskController::class, 'show'])->name('show');
+            Route::get('/visualizando-lista/{id}', [TaskController::class, 'showOne'])->name('show.one');
+            Route::post('/desabilitar', [TaskController::class, 'destroy'])->name('destroy');
+            Route::get('/desabilitar/{id?}', [TaskController::class, 'destroy'])->name('destroy');
+            Route::post('/exibir-subtarefas', [TaskController::class, 'showSubtasks'])->name('show.subtasks');
+            Route::post('/stand-by', [TaskController::class, 'standBy'])->name('stand.by');
+            Route::get('/stand-by/{id}', [TaskController::class, 'standBy'])->name('stand.by.active');
+            Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
+            Route::put('/editar-ajax/{id}', [TaskController::class, 'updateAjax'])->name('update.ajax');
+            Route::put('/separador/{id}', [TaskController::class, 'separator'])->name('separator');
+            Route::get('/ajax/{id}', [TaskController::class, 'ajax'])->name('ajax');
+            Route::post('/check', [TaskController::class, 'check'])->name('check');
+            Route::put('/prioridade', [TaskController::class, 'priority'])->name('priority');
+            Route::put('/designado', [TaskController::class, 'designated'])->name('designated');
+            Route::put('/status', [TaskController::class, 'status'])->name('status');
+            Route::put('/projeto', [TaskController::class, 'project'])->name('project');
+            Route::put('/data', [TaskController::class, 'date'])->name('date');
+            Route::put('/ordem', [TaskController::class, 'order'])->name('order');
+            Route::post('/subtarefa', [TaskController::class, 'subtask'])->name('subtask');
+            Route::post('/concluidas', [TaskController::class, 'checkeds'])->name('checkeds');
+            Route::post('/desafio', [TaskController::class, 'challenge'])->name('challenge');
+            Route::post('/prazo', [TaskController::class, 'time'])->name('time');
+            Route::get('/outras/{type?}', [TaskController::class, 'others'])->name('others');
+        });
+    });
+
+    // COMMENTS
+    Route::prefix('comentarios')->group(function () {
+        Route::name('comments.')->group(function () {
+            Route::post('/adicionar', [CommentController::class, 'store'])->name('store');
+            Route::post('/visualizando', [CommentController::class, 'show'])->name('show');
+            Route::put('/desabilitar/{id}', [CommentController::class, 'destroy'])->name('destroy');
+            Route::put('/editar/{id}', [CommentController::class, 'update'])->name('update');
         });
     });
 
