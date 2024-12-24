@@ -261,40 +261,6 @@ class TaskController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function standBy(Request $request, $id = null)
-    {
-
-        // GET BY POST
-        if($id == null) $id = $request->task_id;
-
-        // GET DATA
-        $content = $this->repository->find($id);
-
-        // UPDATE
-        if($content->status == 2){
-            $status = 1;
-            $message = 'Tarefa ativada! Bora pra cima!!! 💪🏼';
-        } else {
-            $status = 2;
-            $message = 'Tarefa em stand-by.';
-        }
-
-        // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
-
-        // REDIRECT AND MESSAGES
-        return redirect()
-                ->back()
-                ->with('message', $message);
-
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

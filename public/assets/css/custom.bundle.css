@@ -302,7 +302,6 @@ input[type=text]:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
 }
 
 .list-style {
@@ -399,12 +398,6 @@ input[type=text]:disabled {
 
 .fc-event {
     overflow: hidden;
-}
-
-.dayContainer > .flatpickr-day:nth-child(7n),
-.dayContainer > .flatpickr-day:nth-child(7n-1) {
-    background: #F9F9F9;
-    color:#7e8299;
 }
 
 .today {

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained('projects');
             $table->foreignId('module_id')->constrained('modules');
             $table->foreignId('task_id')->nullable()->constrained('tasks');
             $table->foreignId('status_id')->default(1)->constrained('statuses');

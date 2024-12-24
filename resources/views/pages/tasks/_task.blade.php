@@ -82,7 +82,6 @@
                 </div>
             </div>
         </div>
-        <div class="separator-vertical h-100"></div>
         <div class="position-relative opacity-1">
             <input type="text" class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }}
             @if(date('Y-m-d', strtotime($task->date)) == date('Y-m-d'))

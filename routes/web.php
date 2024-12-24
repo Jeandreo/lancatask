@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
@@ -39,8 +40,6 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/desabilitar', [TaskController::class, 'destroy'])->name('destroy');
             Route::get('/desabilitar/{id?}', [TaskController::class, 'destroy'])->name('destroy');
             Route::post('/exibir-subtarefas', [TaskController::class, 'showSubtasks'])->name('show.subtasks');
-            Route::post('/stand-by', [TaskController::class, 'standBy'])->name('stand.by');
-            Route::get('/stand-by/{id}', [TaskController::class, 'standBy'])->name('stand.by.active');
             Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
             Route::put('/editar-ajax/{id}', [TaskController::class, 'updateAjax'])->name('update.ajax');
@@ -57,6 +56,16 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/desafio', [TaskController::class, 'challenge'])->name('challenge');
             Route::post('/prazo', [TaskController::class, 'time'])->name('time');
             Route::get('/outras/{type?}', [TaskController::class, 'others'])->name('others');
+        });
+    });
+
+    // COMMENTS
+    Route::prefix('modulos')->group(function () {
+        Route::name('modules.')->group(function () {
+            Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
+            Route::post('/visualizando', [ModuleController::class, 'show'])->name('show');
+            Route::put('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
+            Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
         });
     });
 

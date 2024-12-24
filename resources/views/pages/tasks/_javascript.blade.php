@@ -126,7 +126,6 @@
 
         // GET TITLE OF TASK
         var name        = $(this).find('[name="name"]').val();
-        var projectId   = $(this).find('[name="project_id"]').val();
         var moduleId    = $(this).find('[name="module_id"]').val();
         var date        = $(this).find('[name="date"]').val();
 
@@ -136,16 +135,17 @@
         // FIND WHERE INSERT
         var divNoTask = $(this).closest('.card-body').find('.no-tasks');
 
+
+        // Esconde div sem tarefas
+        $(this).closest('.card').find('.no-tasks').hide();
+
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type: 'POST',
             url: "{{ route('tasks.store') }}",
-            data: {project_id: projectId, module_id: moduleId, date: date, name: name},
+            data: {module_id: moduleId, date: date, name: name},
             success: function(data){
-
-                // Esconde div sem tarefas
-                $('.no-tasks').hide();
 
                 // AJAX
                 $.ajax({
@@ -578,26 +578,21 @@
     });
 
     // SHOW SUBTASKS
-    $(document).on('click', '.stand-by', function(){
+    $(document).on('click', '#add-module', function(){
 
         // GET TASK
-        var task = $(this).data('task');
-
-        // GET DIV TASK
-        var taskDiv = $(this).closest('.dmk-div-task');
+        var projectId = $(this).data('project');
 
         // PLAY SOUND
         stand.play();
 
-        // REMOVE
-        taskDiv.remove();
-
         // AJAX
         $.ajax({
             type:'POST',
-            url: "{{ route('tasks.stand.by') }}",
-            data: {_token: @json(csrf_token()), task_id: task},
+            url: "{{ route('modules.store') }}",
+            data: {_token: @json(csrf_token()), project_id: projectId},
             success:function(data) {
+                $('.modules').append(data['html']);
             }
         });
 
