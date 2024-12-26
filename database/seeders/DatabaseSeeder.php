@@ -130,12 +130,12 @@ class DatabaseSeeder extends Seeder
 
         ProjectUser::create([
             'user_id' => 1,
-            'project_id' => 1,
+            'project_id' => 2,
         ]);
 
         ProjectUser::create([
             'user_id' => 2,
-            'project_id' => 1,
+            'project_id' => 2,
         ]);
 
         Module::create([
