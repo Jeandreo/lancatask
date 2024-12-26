@@ -72,6 +72,9 @@
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('positions.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Cargos</span></a>
                            </div>
+                           <div  class="menu-item" >
+                              <a class="menu-link" href="{{ route('projects.types.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tipos de projetos</span></a>
+                           </div>
                         </div>
                      </div>
                      @if (Auth::user()->groupProjects()->count())

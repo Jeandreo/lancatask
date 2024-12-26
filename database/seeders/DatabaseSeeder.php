@@ -240,7 +240,7 @@ class DatabaseSeeder extends Seeder
             'created_by' => 1,
         ]);
 
-        Task::factory(20)->create();
+        Task::factory(30)->create();
 
     }
 }

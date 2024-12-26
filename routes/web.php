@@ -5,6 +5,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectTypeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPositionController;
@@ -32,6 +33,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [ProjectController::class, 'update'])->name('update');
             Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
+        });
+    });
+
+    // COMMENTS
+    Route::prefix('tipos-de-projetos')->group(function () {
+        Route::name('projects.types.')->group(function () {
+            Route::get('/', [ProjectTypeController::class, 'index'])->name('index');
+            Route::get('/adicionar', [ProjectTypeController::class, 'create'])->name('create');
+            Route::post('/adicionar', [ProjectTypeController::class, 'store'])->name('store');
+            Route::get('/desabilitar/{id}', [ProjectTypeController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [ProjectTypeController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [ProjectTypeController::class, 'update'])->name('update');
         });
     });
 
