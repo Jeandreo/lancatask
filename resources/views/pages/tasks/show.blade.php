@@ -20,7 +20,7 @@
 						</div>
 						@endif
 					</div>
-					<h2 class="text-white fs-2x my-4">{{ $contents->name }}</h2>
+                    <textarea class="form-control form-control-flush fs-2x my-4 px-0 text-white py-0 lh-1 auto-height name-task" style="resize: none; height: auto; overflow: hidden;" rows="1" data-task="{{ $contents->id }}">{{ $contents->name }}</textarea>
 					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description mh-100px mh-md-300px" @if ($contents->status == 0) disabled @endif placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $contents->id }}">@if($contents->description){{ $contents->description }}@endif</textarea>
 				</div>
 				{{-- ALINHAR EM BAIXO  --}}

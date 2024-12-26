@@ -218,8 +218,17 @@ function select2Images(selector = '.select-with-images'){
 
 }
 
+function autoHeight(){
+    $('.auto-height').on('input', function() {
+        var input = $(this);
+        input.css('height', 'auto'); // Reseta a altura
+        input.css('height', input[0].scrollHeight + 'px'); // Ajusta a altura conforme o conteúdo
+    });
+}
+
 // Chama funções necessárias
 $(document).ready(function() {
+    autoHeight();
     loadTables();
     select2Images();
     generateFlatpickr();

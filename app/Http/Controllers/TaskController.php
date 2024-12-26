@@ -126,17 +126,10 @@ class TaskController extends Controller
         $data['updated_by'] = Auth::id();
 
         // STORING NEW DATA
-        $updated = $content->update($data);
-
-        // SAVE AND RENAME IMAGE
-        if($updated && $request->hasFile('image')){
-            $request->file('image')->storeAs('public/images', $id . '.jpg');
-        }
+        $content->update($data);
 
         // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('projects.index')
-            ->with('message', 'Projeto editado com sucesso.');
+        return response()->json();
 
     }
 

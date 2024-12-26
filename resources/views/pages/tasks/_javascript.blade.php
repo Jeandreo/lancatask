@@ -356,6 +356,22 @@
         });
 
     });
+    // UPDATE DATE
+    $(document).on('change', '.name-task', function(){
+
+        // GET NEW DATE
+        var name = $(this).val();
+        var taskId = $(this).data('task');
+        $('#rename-task-' + taskId).text(name);
+
+        // AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('tasks.update', '') }}/" + taskId,
+            data: {_token: @json(csrf_token()), name: name},
+        });
+
+    });
 
     function showTask(id){
 
@@ -370,6 +386,8 @@
 
                 // CHANGE TO NEW COLOR AND NAME STATUS
                 $('#modal_task').modal('show');
+
+                autoHeight();
 
                 // LOAD COMMENTS
                 loadComments(id);
