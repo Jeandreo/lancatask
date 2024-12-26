@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTypeController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserPositionController;
@@ -82,6 +83,17 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
             Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
+        });
+    });
+
+    // COMMENTS
+    Route::prefix('status')->group(function () {
+        Route::name('statuses.')->group(function () {
+            Route::get('/adicionar', [StatusController::class, 'create'])->name('create');
+            Route::post('/adicionar', [StatusController::class, 'store'])->name('store');
+            Route::get('/desabilitar/{id}', [StatusController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [StatusController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [StatusController::class, 'update'])->name('update');
         });
     });
 

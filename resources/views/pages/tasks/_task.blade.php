@@ -72,7 +72,7 @@
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
                 <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusModule->name }}</p>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
-                    @foreach ($task->module->project->statuses as $status)
+                    @foreach ($task->module->project->statuses->where('status', true) as $status)
                     <div class="menu-item px-3 mb-2">
                         <span data-task="{{ $task->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
                             {{ $status->name }}
