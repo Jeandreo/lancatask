@@ -34,15 +34,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" data-bs-focus="false" id="modal_task">
-    <div class="modal-dialog modal-dialog-centered rounded">
-        <div class="modal-content rounded bg-transparent" id="load-task">
-            {{-- LOAP TASK HERE --}}
-            {{-- LOAP TASK HERE --}}
-            {{-- LOAP TASK HERE --}}
-        </div>
-    </div>
-</div>
+@include('pages.tasks._modals')
 @endsection
 
 @section('custom-footer')

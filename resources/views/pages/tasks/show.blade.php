@@ -5,7 +5,7 @@
 				<h2 class="text-white fw-bold text-uppercase m-0">Detalhes da Tarefa</h2>
 			</div>
 			<div class="px-8 h-md-500px pb-4 mb-md-0">
-				<div class="h-md-350px">
+				<div class="h-md-300px">
 					<div class="d-flex mb-4 mt-7">
 						<span class="badge text-white" style="background-color: {{ $contents->module->color }};">{{ $contents->module->name }}</span>
 						@if ($contents->status == 0)
@@ -23,6 +23,17 @@
                     <textarea class="form-control form-control-flush fs-2x my-4 px-0 text-white py-0 lh-1 auto-height input-name" name="name" style="resize: none; height: auto; overflow: hidden;" rows="1" data-task="{{ $contents->id }}">{{ $contents->name }}</textarea>
 					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description mh-100px mh-md-300px" @if ($contents->status == 0) disabled @endif placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $contents->id }}">@if($contents->description){{ $contents->description }}@endif</textarea>
 				</div>
+				<div class="h-md-50px d-flex align-items-center mb-2">
+                    <span class="fw-bold text-white cursor-pointer">Participantes:</span>
+                    <div class="symbol-group symbol-hover flex-nowrap ms-5">
+                        <div class="symbol symbol-25px symbol-circle">
+                            <img alt="Pic" src="{{ findImage('users/photos/' . $contents->designated->id . '.jpg') }}">
+                        </div>
+                        <div class="symbol symbol-25px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Adicionar participante" data-task="{{ $contents->id }}" id="add-participants">
+                            <span class="symbol-label bg-primary bg-hover-success text-inverse-primary fw-bold">+</span>
+                        </div>
+                    </div>
+                </div>
 				{{-- ALINHAR EM BAIXO  --}}
 				<div class="d-flex align-items-end h-md-150px pb-5">
 					<div class="w-100">

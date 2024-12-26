@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Status;
 use App\Models\Task;
 use App\Models\TaskHistoric;
+use App\Models\TaskParticipant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -550,6 +551,43 @@ class TaskController extends Controller
             'users' => $users,
             'projects' => $projects,
         ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addParticipants($id)
+    {
+
+        // GET ALL DATA
+        $contents = $this->repository->find($id);
+        $users = User::where('status', true)->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._add_participants')->with([
+            'contents' => $contents,
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addParticipant(Request $request, $id)
+    {
+
+        // Adiciona Tarefa
+        TaskParticipant::create([
+            'user_id' => $request->user_id,
+            'task_id' => $id,
+        ]);
+
     }
 
     /**

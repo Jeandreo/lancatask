@@ -72,6 +72,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/subtarefa', [TaskController::class, 'subtask'])->name('subtask');
             Route::post('/concluidas', [TaskController::class, 'checkeds'])->name('checkeds');
             Route::post('/prazo', [TaskController::class, 'time'])->name('time');
+            Route::get('/adicionar-participante/{id}', [TaskController::class, 'addParticipants'])->name('add.participants');
+            Route::put('/adicionar-participante/{id}', [TaskController::class, 'addParticipant'])->name('add.participant');
             Route::get('/historico/{id}', [TaskController::class, 'historic'])->name('historic');
         });
     });

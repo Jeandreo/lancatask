@@ -68,9 +68,9 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusModule->color }}">
+        <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusProject->color }}">
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusModule->name }}</p>
+                <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusProject->name }}</p>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
                     @foreach ($task->module->project->statuses->where('status', true) as $status)
                     <div class="menu-item px-3 mb-2">

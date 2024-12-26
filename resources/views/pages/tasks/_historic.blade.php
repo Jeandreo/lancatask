@@ -140,7 +140,7 @@
         {{ $historic->task->created_at->format('d/m/Y') }} às {{ $historic->task->created_at->format('H:i') }}
     </p>
 @else
-<div class="w-100 bg-light border border-dashed border-1 border-gray-200 h-200px rounded d-flex justify-content-center align-items-center">
+<div class="w-100 bg-light border border-dashed border-1 border-gray-200 h-100 rounded d-flex justify-content-center align-items-center">
     <div class="d-flex">
         <i class="fa-solid fa-clock-rotate-left text-success fs-3x me-4"></i>
         <div>

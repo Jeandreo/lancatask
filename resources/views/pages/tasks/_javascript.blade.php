@@ -124,8 +124,6 @@
 
     });
 
-    console.log(enableSound);
-
     var check = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
     var stand = new Audio('{{ asset("assets/media/sounds/task-stand.mp3") }}');
     var remove = new Audio('{{ asset("assets/media/sounds/task-remove.mp3") }}');
@@ -233,6 +231,40 @@
     // SHOW INPUT PHRASE
     $(document).on('focus', '.input-name', function(){
         $(this).next('.input-phrase').fadeIn();
+    });
+
+    // SHOW INPUT PHRASE
+    $(document).on('click', '#add-participants', function(){
+
+        var taskId = $(this).data('task');
+
+        // AJAX
+        $.ajax({
+            type: 'GET',
+            url: "{{ route('tasks.add.participants', '') }}/" + taskId,
+            success: function(data){
+                $('#div-users-task').html(data);
+                $('#add_user').modal('show');
+            }
+        });
+    });
+
+    // SHOW INPUT PHRASE
+    $(document).on('click', '.add-user', function(){
+
+        var taskId = $(this).data('task');
+        var userId = $(this).data('user');
+
+        // AJAX
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            type: 'PUT',
+            url: "{{ route('tasks.add.participant', '') }}/" + taskId,
+            data: {user_id: userId},
+            success: function(data){
+                alert('sucesso');
+            }
+        });
     });
 
     // HIDE INPUT PHRASE

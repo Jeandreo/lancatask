@@ -208,7 +208,7 @@ button:focus {
 }
 
 .modal-backdrop.show, .bg-blur {
-    background-color: rgb(0 2 41 / 50%);
+    background-color: rgb(16 17 38 / 60%);
     opacity: 1;
 }
 

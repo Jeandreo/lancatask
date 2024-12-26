@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -42,6 +43,14 @@ class Task extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'task_id', 'id');
+    }
+
+    /**
+     * Get the comments associated with the tasks.
+     */
+    public function participants(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'tasks_participants', 'user_id', 'task_id');
     }
 
     /**
@@ -95,16 +104,16 @@ class Task extends Model
     /**
      * Get the creator associated with the tasks.
      */
-    public function statusModule(): HasOne
-    {
-        return $this->hasOne(Status::class, 'id', 'status_id');
-    }
-
-    /**
-     * Get the creator associated with the tasks.
-     */
     public function module(): HasOne
     {
         return $this->hasOne(Module::class, 'id', 'module_id');
+    }
+
+    /**
+     * Get the subtask associated with the tasks.
+     */
+    public function statusProject(): HasOne
+    {
+        return $this->hasOne(Status::class, 'id', 'status_id');
     }
 }
