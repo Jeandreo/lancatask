@@ -138,17 +138,18 @@ class DatabaseSeeder extends Seeder
             'project_id' => 2,
         ]);
 
-        Module::create([
-            'name' => 'Estratégia e definições',
+        // Módulo: Preparação para captação
+        $module1 = Module::create([
+            'name' => 'Preparação para captação',
             'project_id' => 1,
-            'color' => '#A64D79',
+            'color' => '#674EA7',
             'created_by' => 1,
         ]);
 
         Status::create([
             'name' => 'A Fazer',
             'color' => '#009ef7',
-            'module_id' => 1,
+            'module_id' => $module1->id,
             'order' => 1,
             'created_by' => 1,
         ]);
@@ -156,89 +157,307 @@ class DatabaseSeeder extends Seeder
         Status::create([
             'name' => 'Em andamento',
             'color' => '#79bc17',
-            'module_id' => 1,
-            'order' => 1,
+            'module_id' => $module1->id,
+            'order' => 2,
             'created_by' => 1,
         ]);
 
         Status::create([
             'name' => 'Concluído',
             'color' => '#282c43',
-            'module_id' => 1,
-            'order' => 1,
+            'module_id' => $module1->id,
+            'order' => 3,
             'created_by' => 1,
         ]);
 
-
-        Module::create([
-            'name' => 'Preparação para captação',
-            'project_id' => 1,
-            'color' => '#674EA7',
-            'created_by' => 1,
-        ]);
-
-        Module::create([
+        // Módulo: INICIO DA CAPTAÇÃO
+        $module2 = Module::create([
             'name' => 'INICIO DA CAPTAÇÃO',
             'project_id' => 1,
             'color' => '#674EA7',
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module2->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module2->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module2->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: Preparação para o evento
+        $module3 = Module::create([
             'name' => 'Preparação para o evento',
             'project_id' => 1,
             'color' => '#85200C',
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module3->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module3->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module3->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: EVENTO NO AR
+        $module4 = Module::create([
             'name' => 'EVENTO NO AR',
             'project_id' => 1,
             'color' => '#85200C',
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module4->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module4->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module4->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: Preparação do curso
+        $module5 = Module::create([
             'name' => 'Preparação do curso',
             'project_id' => 1,
             'color' => randomColor(),
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module5->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module5->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module5->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: Preparação para venda
+        $module6 = Module::create([
             'name' => 'Preparação para venda',
             'project_id' => 1,
             'color' => randomColor(),
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module6->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module6->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module6->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: Preparação curso Segredos
+        $module7 = Module::create([
             'name' => 'Preparação curso Segredos',
             'project_id' => 1,
             'color' => randomColor(),
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module7->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module7->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module7->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: VENDAS
+        $module8 = Module::create([
             'name' => 'VENDAS',
             'project_id' => 1,
             'color' => randomColor(),
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module8->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module8->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module8->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: Fechamento
+        $module9 = Module::create([
             'name' => 'Fechamento',
             'project_id' => 1,
             'color' => randomColor(),
             'created_by' => 1,
         ]);
 
-        Module::create([
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module9->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module9->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module9->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
+        // Módulo: Entrega
+        $module10 = Module::create([
             'name' => 'Entrega',
             'project_id' => 1,
             'color' => randomColor(),
             'created_by' => 1,
         ]);
+
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => $module10->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => $module10->id,
+            'order' => 2,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => $module10->id,
+            'order' => 3,
+            'created_by' => 1,
+        ]);
+
 
         Task::factory(30)->create();
 
