@@ -68,7 +68,7 @@ class ProjectTypeController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
                 ->route('projects.types.index')
-                ->with('message', 'Cargo adicionado com sucesso.');
+                ->with('message', 'Tipo de projeto adicionado com sucesso.');
 
     }
 
@@ -118,7 +118,7 @@ class ProjectTypeController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('projects.types.index')
-            ->with('message', 'Cargo atualizado com sucesso.');
+            ->with('message', 'Tipo de projeto atualizado com sucesso.');
 
     }
 
@@ -141,7 +141,7 @@ class ProjectTypeController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('projects.types.index')
-            ->with('message', 'Cargo ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Tipo de projeto ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
 
     }
 }
