@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
@@ -60,8 +61,6 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/exibir-subtarefas', [TaskController::class, 'showSubtasks'])->name('show.subtasks');
             Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
-            Route::put('/editar-ajax/{id}', [TaskController::class, 'updateAjax'])->name('update.ajax');
-            Route::put('/separador/{id}', [TaskController::class, 'separator'])->name('separator');
             Route::get('/ajax/{id}', [TaskController::class, 'ajax'])->name('ajax');
             Route::post('/check', [TaskController::class, 'check'])->name('check');
             Route::put('/prioridade', [TaskController::class, 'priority'])->name('priority');
@@ -107,6 +106,15 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/barra-lateral', [UserController::class, 'sidebar'])->name('sidebar');
         });
     });
+
+    // Usuários
+    Route::prefix('minha-conta')->group(function () {
+        Route::name('account.')->group(function () {
+            Route::get('/', [AccountController::class, 'index'])->name('index');
+            Route::put('/', [AccountController::class, 'update'])->name('update');
+        });
+    });
+
 
     // COMMENTS
     Route::prefix('cargos')->group(function () {

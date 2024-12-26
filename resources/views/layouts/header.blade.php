@@ -288,7 +288,7 @@
                     </div>
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-200px" data-kt-menu="true">
                         <div class="menu-item px-5">
-                            <a href="#" class="menu-link px-5">Meu Perfil</a>
+                            <a href="{{ route('account.index') }}" class="menu-link px-5">Minha Conta</a>
                         </div>
                         <div class="separator my-2"></div>
                         <div class="menu-item px-5">

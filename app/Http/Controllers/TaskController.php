@@ -122,34 +122,6 @@ class TaskController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
-        // UPDATE BY
-        $data['updated_by'] = Auth::id();
-
-        // STORING NEW DATA
-        $content->update($data);
-
-        // REDIRECT AND MESSAGES
-        return response()->json();
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateAjax(Request $request, $id)
-    {
-
-        // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($id))
-        return redirect()->back();
-
-        // GET FORM DATA
-        $data = $request->all();
-
         // UPDATE VALUE
         $data[$request->input] = $request->value;
 
@@ -161,34 +133,6 @@ class TaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return response()->json('Success', 200);
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function separator(Request $request, $id)
-    {
-
-        // GET BY POST
-        if($id == null) $id = $request->task_id;
-
-        // GET DATA
-        $content = $this->repository->find($id);
-
-        // UPDATE
-        if($content->separator == 0){
-            $status = 1;
-        } else {
-            $status = 0;
-        }
-
-        // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['separator' => $status, 'updated_by' => Auth::id()]);
 
     }
 

@@ -220,13 +220,13 @@
 
         // IF RENAME TASK
         if(input == 'name'){
-            $(this).closest('.div-name-task').find('.task-name').text(value);
+            $('#rename-task-' + taskId).text(value);
         }
 
         // AJAX
         $.ajax({
             type: 'PUT',
-            url: "{!! route('tasks.update.ajax', '') !!}/" + taskId,
+            url: "{!! route('tasks.update', '') !!}/" + taskId,
             data: {_token: @json(csrf_token()), input: input, value: value},
         });
 
@@ -353,22 +353,6 @@
             type:'PUT',
             url: "{{ route('tasks.date') }}",
             data: {_token: @json(csrf_token()), task_id: taskId, date: date},
-        });
-
-    });
-    // UPDATE DATE
-    $(document).on('change', '.name-task', function(){
-
-        // GET NEW DATE
-        var name = $(this).val();
-        var taskId = $(this).data('task');
-        $('#rename-task-' + taskId).text(name);
-
-        // AJAX
-        $.ajax({
-            type:'PUT',
-            url: "{{ route('tasks.update', '') }}/" + taskId,
-            data: {_token: @json(csrf_token()), name: name},
         });
 
     });
