@@ -9,7 +9,7 @@
 					<div class="d-flex mb-4 mt-7">
 						<span class="badge text-white" style="background-color: {{ $contents->module->color }};">{{ $contents->module->name }}</span>
 						@if ($contents->status == 0)
-						<span class="badge badge-danger text-white">Arquivada</span>
+						<span class="badge badge-danger text-white ms-2">Arquivada</span>
 						@endif
 						@if ($contents->subtasks->count())
 						<div class="form-check form-switch form-check-custom form-check-solid ms-4">
@@ -27,10 +27,6 @@
 				<div class="d-flex align-items-end h-md-150px pb-5">
 					<div class="w-100">
 						<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
-                            <p class="text-white text-hover-gray-100 fw-bolder m-0 text-uppercase fs-7 text-center cursor-pointer" id="see-historic" data-task="{{ $contents->id }}">Ver Histórico</p>
-                            <p class="text-white text-hover-gray-100 fw-bolder m-0 text-uppercase fs-7 text-center cursor-pointer" id="see-details" style="display: none;">Ver Detalhes</p>
-                        </div>
-						<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
 							<div class="col-4">
 								<p class="text-white fw-bolder m-0 text-uppercase fs-8">Autor</p>
 							</div>
@@ -46,7 +42,7 @@
 								<p class="text-white text-end m-0">{{ $contents->module->project->name }}</p>
 							</div>
 						</div>
-						<div class="row">
+						<div class="row pb-3 mb-2">
 							<div class="col-4">
 								<p class="text-white fw-bolder m-0 text-uppercase fs-8">Criado as</p>
 							</div>
@@ -54,6 +50,10 @@
 								<p class="text-white text-end m-0">{{ $contents->created_at->format('d/m/Y H:i') }}</p>
 							</div>
 						</div>
+						<div class="row" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
+                            <p class="btn btn-sm btn-primary fw-bold text-uppercase mb-0" id="see-historic" data-task="{{ $contents->id }}">Ver Histórico</p>
+                            <p class="btn btn-sm btn-success fw-bold text-uppercase mb-0" id="see-details" style="display: none;">Ver Detalhes</p>
+                        </div>
 					</div>
 				</div>
 				{{-- ALINHAR EM BAIXO  --}}
@@ -89,7 +89,7 @@
                     @endif
                 </div>
             </div>
-            <div class="p-5" id="task-historic" style="display: none">
+            <div class="p-5 scroll-y h-100" id="task-historic" style="display: none">
                 <div class="w-100 bg-light border border-dashed border-1 border-gray-200 h-200px rounded d-flex justify-content-center align-items-center">
                     <div class="d-flex align-items-center">
                         <div class="spinner-border text-primary me-4" role="status">

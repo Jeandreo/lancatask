@@ -64,7 +64,7 @@ function generateFlatpickr(options = null, calendarSelector = '.flatpickr') {
         altFormat: "d/m/Y",
         dateFormat: "Y-m-d",
         locale: "pt",
-        minDate: "today",
+        // minDate: "today",
     };
 
     // Sobrescreve as opções personalizadas nas padrões

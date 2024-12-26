@@ -38,4 +38,36 @@ class TaskHistoric extends Model
     {
         return $this->hasOne(Task::class, 'id', 'task_id');
     }
+
+    /**
+     * Get the creator associated with the tasks.
+     */
+    public function statusOld(): HasOne
+    {
+        return $this->hasOne(Status::class, 'id', 'previous_key');
+    }
+
+    /**
+     * Get the creator associated with the tasks.
+     */
+    public function status(): HasOne
+    {
+        return $this->hasOne(Status::class, 'id', 'key');
+    }
+
+    /**
+     * Get the creator associated with the tasks.
+     */
+    public function designatedOld(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'previous_key');
+    }
+
+    /**
+     * Get the creator associated with the tasks.
+     */
+    public function designated(): HasOne
+    {
+        return $this->hasOne(User::class, 'id', 'key');
+    }
 }

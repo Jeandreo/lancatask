@@ -8,12 +8,11 @@
         <input type="email" class="form-control form-control-solid" placeholder="nome@gmail.com" name="email" value="{{ $content->email ?? old('email') }}" required/>
     </div>
     <div class="col-4 mb-5">
-        <label class="form-label fw-bold required">Grupo de usuário:</label>
+        <label class="form-label fw-bold required">É administrador:</label>
         <select class="form-select form-select-solid" name="role" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
-            <option value="Administrador" @if(isset($content) && $content->role == 'Administrador') selected @endif>Administrador</option>
-            <option value="Gerente" @if(isset($content) && $content->role == 'Gerente') selected @endif>Gerente</option>
-            <option value="Colaborador" @if(isset($content) && $content->role == 'Colaborador') selected @endif>Colaborador</option>
+            <option value="Administrador" @if(isset($content) && $content->role == 'Administrador') selected @endif>Sim</option>
+            <option value="Usuário" @if(isset($content) && $content->role == 'Usuário') selected @endif>Não</option>
         </select>
     </div>
     <div class="col-4 mb-5">

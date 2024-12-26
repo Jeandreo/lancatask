@@ -24,14 +24,6 @@
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="menu-link" href="{{ route('releases') }}">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-rocket fs-4"></i>
-                            </span>
-                            <span class="menu-title">Lançamentos</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
                         <a class="menu-link" href="#">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-calendar-days fs-4"></i>
@@ -122,13 +114,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="app-sidebar-footer flex-column-auto pt-2 pb-6 px-6" id="kt_app_sidebar_footer">
-        <a href="#" class="btn btn-flex flex-center btn-custom btn-primary overflow-hidden text-nowrap px-0 h-40px w-100">
-            <span class="btn-label">Lançamentos</span>
-            <span class="btn-icon">
-                <i class="fa-solid fa-rocket fs-5 mt-2"></i>
-            </span>
-        </a>
     </div>
 </div>

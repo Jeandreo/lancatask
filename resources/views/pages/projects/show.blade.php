@@ -7,6 +7,13 @@
 @endsection
 
 @section('content')
+<div class="card mb-4">
+    <div class="card-body">
+        <h2>Lançamento 01/02/2024</h2>
+        <span>Frase</span>
+        <span>Emoji</span>
+    </div>
+</div>
 <div class="modules">
     @if ($project->modules()->where('status', true)->count())
         @foreach ($project->modules()->where('status', true)->get() as $module)

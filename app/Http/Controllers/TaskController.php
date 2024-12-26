@@ -186,6 +186,13 @@ class TaskController extends Controller
             $message = 'Tarefa ativada! Bora pra cima!!! 💪🏼';
         }
 
+        TaskHistoric::create([
+            'task_id'      => $request->task_id ?? $id,
+            'action'       => 'estado',
+            'key'          => $status,
+            'created_by'   => Auth::id(),
+        ]);
+
         // STORING NEW DATA
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
@@ -289,6 +296,14 @@ class TaskController extends Controller
         $contents->priority = $newPriority;
         $contents->save();
 
+        TaskHistoric::create([
+            'task_id'      => $request->task_id,
+            'action'       => 'prioridade',
+            'previous_key' => $priority,
+            'key'          => $newPriority,
+            'created_by'   => Auth::id(),
+        ]);
+
         return response()->json($contents->priority, 200);
 
     }
@@ -303,13 +318,20 @@ class TaskController extends Controller
 
         // GET ALL DATA
         $contents = Task::find($request->task_id);
-
-        // MARK AS CHECK
+        $previousValue = $contents->designated_id;
         $contents->designated_id = $request->designated_id;
         $contents->save();
 
+        TaskHistoric::create([
+            'task_id'      => $request->task_id,
+            'action'       => 'designado',
+            'previous_key' => $previousValue,
+            'key'          => $request->designated_id,
+            'created_by'   => Auth::id(),
+        ]);
+
         // GET IMAGE
-        $img = findImage('users/' . $request->designated_id . '/' . 'perfil-35px.jpg');
+        $img = findImage('users/photos/' . $request->designated_id . '.jpg');
 
         // RETURN
         return response()->json($img, 200);
@@ -326,8 +348,17 @@ class TaskController extends Controller
 
         // UPDATE TASK STATUS
         $content = Task::find($request->task_id);
+        $previousValue = $content->status_id;
         $content->status_id = $request->status_id;
         $content->save();
+
+        TaskHistoric::create([
+            'task_id'      => $request->task_id,
+            'action'       => 'status',
+            'previous_key' => $previousValue,
+            'key'          => $request->status_id,
+            'created_by'   => Auth::id(),
+        ]);
 
         // STATUS
         $status = Status::find($request->status_id);

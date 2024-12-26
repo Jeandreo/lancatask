@@ -12,6 +12,7 @@
         <table id="datatables" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle datatables no-footer">
             <thead>
                 <tr class="fw-bold fs-6 text-gray-800 px-7">
+                    <th>ID</th>
                     <th>Nome</th>
                     <th>Quando</th>
                     <th>Concluída</th>
@@ -23,6 +24,11 @@
             <tbody class="table-pd">
                 @foreach ($contents as $content)
                     <tr>
+                        <td>
+                            <span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="{{ $content->id }}">
+                                {{ $content->id }}
+                            </span>
+                        </td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="symbol symbol-25px symbol-circle me-2" data-bs-toggle="tooltip" data-bs-original-title="{{ $content->name }}">

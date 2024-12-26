@@ -22,6 +22,20 @@ function randomColor()
     return $color;
 }
 
+// PUT THE BACKGROUND IN THE TEXT COLOR
+function hex2rgb($colour, $opacity)
+{
+
+    // REMOVE # FROM STRING
+    $colour = ltrim($colour, '#');
+
+    // EXTRACT RGB FROM HEX
+    $rgb = sscanf($colour, '%2x%2x%2x');
+    $rgb[] = $opacity;
+
+    // RETURN RGBA
+    return sprintf('rgb(%d, %d, %d, %d%%)', ...$rgb);
+}
 
 function findImage($pathAndFile, $default = 'user')
 {

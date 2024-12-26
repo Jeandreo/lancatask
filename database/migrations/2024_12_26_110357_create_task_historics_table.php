@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('task_id')->constrained('tasks');
             $table->string('action');
             $table->text('previous_key')->nullable();
-            $table->text('key');
+            $table->text('key')->nullable();
             $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
         });

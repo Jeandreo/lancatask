@@ -156,7 +156,7 @@ class ProjectController extends Controller
         return view('pages.projects.show')->with([
             'project' => $project,
             'users' => $users,
-            'pageClean' => true,
+            // 'pageClean' => true,
         ]);
     }
 

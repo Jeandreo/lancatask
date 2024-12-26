@@ -14,7 +14,7 @@
             </div>
             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
-                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">{{ $task->name }}</p>
+                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-5" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">{{ $task->name }}</p>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 text-primary
             @else
                 text-gray-700
-            @endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
+            @endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ $task->date }} @endif"/>
             <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-300 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task={{ $task->id }}" style="top: 15%; right: 0"></i>
         </div>
         @if (!isset($hideMove))
