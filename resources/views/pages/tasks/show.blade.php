@@ -75,8 +75,9 @@
 						<textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>
 					</div>
 					<div class="text-end position-absolute" style="bottom: 5px; right: 5px;">
-						<button class="btn btn-sm btn-icon btn-primary btn-active-danger fw-bold text-uppercase mt-2">
-							<i class="fa-regular fa-paper-plane fs-5"></i>
+						<button class="btn btn-sm btn-primary btn-active-success fw-bold text-uppercase mt-2">
+                            Enviar
+							<i class="fa-regular fa-paper-plane fs-5 pe-0"></i>
 						</button>
 					</div>
 				</form>

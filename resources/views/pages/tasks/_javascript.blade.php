@@ -423,7 +423,6 @@
         });
 
     });
-
     // SHOW TASK
     $(document).on('change', '.module-colors', function(){
 

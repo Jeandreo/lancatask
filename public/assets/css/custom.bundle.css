@@ -209,9 +209,6 @@ button:focus {
 
 .modal-backdrop.show, .bg-blur {
     background-color: rgb(0 2 41 / 50%);
-    mix-blend-mode: normal;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     opacity: 1;
 }
 
