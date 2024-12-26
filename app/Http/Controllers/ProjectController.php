@@ -171,6 +171,7 @@ class ProjectController extends Controller
         // GET ALL DATA
         $content = $this->repository->find($id);
         $users = User::where('status', 1)->get();
+        $types = ProjectType::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -179,6 +180,7 @@ class ProjectController extends Controller
         return view('pages.projects.edit')->with([
             'content' => $content,
             'users' => $users,
+            'types' => $types,
         ]);
     }
 
