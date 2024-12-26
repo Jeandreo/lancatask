@@ -4,7 +4,7 @@
       @if ($content->created_by != $previousCreatedBy)
          <div class="d-flex align-items-center mb-2">
                <div class="symbol symbol-35px symbol-rounded">
-                  <img alt="Pic" src="{{ findImage('users/' . $content->created_by . '/' . 'perfil-35px.jpg') }}">
+                  <img alt="Pic" src="{{ findImage('users/photos/' . $content->created_by . '.jpg') }}" class="object-fit-cover">
                </div>
                <div class="ms-3">
                   <p class="fs-6 fw-bold text-gray-700 me-1 mb-0">{{ $content->author->name }}</p>

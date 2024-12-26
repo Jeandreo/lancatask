@@ -48,7 +48,7 @@
         <div class="w-125px text-center designated-div">
             <div class="symbol symbol-30px symbol-circle cursor-pointer" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
                 <div class="symbol symbol-25px symbol-circle me-2">
-                    <img alt="Pic" src="{{ findImage('users/photos/' . $task->designated_id . '.jpg') }}" class="designated">
+                    <img alt="Pic" src="{{ findImage('users/photos/' . $task->designated_id . '.jpg') }}" class="designated object-fit-cover">
                 </div>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true">
                 @foreach ($users as $user)

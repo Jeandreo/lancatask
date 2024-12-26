@@ -29,7 +29,7 @@
                                 <div class="symbol-group symbol-hover flex-nowrap">
                                 @foreach ($content->users as $user)
                                 <div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="{{ $user->name }}">
-                                    <img alt="Pic" src="{{ findImage('users/photos/' . $user->id . '.jpg') }}">
+                                    <img alt="Pic" src="{{ findImage('users/photos/' . $user->id . '.jpg') }}" class="object-fit-cover">
                                 </div>
                                 @endforeach
                                 </div>

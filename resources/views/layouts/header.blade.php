@@ -277,7 +277,7 @@
                         <div class="menu-item px-3">
                             <div class="menu-content d-flex align-items-center px-3" id="clear-sidebar">
                                 <div class="symbol symbol-40px me-4">
-                                    <img alt="Logo" src="{{ findImage('users/photos/' . Auth::id() . '.jpg') }}" />
+                                    <img alt="Logo" src="{{ findImage('users/photos/' . Auth::id() . '.jpg') }}" class="object-fit-cover" />
                                 </div>
                                 <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5">{{ Auth::user()->name }}</div>

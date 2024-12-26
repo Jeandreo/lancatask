@@ -525,30 +525,6 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function others($type)
-    {
-
-        // FILTER TYPE
-        $filterStatus = $type == 'ideias' ? 2 : 0;
-
-        // GET ALL DATA
-        $contents = $this->repository->where('status', $filterStatus)->get();
-        $users = User::where('status', 1)->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.tasks.others')->with([
-            'contents' => $contents,
-            'users' => $users,
-            'type' => $type,
-        ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function showOne($id)
     {
         // GET ALL DATA

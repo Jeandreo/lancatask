@@ -71,9 +71,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/ordem', [TaskController::class, 'order'])->name('order');
             Route::post('/subtarefa', [TaskController::class, 'subtask'])->name('subtask');
             Route::post('/concluidas', [TaskController::class, 'checkeds'])->name('checkeds');
-            Route::post('/desafio', [TaskController::class, 'challenge'])->name('challenge');
             Route::post('/prazo', [TaskController::class, 'time'])->name('time');
-            Route::get('/outras/{type?}', [TaskController::class, 'others'])->name('others');
         });
     });
 

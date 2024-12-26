@@ -26,7 +26,7 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="symbol symbol-25px symbol-circle me-2" data-bs-toggle="tooltip" data-bs-original-title="{{ $content->name }}">
-                                    <img alt="Pic" src="{{ findImage('users/photos/' . $content->designated_id . '.jpg') }}">
+                                    <img alt="Pic" src="{{ findImage('users/photos/' . $content->designated_id . '.jpg') }}" class="object-fit-cover">
                                 </div>
                                 <span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="{{ $content->id }}">
                                     {{ $content->name }}
@@ -48,7 +48,7 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('projects.show', $content->module->project_id) }}" class="text-gray-700 fw-bolder">
+                            <a href="{{ route('projects.show', $content->module->project_id) }}" class="text-gray-700 text-hover-primary fw-bolder">
                                 {{ $content->module->project->name }} >
                                 <span class="text-gray-600 fw-normal">
                                     {{ Str::limit($content->module->name, 25) }}
