@@ -186,9 +186,7 @@ class ModuleController extends Controller
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('projects.index')
-            ->with('message', 'Projeto ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+        return response()->json();
 
     }
 }

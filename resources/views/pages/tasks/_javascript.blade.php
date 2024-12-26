@@ -501,6 +501,27 @@
     });
 
     // SHOW TASK
+    $(document).on('click', '.module-remove', function(){
+
+        // GET DATA
+        var moduleId = $(this).data('module');
+
+        // Obtém cor
+        $(this).closest('.card').remove();
+
+        // Som
+        remove.play();
+
+        // AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('modules.destroy', '') }}/" + moduleId,
+            data: {_token: @json(csrf_token())},
+        });
+
+    });
+
+    // SHOW TASK
     $(document).on('click', '.destroy-comment', function(e){
 
         // PARA EVENTO

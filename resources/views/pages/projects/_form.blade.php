@@ -17,10 +17,10 @@
     </div>
     <div class="col-6 mb-4">
         <label class="required form-label fw-bold">Time:</label>
-        <select class="form-select form-select-solid select-with-images" name="team[]" data-control="select2" data-hide-search="true" data-placeholder="Selecione" multiple>
+        <select class="form-select form-select-solid select-with-images" name="team[]" data-control="select2" data-hide-search="true" data-placeholder="Selecione" multiple required>
             <option value=""></option>
             @foreach ($users as $user)
-            <option value="{{ $user->id }}" @if(isset($content) && in_array($user->id, $content->users->pluck('id')->toArray())) selected @endif data-kt-select2-user="{{ findImage('users/photos/' . $user->id . '.jpg') }}">{{ $user->name }}</option>
+            <option value="{{ $user->id }}" @if(isset($content) && in_array($user->id, $content->users->pluck('id')->toArray()) || $user->id == Auth::id()) selected @endif data-kt-select2-user="{{ findImage('users/photos/' . $user->id . '.jpg') }}">{{ $user->name }}</option>
             @endforeach
         </select>
     </div>

@@ -15,6 +15,14 @@ border-radius: 5px;
 padding: 0;
 border: 5px solid #DDD;
 }
+.form-check-input:checked {
+    background-color: #90c536;
+    border-color: #90c536;
+}
+/* Substitui o outline padrão por uma borda personalizada */
+:focus {
+    outline: none;
+}
 
 input[type="color"]::-moz-color-swatch {
 border: none;

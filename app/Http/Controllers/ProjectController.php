@@ -72,6 +72,9 @@ class ProjectController extends Controller
         // SEND DATA
         $created = $this->repository->create($data);
 
+        // Sincroniza time
+        $created->users()->sync($data['team']);
+
         // Cria módulo inicial
         $createdModule = Module::create([
             'name' => 'Primeiro Módulo de ' . $created['name'],

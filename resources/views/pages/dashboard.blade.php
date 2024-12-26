@@ -24,14 +24,11 @@
                     <div class="d-flex align-items-center justify-content-center cursor-pointer w-200px text-gray-700 fs-7 text-uppercase fw-bold">
                         Data
                     </div>
-                    <div>
-                        <i class="fa-solid fa-arrows-to-dot text-hover-primary cursor-pointer py-2 px-3 mx-3 fs-7 text-gray-700"></i>
-                    </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body p-5">
                 @foreach ($tasks as $task)
-                    @include('pages.tasks._tasks')
+                    @include('pages.tasks._task', ['hideMove' => true])
                 @endforeach
             </div>
         </div>

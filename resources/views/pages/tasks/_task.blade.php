@@ -95,9 +95,11 @@
             @endif" data-task="{{ $task->id }}" placeholder="Prazo da tarefa" value="@if($task->date) {{ date('Y-m-d H:i:s', strtotime($task->date)) }} @endif"/>
             <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-300 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task={{ $task->id }}" style="top: 15%; right: 0"></i>
         </div>
+        @if (!isset($hideMove))
         <div class="separator-vertical h-100"></div>
         <div>
             <i class="fa-solid fa-arrows-to-dot text-hover-primary py-2 px-3 mx-3 fs-6 draggable-handle"></i>
         </div>
+        @endif
     </div>
 </div>

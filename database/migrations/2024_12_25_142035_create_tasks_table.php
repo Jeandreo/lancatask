@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('status_id')->default(1)->constrained('statuses');
             $table->foreignId('designated_id')->constrained('users');
             $table->boolean('checked')->default(false);
+            $table->dateTime('checked_at')->nullable();
             $table->integer('order')->default(0);
             $table->integer('priority')->default(0);
             $table->dateTime('date')->nullable();

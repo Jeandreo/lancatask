@@ -8,8 +8,8 @@
 
 @section('content')
 <div class="modules">
-    @if ($project->modules->count())
-        @foreach ($project->modules as $module)
+    @if ($project->modules()->where('status', true)->count())
+        @foreach ($project->modules()->where('status', true)->get() as $module)
             @include('pages.projects._module')
         @endforeach
     @endif

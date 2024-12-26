@@ -11,7 +11,7 @@
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>Time</th>
-                        <th>Data</th>
+                        <th>Tarefas</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -20,7 +20,7 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <a href="{{ route('projects.edit', $content->id) }}"
+                                <a href="{{ route('projects.show', $content->id) }}"
                                    class="text-gray-700 fw-bold text-hover-primary fs-6">
                                     {{ $content->name }}
                                 </a>
@@ -46,17 +46,9 @@
                                 </div>
                             </td>
                             <td>
-                                @if ($content->start)
-                                <span class="badge badge-light">
-                                    {{ $content->start->format('d/m/Y') }}
+                                <span class="badge badge-light-primary">
+                                    {{ $content->tasksCount('checked') }} / {{ $content->tasksCount() }}
                                 </span>
-                                @endif
-                                @if ($content->end)
-                                -
-                                <span class="badge badge-light">
-                                    {{ $content->end->format('d/m/Y') }}
-                                </span>
-                                @endif
                             </td>
                             <td>
                                 @if ($content->status == 1)

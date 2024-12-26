@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Project extends Model
@@ -36,18 +37,39 @@ class Project extends Model
     /**
      * Get the brand associated with the user.
      */
+     public function modules(): HasMany
+    {
+        return $this->HasMany(Module::class, 'project_id', 'id');
+    }
+
+    /**
+     * Get all tasks associated with the project through modules.
+     */
+    public function tasksCount($type = null)
+    {
+
+        // Conta tarefas dos módulos
+        $count = 0;
+        foreach($this->modules()->where('status', true)->get() as $module){
+            $tasks = $module->tasks;
+
+            if($type == 'checked'){
+                $tasks = $tasks->where('checked', true);
+            }
+
+            $count += $tasks->count();
+        }
+
+        return $count;
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
     public function users()
     {
         return $this->belongsToMany(User::class, 'projects_users');
     }
-
-    // // /**
-    // //  * Get the brand associated with the user.
-    // //  */
-    // //  public function category(): HasOne
-    // // {
-    // //     return $this->HasOne(ProjectCategory::class, 'id', 'category_id');
-    // // }
 
     /**
      * Get the brand associated with the user.
@@ -60,24 +82,8 @@ class Project extends Model
     /**
      * Get the brand associated with the user.
      */
-    public function tasks(): HasMany
-    {
-        return $this->HasMany(Task::class, 'project_id', 'id');
-    }
-
-    /**
-     * Get the brand associated with the user.
-     */
      public function statuses(): HasMany
     {
         return $this->HasMany(Status::class, 'project_id', 'id');
-    }
-
-    /**
-     * Get the brand associated with the user.
-     */
-     public function modules(): HasMany
-    {
-        return $this->HasMany(Module::class, 'project_id', 'id');
     }
 }
