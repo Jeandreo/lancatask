@@ -33,6 +33,14 @@ class Project extends Model
         'updated_by',
     ];
 
+    /**
+     * Get the brand associated with the user.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'projects_users');
+    }
+
     // // /**
     // //  * Get the brand associated with the user.
     // //  */
@@ -47,14 +55,6 @@ class Project extends Model
      public function manager(): HasOne
     {
         return $this->HasOne(User::class, 'id', 'manager_id');
-    }
-
-    /**
-     * Get the brand associated with the user.
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ModuleController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::name('tasks.')->group(function () {
             Route::post('/', [TaskController::class, 'index'])->name('index');
             Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
-            Route::post('/visualizando', [TaskController::class, 'show'])->name('show');
+            Route::get('/visualizando/{id}', [TaskController::class, 'show'])->name('show');
             Route::get('/visualizando-lista/{id}', [TaskController::class, 'showOne'])->name('show.one');
             Route::post('/desabilitar', [TaskController::class, 'destroy'])->name('destroy');
             Route::get('/desabilitar/{id?}', [TaskController::class, 'destroy'])->name('destroy');
@@ -73,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('comentarios')->group(function () {
         Route::name('comments.')->group(function () {
             Route::post('/adicionar', [CommentController::class, 'store'])->name('store');
-            Route::post('/visualizando', [CommentController::class, 'show'])->name('show');
+            Route::get('/visualizando/{id}', [CommentController::class, 'show'])->name('show');
             Route::put('/desabilitar/{id}', [CommentController::class, 'destroy'])->name('destroy');
             Route::put('/editar/{id}', [CommentController::class, 'update'])->name('update');
         });
@@ -89,6 +89,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
             Route::put('/barra-lateral', [UserController::class, 'sidebar'])->name('sidebar');
+        });
+    });
+
+    // PROFILE USER
+    Route::prefix('configuracoes')->group(function () {
+        Route::name('configs.')->group(function () {
+            Route::post('/cke-upload', [ConfigController::class, 'CKEupload']);
         });
     });
 

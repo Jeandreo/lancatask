@@ -71,7 +71,7 @@
 			var draggableType = draggableDropped.data('type');
 
 			// GET PROJECT
-			var projectId = draggableDropped.data('project');
+			var moduleId = draggableDropped.data('module');
 
 			// START
 			var tasksOrderIds = [];
@@ -93,7 +93,7 @@
 				url: "{{ route('tasks.order') }}",
 				data: {
 					_token: @json(csrf_token()),
-					project_id: projectId,
+					module_id: moduleId,
 					task_id: taskId,
 					tasksOrderIds: tasksOrderIds
 				},

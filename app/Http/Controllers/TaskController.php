@@ -79,10 +79,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
         // GET ALL DATA
-        $contents = $this->repository->find($request->task_id);
+        $contents = $this->repository->find($id);
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.show')->with([
@@ -417,17 +417,17 @@ class TaskController extends Controller
         if($request->task_id){
             // GET TASK
             $task = Task::find($request->task_id);
-            $startProject = $task->project_id;
-            $task->project_id = $request->project_id;
+            $startModule = $task->module_id;
+            $task->module_id = $request->module_id;
             $task->save();
-            $return['startProject'] = $startProject;
+            $return['startModule'] = $startModule;
         }
 
 
-        if($request->project_id){
+        if($request->module_id){
             // PROJECT
-            $project = Project::find($request->project_id);
-            $return['color'] = $project->color;
+            $module = Module::find($request->module_id);
+            $return['color'] = $module->color;
         }
 
         // SAVE NEW ORDER

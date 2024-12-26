@@ -34,18 +34,24 @@
 				</div>
 			</div>
 		</div>
+        @include('includes.preview')
 		<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
 			<i class="ki-duotone ki-arrow-up">
 				<span class="path1"></span>
 				<span class="path2"></span>
 			</i>
 		</div>
-		<script>var hostUrl = "assets/";</script>
+        <script>
+            var hostUrl = "assets/";
+			var globalUrl = "{{ route('dashboard.index') }}";
+			var csrf = "{{ csrf_token() }}";
+        </script>
 		<script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/l10n/pt.min.js"></script>
 		<script src="{{ asset('assets/js/custom.bundle.js') }}"></script>
+        <script src="{{ asset('assets/plugins/custom/ckeditor5/ckeditor-classic.bundle.js') }}"></script>
         <script>
             // SAVE STATE SIDEBAR
             $(document).on('click', '.toggle-sidebar', function(){

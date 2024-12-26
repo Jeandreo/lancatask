@@ -10,7 +10,26 @@ body {
     border: 0;
 }
 
-[data-kt-app-layout=dark-sidebar] .app-sidebar {
+input[type="color"] {
+border-radius: 5px;
+padding: 0;
+border: 5px solid #DDD;
+}
+
+input[type="color"]::-moz-color-swatch {
+border: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+padding: 0;
+border-radius: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+border: none;
+}
+
+[data-kt-app-layout=dark-sidebar] .app-sidebar, .bg-dark {
     background: linear-gradient(45deg, #0e081c, #291D47);
     border-right: 0;
 }

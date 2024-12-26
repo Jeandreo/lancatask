@@ -1,13 +1,13 @@
 <div class="modal-body p-0">
 	<div class="row m-0">
 		<div class="col-12 col-md-4 bg-dark h-md-600px rounded-task-left p-0">
-			<div class="h-50px h-md-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.3)">
-				<h2 class="text-white fw-bold text-uppercase m-0">Detalhes da missão</h2>
+			<div class="h-50px h-md-75px p-3 d-flex align-items-center justify-content-center" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
+				<h2 class="text-white fw-bold text-uppercase m-0">Detalhes da Tarefa</h2>
 			</div>
 			<div class="px-8 h-md-500px pb-4 mb-md-0">
 				<div class="h-md-350px">
 					<div class="d-flex mb-4 mt-7">
-						<span class="badge text-white" style="background-color: {{ $contents->statusInfo->color }};">{{ $contents->statusInfo->name }}</span>
+						<span class="badge text-white" style="background-color: {{ $contents->statusModule->color }};">{{ $contents->statusModule->name }}</span>
 						@if ($contents->status == 0)
 						<span class="badge badge-danger text-white">Arquivada</span>
 						@endif
@@ -15,7 +15,7 @@
 						<div class="form-check form-switch form-check-custom form-check-solid ms-4">
 							<input class="form-check-input h-20px w-30px cursor-pointer" name="challenge" data-task="{{ $contents->id }}" type="checkbox" @if($contents->challenge) checked @endif id="challenge_task"/>
 							<label class="form-check-label fw-bold cursor-pointer" for="challenge_task">
-								DESAFIO
+								Subtarefas
 							</label>
 						</div>
 						@endif
@@ -39,7 +39,7 @@
 								<p class="text-white fw-bolder m-0 text-uppercase fs-8">Projeto</p>
 							</div>
 							<div class="col-8">
-								<p class="text-white text-end m-0">{{ $contents->project->name }}</p>
+								<p class="text-white text-end m-0">{{ $contents->module->project->name }}</p>
 							</div>
 						</div>
 						<div class="row">

@@ -1,7 +1,8 @@
 <div class="card mb-6">
     <div class="card-header min-h-50px ps-2 pe-6">
             <div class="d-flex align-items-center ps-3 pe-5 w-50">
-                <input class="form-control form-control-flush bg-hover-light rounded py-2 px-6 text-gray-700 fs-5 fw-bold p-0" value="{{ $module->name }}">
+                <input type="color" class="form-control form-control-flush p-0 w-20px h-20px border-0 min-h-10px rounded module-colors" data-module="{{ $module->id }}" value="{{ $module->color }}">
+                <input class="form-control form-control-flush bg-hover-light rounded py-2 px-3 text-gray-700 fs-5 fw-bold p-0 module-title" data-module="{{ $module->id }}" value="{{ $module->name }}">
             </div>
             <div class="d-none d-md-flex align-items-center">
                 <div class="w-125px text-center text-gray-700 fs-7 text-uppercase fw-bold">
@@ -19,7 +20,7 @@
             </div>
     </div>
     <div class="card-body p-5">
-        <div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-project="{{ $module->id }}" id="project-tasks-{{ $module->id }}">
+        <div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-module="{{ $module->id }}" id="project-tasks-{{ $module->id }}">
             @if ($module->tasks()->whereNull('task_id')->count())
                 @foreach ($module->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
                     @include('pages.tasks._tasks')

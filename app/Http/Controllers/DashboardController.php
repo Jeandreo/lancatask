@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Task;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -13,9 +15,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
+
+        // Obtém minhas tarefas
+        $tasks = Task::where('designated_id', Auth::id())->get();
+        $users = User::where('status', true)->get();
+
         // RETURN VIEW WITH DATA
         return view('pages.dashboard')->with([
-            // 'contents' => $contents,
+           'tasks' => $tasks,
+           'users' => $users,
         ]);
     }
 }

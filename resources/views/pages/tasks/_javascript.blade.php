@@ -400,9 +400,8 @@
 
         // AJAX
         $.ajax({
-            type:'POST',
-            url: "{{ route('tasks.show') }}",
-            data: {_token: @json(csrf_token()), task_id: id},
+            type:'GET',
+            url: "{{ route('tasks.show', '') }}/" + id,
             success:function(data) {
 
                 //  REPLACE CONTENT
@@ -426,9 +425,8 @@
 
         // AJAX
         $.ajax({
-            type:'POST',
-            url: "{{ route('comments.show') }}",
-            data: {_token: @json(csrf_token()), task_id: id},
+            type:'GET',
+            url: "{{ route('comments.show', '') }}/" + id,
             success:function(data) {
 
                 //  REPLACE CONTENT
@@ -464,6 +462,45 @@
     });
 
     // SHOW TASK
+    $(document).on('change', '.module-colors', function(){
+
+        // GET DATA
+        var moduleId = $(this).data('module');
+
+        // Obtém cor
+        var color = $(this).val();
+
+        // Altera cor das tarefas do modulo
+        $('.task-module-' + moduleId).css('background', color);
+
+        // AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('modules.update', '') }}/" + moduleId,
+            data: {_token: @json(csrf_token()), color: color},
+        });
+
+    });
+
+    // SHOW TASK
+    $(document).on('change', '.module-title', function(){
+
+        // GET DATA
+        var moduleId = $(this).data('module');
+
+        // Obtém cor
+        var name = $(this).val();
+
+        // AJAX
+        $.ajax({
+            type:'PUT',
+            url: "{{ route('modules.update', '') }}/" + moduleId,
+            data: {_token: @json(csrf_token()), name: name},
+        });
+
+    });
+
+    // SHOW TASK
     $(document).on('click', '.destroy-comment', function(e){
 
         // PARA EVENTO
@@ -490,8 +527,6 @@
 
         // GET DATA
         var taskId = $(this).data('task');
-
-        // open.play();
 
         // EXIBE TASK
         showTask(taskId);

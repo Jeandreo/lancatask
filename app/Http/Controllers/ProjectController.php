@@ -48,7 +48,10 @@ class ProjectController extends Controller
     public function create()
     {
         // RENDER VIEW
-        return view('pages.projects.create');
+        $users = User::where('status', 1)->get();
+        return view('pages.projects.create')->with([
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -143,6 +146,7 @@ class ProjectController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
+        $users = User::where('status', 1)->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -150,6 +154,7 @@ class ProjectController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.projects.edit')->with([
             'content' => $content,
+            'users' => $users,
         ]);
     }
 
@@ -175,6 +180,9 @@ class ProjectController extends Controller
 
         // STORING NEW DATA
         $content->update($data);
+
+        // Sincroniza time
+        $content->users()->sync($data['team']);
 
         // REDIRECT AND MESSAGES
         return redirect()

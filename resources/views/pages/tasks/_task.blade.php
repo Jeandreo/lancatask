@@ -1,7 +1,7 @@
 <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list task-on-subtask" data-task="{{ $task->id }}">
     <div class="d-flex align-items-center justify-content-between w-100 h-100">
         <div class="d-flex align-items-center h-100 w-100">
-            <div style="background: {{ $task->module->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons">
+            <div style="background: {{ $task->module->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons task-module-{{ $task->module_id }}">
                 <div class="form-check form-check-custom form-check-solid py-2 px-5">
                     <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
                     <span class="show-task" data-task="{{ !$task->task_id ? $task->id : $task->task_id }}">
@@ -48,7 +48,7 @@
         <div class="w-125px text-center designated-div">
             <div class="symbol symbol-30px symbol-circle cursor-pointer" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
                 <div class="symbol symbol-25px symbol-circle me-2">
-                    <img alt="Pic" src="{{ findImage('users/' . $task->designated_id . '/' . 'perfil-35px.jpg') }}" class="designated">
+                    <img alt="Pic" src="{{ findImage('users/photos/' . $task->designated_id . '.jpg') }}" class="designated">
                 </div>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true">
                 @foreach ($users as $user)
@@ -56,7 +56,7 @@
                     <a href="{{ route('tasks.designated') }}" class="menu-link px-3 py-1 task-designated" data-task="{{ $task->id }}" data-designated="{{ $user->id }}">
                         <div class="cursor-pointer symbol symbol-25px symbol-md-35px">
                             <div class="symbol symbol-25px symbol-circle me-2">
-                                <img alt="Pic" src="{{ findImage('users/' . $user->id . '/' . 'perfil-35px.jpg') }}">
+                                <img alt="Pic" src="{{ findImage('users/photos/' . $user->id . '.jpg') }}">
                             </div>
                         </div>
                         <span class="ms-4">

@@ -165,9 +165,7 @@ class ModuleController extends Controller
         $content->update($data);
 
         // REDIRECT AND MESSAGES
-        return redirect()
-            ->route('projects.index')
-            ->with('message', 'Projeto editado com sucesso.');
+        return response()->json();
 
     }
 

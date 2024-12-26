@@ -37,7 +37,13 @@
                                 @endif
                             </td>
                             <td>
-                                -
+                                <div class="symbol-group symbol-hover flex-nowrap">
+                                @foreach ($content->users as $user)
+                                <div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" aria-label="Michael Eberon" data-bs-original-title="{{ $user->name }}">
+                                    <img alt="Pic" src="{{ findImage('users/photos/' . $user->id . '.jpg') }}">
+                                </div>
+                                @endforeach
+                                </div>
                             </td>
                             <td>
                                 @if ($content->start)

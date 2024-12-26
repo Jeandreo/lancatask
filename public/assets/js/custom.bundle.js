@@ -75,8 +75,152 @@ function generateFlatpickr(options = null, calendarSelector = '.flatpickr') {
 
 }
 
+
+// CUSTOM UPLOAD
+class MyUploadCKE {
+    constructor(loader) {
+        // INSTANCE TO BE USED
+        this.loader = loader;
+    }
+
+    // STARTS THE UPLOAD PROCESS
+    upload() {
+        return this.loader.file
+            .then(file => new Promise((resolve, reject) => {
+                this._initRequest();
+                this._initListeners(resolve, reject, file);
+                this._sendRequest(file);
+            }));
+    }
+
+    // ABORTS THE UPLOAD PROCESS
+    abort() {
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+    }
+
+    //  INITIALIZE THE OBJECT USING URL PASSED
+    _initRequest() {
+        const xhr = this.xhr = new XMLHttpRequest();
+        xhr.open('POST', globalUrl + '/configuracoes/cke-upload', true);
+        xhr.setRequestHeader('x-csrf-token', csrf);
+        xhr.responseType = 'json';
+    }
+
+    // INIT LISTENERS
+    _initListeners(resolve, reject, file) {
+        const xhr = this.xhr;
+        const loader = this.loader;
+        const genericErrorText = `Couldn't upload file: ${file.name}.`;
+
+        xhr.addEventListener('error', () => reject(genericErrorText));
+        xhr.addEventListener('abort', () => reject());
+        xhr.addEventListener('load', () => {
+
+            // ERROR
+            const response = xhr.response;
+            if (!response || response.error) {
+                return reject(response && response.error ? response.error.message : genericErrorText);
+            }
+
+            // SUCCESS
+            resolve({
+                default: response.url
+            });
+
+        });
+
+        // UPLOAD PROGRESS
+        if (xhr.upload) {
+            xhr.upload.addEventListener('progress', evt => {
+                if (evt.lengthComputable) {
+                    loader.uploadTotal = evt.total;
+                    loader.uploaded = evt.loaded;
+                }
+            });
+        }
+    }
+
+    // PREPARE DATA AND SENDS REQUEST
+    _sendRequest(file) {
+
+        // CREATE FORMDATA
+        const data = new FormData();
+
+        // APPEND FILE
+        data.append('upload', file);
+
+        // SEND REQUEST.
+        this.xhr.send(data);
+    }
+}
+
+function UploadPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+        // URL TO UPLOAD CKE
+        return new MyUploadCKE(loader);
+    };
+}
+
+
+// FUNCTION CKE EDITOR
+function loadEditorText(selector = '.load-editor') {
+
+    ClassicEditor.create(document.querySelector(selector), {
+        extraPlugins: [UploadPlugin],
+        removePlugins: ["MediaEmbedToolbar"],
+    }).then(function (editor) {
+        // ALOW ACCESS TO CLEAR
+        textarea = editor;
+    });
+
+}
+
+$(document).on('click', '.show-image, .show-image-div img, figure img', function(){
+
+    // GET LINK IMAGE
+    var url = $(this).attr('src');
+
+    // REPLACE IN MODAL
+    $('#preview-image-modal').attr('src', url);
+
+    // OPEN MODAL
+    $('#preview_image_modal').modal('show');
+
+});
+
+function select2Images(selector = '.select-with-images'){
+
+    // FORMAT OPTIONS SELECT2 WITH IMAGES
+    var optionFormat = function(item) {
+        if ( !item.id ) {
+            return item.text;
+        }
+
+        var span = document.createElement('span');
+        var imgUrl = item.element.getAttribute('data-kt-select2-user');
+        var template = '';
+
+        template += '<img src="' + imgUrl + '" class="rounded-circle h-20px me-2" alt="image"/>';
+        template += item.text;
+
+        span.innerHTML = template;
+
+        return $(span);
+    }
+
+    // INIT SELECT2 IMAGES
+    $(selector).select2({
+        templateSelection: optionFormat,
+        templateResult: optionFormat
+    });
+
+}
+
 // Chama funções necessárias
 $(document).ready(function() {
     loadTables();
+    select2Images();
     generateFlatpickr();
 });
