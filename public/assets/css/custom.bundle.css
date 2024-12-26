@@ -12,6 +12,7 @@ body {
 
 :root {
     --bs-primary: #1e9cf0;
+    --bs-text-primary: #1e9cf0;
     --bs-success-active: #1f9e00
 }
 
