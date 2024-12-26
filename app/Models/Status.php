@@ -18,7 +18,6 @@ class Status extends Model
     protected $fillable = [
         'name',
         'color',
-        'module_id',
         'project_id',
         'order',
         'status',

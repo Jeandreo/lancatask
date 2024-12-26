@@ -62,31 +62,6 @@ class ModuleController extends Controller
         // SEND DATA
         $module = $this->repository->create($data);
 
-        // Insere Status
-        Status::create([
-            'name' => 'A Fazer',
-            'color' => '#009ef7',
-            'module_id' => $module->id,
-            'order' => 1,
-            'created_by' => 1,
-        ]);
-
-        Status::create([
-            'name' => 'Em andamento',
-            'color' => '#79bc17',
-            'module_id' => $module->id,
-            'order' => 1,
-            'created_by' => 1,
-        ]);
-
-        Status::create([
-            'name' => 'Concluído',
-            'color' => '#282c43',
-            'module_id' => $module->id,
-            'order' => 1,
-            'created_by' => 1,
-        ]);
-
         // Renderiza modulo
         $moduleHtml = view('pages.projects._module')->with([
             'module' => $module,

@@ -461,3 +461,13 @@ input[type=text]:disabled {
     border-color: #88bd03;
     background-color: #88bd03;
 }
+
+
+#results-comments figure img {
+    max-height: 300px;
+}
+
+
+.form-check.form-check-solid .form-check-input:not(:checked) {
+    background-color: #00000025;
+}

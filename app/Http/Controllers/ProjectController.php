@@ -97,7 +97,7 @@ class ProjectController extends Controller
         $created->users()->sync($data['team']);
 
         // Cria módulo inicial
-        $createdModule = Module::create([
+        Module::create([
             'name' => 'Primeiro Módulo de ' . $created['name'],
             'project_id' => $created->id,
             'color' => '#348feb',
@@ -107,7 +107,7 @@ class ProjectController extends Controller
         Status::create([
             'name' => 'A Fazer',
             'color' => '#009ef7',
-            'module_id' => $createdModule->id,
+            'project_id' => $created->id,
             'order' => 1,
             'created_by' => 1,
         ]);
@@ -115,7 +115,7 @@ class ProjectController extends Controller
         Status::create([
             'name' => 'Em andamento',
             'color' => '#79bc17',
-            'module_id' => $createdModule->id,
+            'project_id' => $created->id,
             'order' => 1,
             'created_by' => 1,
         ]);
@@ -123,7 +123,7 @@ class ProjectController extends Controller
         Status::create([
             'name' => 'Concluído',
             'color' => '#282c43',
-            'module_id' => $createdModule->id,
+            'project_id' => $created->id,
             'order' => 1,
             'created_by' => 1,
         ]);

@@ -40,6 +40,16 @@ class Project extends Model
         return $this->HasMany(Module::class, 'project_id', 'id');
     }
 
+
+    /**
+     * Get the brand associated with the user.
+     */
+    public function statuses(): HasMany
+    {
+        return $this->HasMany(Status::class, 'project_id', 'id');
+    }
+
+
     /**
      * Get all tasks associated with the project through modules.
      */
@@ -75,13 +85,5 @@ class Project extends Model
      public function type(): HasOne
     {
         return $this->HasOne(ProjectType::class, 'id', 'type_id');
-    }
-
-    /**
-     * Get the brand associated with the user.
-     */
-     public function statuses(): HasMany
-    {
-        return $this->HasMany(Status::class, 'project_id', 'id');
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('color');
-            $table->foreignId('module_id')->default(1)->constrained('modules');
+            $table->foreignId('project_id')->constrained('projects');
             $table->integer('order')->default(1);
             $table->integer('status')->default(true);
             $table->foreignId('filed_by')->nullable()->constrained('users');

@@ -1,9 +1,9 @@
 <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list task-on-subtask" data-task="{{ $task->id }}">
     <div class="d-flex align-items-center justify-content-between w-100 h-100">
         <div class="d-flex align-items-center h-100 w-100">
-            <div style="background: {{ $task->module->color }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons task-module-{{ $task->module_id }}">
-                <div class="form-check form-check-custom form-check-solid py-2 px-5">
-                    <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
+            <div style="background: {{ $task->checked == false ? $task->module->color : '#d5d5d5' }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons task-module-{{ $task->module_id }}">
+                <div class="form-check form-check-custom form-check-solid py-2 ps-4 me-5">
+                    <input class="form-check-input w-20px h-20px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
                     <span class="show-task" data-task="{{ !$task->task_id ? $task->id : $task->task_id }}">
                         <i class="fa-solid fa-eye p-1 fs-5 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03"></i>
                     </span>
@@ -72,13 +72,16 @@
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
                 <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusModule->name }}</p>
                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
-                    @foreach ($task->module->statuses as $status)
+                    @foreach ($task->module->project->statuses as $status)
                     <div class="menu-item px-3 mb-2">
                         <span data-task="{{ $task->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
                             {{ $status->name }}
                         </span>
                     </div>
                     @endforeach
+                    <a href="{{ route('projects.edit', $task->module->project_id) }}" class="px-3 d-block text-center text-gray-600 text-hover-primary fw-semibold fs-8 text-uppercase redirect-this">
+                        Gerenciar Status
+                    </a>
                 </div>
             </div>
         </div>

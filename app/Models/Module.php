@@ -38,14 +38,6 @@ class Module extends Model
     /**
      * Get the brand associated with the user.
      */
-    public function statuses(): HasMany
-    {
-        return $this->HasMany(Status::class, 'module_id', 'id');
-    }
-
-    /**
-     * Get the brand associated with the user.
-     */
     public function tasks(): HasMany
     {
         return $this->HasMany(Task::class, 'module_id', 'id');

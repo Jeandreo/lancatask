@@ -27,11 +27,11 @@
     <div class="card-body p-5">
         <div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-module="{{ $module->id }}" id="project-tasks-{{ $module->id }}">
             @if ($module->tasks()->whereNull('task_id')->count())
-                @foreach ($module->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
+                @foreach ($module->tasks()->where('status', 1)->whereNull('task_id')->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get() as $task)
                     @include('pages.tasks._tasks')
                 @endforeach
             @endif
-            <div class="no-tasks" @if ($module->tasks()->where('status', 1)->whereNull('task_id')->where('checked', false)->count()) style="display: none;" @endif>
+            <div class="no-tasks" @if ($module->tasks()->where('status', 1)->whereNull('task_id')->count()) style="display: none;" @endif>
                 <div class="rounded bg-light d-flex align-items-center justify-content-center h-50px">
                     <div class="text-center">
                         <p class="m-0 text-gray-600 fw-bold text-uppercase">Sem tarefas ainda nesse projeto</p>

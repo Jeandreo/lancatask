@@ -59,7 +59,7 @@ class TaskController extends Controller
 
         // Obtém Módulo
         $module = Module::find($data['module_id']);
-        $data['status_id'] = $module->statuses()->first()->id ?? 1;
+        $data['status_id'] = $module->project->statuses()->first()->id ?? 1;
 
         // SEND DATA
         $created = $this->repository->create($data);
@@ -262,12 +262,21 @@ class TaskController extends Controller
         $contents = Task::find($request->task_id);
 
         // MARK AS CHECK
-        $check = $contents->checked == true ? false : true;
+        if($contents->checked == true){
+            $check = false;
+            $color = $contents->module->color;
+        } else {
+            $check = true;
+            $color = '#d5d5d5';
+        }
 
         // SAVE
         $contents->checked = $check;
         $contents->checked_at = now();
         $contents->save();
+
+        //
+        return response()->json($color, 200);
 
     }
 

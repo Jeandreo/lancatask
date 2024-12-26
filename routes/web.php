@@ -62,7 +62,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');
             Route::get('/ajax/{id}', [TaskController::class, 'ajax'])->name('ajax');
-            Route::post('/check', [TaskController::class, 'check'])->name('check');
+            Route::post('/concluir', [TaskController::class, 'check'])->name('check');
             Route::put('/prioridade', [TaskController::class, 'priority'])->name('priority');
             Route::put('/designado', [TaskController::class, 'designated'])->name('designated');
             Route::put('/status', [TaskController::class, 'status'])->name('status');

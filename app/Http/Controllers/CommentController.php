@@ -53,7 +53,7 @@ class CommentController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->where('task_id', $id)->where('status', 1)->orderBy('id', 'DESC')->get();
+        $contents = $this->repository->where('task_id', $id)->where('status', 1)->orderBy('id', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks._comments')->with([

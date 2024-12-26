@@ -138,6 +138,7 @@
         var isMain = $(this).hasClass('task-main');
         var subtask = $(this).closest('.task-left-side').find('.input-name');
         var checked = $(this).is(':checked');
+        var divColor = $(this).closest('.color-task');
 
         // IF TASK MAIN
         if(isMain){
@@ -158,6 +159,8 @@
         if(checked){
             // PLAY SOUND
             check.play();
+        } else {
+            remove.play();
         }
 
         // AJAX
@@ -166,6 +169,9 @@
             type: 'POST',
             url: "{{ route('tasks.check') }}",
             data: {task_id: taskId},
+            success: function(data){
+                divColor.css('background', data);
+            }
         });
 
     });
@@ -310,6 +316,11 @@
 
     });
 
+    $(document).on('click', '.redirect-this', function(){
+        var url = $(this).attr('href');
+        window.location.href = url;
+    });
+
     // UPDATE DATE
     $(document).on('change', '.task-date', function(){
 
@@ -394,6 +405,9 @@
 
                 //  REPLACE CONTENT
                 $('#results-comments').html(data);
+                setTimeout(() => {
+                    $('#results-comments').scrollTop($('#results-comments')[0].scrollHeight);
+                }, 150);
 
             }
         });
