@@ -124,11 +124,38 @@
 
     });
 
-    // LOAD SOUND
+    console.log(enableSound);
+
     var check = new Audio('{{ asset("assets/media/sounds/task-checked.mp3") }}');
     var stand = new Audio('{{ asset("assets/media/sounds/task-stand.mp3") }}');
     var remove = new Audio('{{ asset("assets/media/sounds/task-remove.mp3") }}');
     var open = new Audio('{{ asset("assets/media/sounds/task-open.mp3") }}');
+
+    // SHOW TASK
+    $(document).on('click', '.module-remove', function(){
+
+        // GET DATA
+        var moduleId = $(this).data('module');
+
+        // Obtém cor
+        $(this).closest('.card').remove();
+
+        // Som (verifica se o som está habilitado)
+        if (enableSound) {
+            remove.play();
+        }
+
+        toastr.info('Módulo desativado');
+
+        // AJAX
+        $.ajax({
+            type:'GET',
+            url: "{{ route('modules.destroy', '') }}/" + moduleId,
+            data: {_token: @json(csrf_token())},
+        });
+
+    });
+
 
     // SAVE STATUS CHECKED
     $(document).on('click', '.check-task', function(){
@@ -155,12 +182,15 @@
             subtask.toggleClass('text-decoration-line-through ');
         }
 
-        // IF CHECKED
-        if(checked){
-            // PLAY SOUND
-            check.play();
-        } else {
-            remove.play();
+        // Som (verifica se o som está habilitado)
+        if (enableSound) {
+            // IF CHECKED
+            if(checked){
+                // PLAY SOUND
+                check.play();
+            } else {
+                remove.play();
+            }
         }
 
         // AJAX
@@ -500,30 +530,6 @@
         });
 
     });
-
-    // SHOW TASK
-    $(document).on('click', '.module-remove', function(){
-
-        // GET DATA
-        var moduleId = $(this).data('module');
-
-        // Obtém cor
-        $(this).closest('.card').remove();
-
-        // Som
-        remove.play();
-
-        toastr.info('Módulo desativado');
-
-        // AJAX
-        $.ajax({
-            type:'GET',
-            url: "{{ route('modules.destroy', '') }}/" + moduleId,
-            data: {_token: @json(csrf_token())},
-        });
-
-    });
-
     // SHOW TASK
     $(document).on('click', '.destroy-comment', function(e){
 
@@ -618,8 +624,10 @@
         // GET DIV TASK
         var taskDiv = $(this).closest('.div-task');
 
-        // PLAY SOUND
-        remove.play();
+        // Som (verifica se o som está habilitado)
+        if (enableSound) {
+            remove.play();
+        }
 
         // REMOVE
         taskDiv.remove();
@@ -642,8 +650,10 @@
         // GET TASK
         var projectId = $(this).data('project');
 
-        // PLAY SOUND
-        stand.play();
+        // Som (verifica se o som está habilitado)
+        if (enableSound) {
+            stand.play();
+        }
 
         // AJAX
         $.ajax({

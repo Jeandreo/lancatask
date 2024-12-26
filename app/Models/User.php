@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'role',
         'sidebar',
+        'sounds',
         'position_id',
         'email',
         'password',

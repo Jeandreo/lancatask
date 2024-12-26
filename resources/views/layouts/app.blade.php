@@ -99,7 +99,20 @@
             $(document).on('click', '.toggle-sidebar', function(){
                 $.ajax({
                     type:'PUT',
-                    url: "{{ route('users.sidebar') }}",
+                    url: "{{ route('account.sidebar') }}",
+                    data: {_token: @json(csrf_token())},
+                });
+            });
+
+            // LOAD SOUND
+            var enableSound = "{{ Auth::user()->sounds }}" == '0' ? false : true;
+
+            $(document).on('click', '.toggle-sounds', function(){
+                $(this).toggleClass('fa-volume-high fa-volume-xmark');
+                enableSound = enableSound == true ? false : true;
+                $.ajax({
+                    type:'PUT',
+                    url: "{{ route('account.sounds') }}",
                     data: {_token: @json(csrf_token())},
                 });
             });

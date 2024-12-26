@@ -116,7 +116,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/desabilitar/{id}', [UserController::class, 'destroy'])->name('destroy');
             Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
-            Route::put('/barra-lateral', [UserController::class, 'sidebar'])->name('sidebar');
         });
     });
 
@@ -125,6 +124,8 @@ Route::middleware(['auth'])->group(function () {
         Route::name('account.')->group(function () {
             Route::get('/', [AccountController::class, 'index'])->name('index');
             Route::put('/', [AccountController::class, 'update'])->name('update');
+            Route::put('/barra-lateral', [AccountController::class, 'sidebar'])->name('sidebar');
+            Route::put('/sons', [AccountController::class, 'sounds'])->name('sounds');
         });
     });
 

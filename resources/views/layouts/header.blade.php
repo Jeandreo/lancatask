@@ -32,6 +32,7 @@
             </div>
             <div class="app-navbar flex-shrink-0">
                 <div class="app-navbar-item ms-1 ms-md-4" id="kt_header_user_menu_toggle">
+                    <i class="fa-solid fs-2 toggle-sounds cursor-pointer text-hover-primary @if(Auth::user()->sounds == true) fa-volume-high @else fa-volume-xmark @endif"></i>
                     <div class="cursor-pointer" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                         <div class="menu-item px-3">
                             <div class="menu-content d-flex align-items-center px-3" id="clear-sidebar">
