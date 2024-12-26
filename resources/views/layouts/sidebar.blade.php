@@ -20,23 +20,15 @@
                             <span class="menu-icon">
                                 <i class="fa-solid fa-house fs-4"></i>
                             </span>
-                            <span class="menu-title">Início</span>
+                            <span class="menu-title">Minhas Tarefas</span>
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="menu-link" href="{{ route('projects.index') }}">
+                        <a class="menu-link" href="{{ route('releases') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-rocket fs-4"></i>
                             </span>
                             <span class="menu-title">Lançamentos</span>
-                        </a>
-                    </div>
-                    <div class="menu-item">
-                        <a class="menu-link" href="{{ route('users.index') }}">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-users fs-4"></i>
-                            </span>
-                            <span class="menu-title">Usuários</span>
                         </a>
                     </div>
                     <div class="menu-item">
@@ -49,30 +41,79 @@
                             </span>
                         </a>
                     </div>
-                    <div class="menu-item">
+                    <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
+                        <span class="menu-link"  >
+                            <span  class="menu-icon" >
+                                <i class="ki-duotone ki-element-11 fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                </i>
+                            </span>
+                            <span  class="menu-title" >
+                                Configurações
+                            </span>
+                            <span  class="menu-arrow" ></span>
+                        </span>
+                        <div  class="menu-sub menu-sub-accordion">
+                           <div  class="menu-item">
+                              <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Projetos & Lançamentos</span></a>
+                           </div>
+                           <div  class="menu-item">
+                              <a class="menu-link" href="{{ route('modules.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Módulos</span></a>
+                           </div>
+                           <div  class="menu-item" >
+                            <a class="menu-link" href="{{ route('tasks.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tarefas</span></a>
+                           </div>
+                           <div  class="menu-item" >
+                              <a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Usuários</span></a>
+                           </div>
+                        </div>
+                        <!--end:Menu sub-->
+                     </div>
+                     @if (Auth::user()->groupProjects()->count())
+                     @foreach (Auth::user()->groupProjects() as $group => $projects)
+                        <div class="menu-item opacity-1">
+                            <div class="menu-content pt-8 pb-2 pe-0 d-flex justify-content-between align-items-center">
+                                <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">{{ $group }}</span>
+                                <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
+                                    +
+                                </a>
+                            </div>
+                        </div>
+                        @foreach ($projects as $project)
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                                <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
+                                    <span class="menu-icon">
+                                        <i class="ki-duotone ki-element-7 fs-3">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>
+                                    </span>
+                                    <span class="menu-title">{{ Str::limit($project->name, 18) }}</span>
+                                </a>
+                            </div>
+                            @if (!$loop->last)
+                            <div class="separator separator-dashed mx-6" style="opacity: 0.15;"></div>
+                            @endif
+                        @endforeach
+                     @endforeach
+                     @else
+                     <div class="menu-item opacity-1">
                         <div class="menu-content pt-8 pb-2 pe-0 d-flex justify-content-between align-items-center">
-                            <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">Lançamentos</span>
-                            <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-placement="right-start">
+                            <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">Projetos</span>
+                            <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
                                 +
                             </a>
                         </div>
                     </div>
-                    @foreach (projects() as $project)
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                            <a class="menu-link" href="{{ route('projects.show', $project->id) }}">
-                                <span class="menu-icon">
-                                    <i class="ki-duotone ki-element-7 fs-3">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>
-                                </span>
-                                <span class="menu-title">{{ Str::limit($project->name, 18) }}</span>
-                            </a>
-                        </div>
-                        @if (!$loop->last)
-                        <div class="separator separator-dashed mx-6" style="opacity: 0.15;"></div>
-                        @endif
-                    @endforeach
+                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                        <a href="{{ route('projects.create') }}" class="menu-link" style="background: #0000000f;">
+                            <span class="menu-title justify-content-center">Adicionar Projeto</span>
+                        </a>
+                    </div>
+                     @endif
                 </div>
             </div>
         </div>

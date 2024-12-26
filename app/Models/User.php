@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -60,6 +61,25 @@ class User extends Authenticatable
     public function position(): HasOne
     {
         return $this->hasOne(UserPosition::class, 'id', 'position_id');
+    }
+
+    public function groupProjects()
+    {
+        // Obtém os IDs dos projetos que o usuário está associado
+        $projectsIds = ProjectUser::where('user_id', Auth::id())->pluck('project_id')->toArray();
+
+        // Obtém os projetos ativos com os tipos carregados
+        $projects = Project::whereIn('id', $projectsIds)
+            ->where('status', true)
+            ->with('type') // Carrega a relação de tipo
+            ->get();
+
+        // Agrupa os projetos pelo nome do tipo
+        $groupedProjects = $projects->groupBy(function ($project) {
+            return $project->type->name;
+        });
+
+        return $groupedProjects;
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Module;
 use App\Models\Project;
+use App\Models\ProjectType;
 use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,6 +42,24 @@ class ProjectController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function releases()
+    {
+
+        // GET ALL DATA
+        $contents = $this->repository->where('status', true)->where('type_id', 1)->orderBy('name', 'ASC')->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.projects.releases')->with([
+            'contents' => $contents,
+        ]);
+
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -49,8 +68,10 @@ class ProjectController extends Controller
     {
         // RENDER VIEW
         $users = User::where('status', 1)->get();
+        $types = ProjectType::where('status', 1)->get();
         return view('pages.projects.create')->with([
             'users' => $users,
+            'types' => $types,
         ]);
     }
 

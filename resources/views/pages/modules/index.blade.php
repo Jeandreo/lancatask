@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('Page Title', 'Usuários')
+@section('Page Title', 'Módulos')
 
 @section('content')
     <div class="card">
@@ -9,8 +9,8 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
-                        <th>Grupo</th>
-                        <th>Cargo</th>
+                        <th>Projeto</th>
+                        <th>Tarefas</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -19,19 +19,18 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <a href="{{ route('users.edit', $content->id) }}" class="text-gray-700 fw-bold text-hover-primary fs-6">
-                                    <img src="{{ findImage('users/photos/' . $content->id . '.jpg') }}" class="w-30px h-30px rounded me-2">
+                                <a href="{{ route('projects.show', $content->project_id) }}" class="text-gray-700 text-hover-primary fw-bold fs-6">
                                     {{ $content->name }}
                                 </a>
                             </td>
                             <td>
-                                <span class="badge badge-light-primary">
-                                    {{ $content->role }}
-                                </span>
+                                <a href="{{ route('projects.show', $content->project_id) }}" class="badge badge-light-primary">
+                                    {{ $content->project->name }}
+                                </a>
                             </td>
                             <td>
-                                <span class="badge badge-light-info">
-                                    {{ $content->position->name }}
+                                <span class="badge badge-light">
+                                    {{ $content->tasks->count() }}
                                 </span>
                             </td>
                             <td>
@@ -43,18 +42,13 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center icons-table">
-                                    <a href="{{ route('users.edit', $content->id) }}">
-                                        <i class="fas fa-edit" title="Editar"></i>
+                                    <a href="{{ route('modules.destroy', $content->id) }}">
+                                        @if ($content->status == 1)
+                                        <i class="fas fa-times-circle" title="Desativar"></i>
+                                        @else
+                                        <i class="fas fa-redo" title="Reativar"></i>
+                                        @endif
                                     </a>
-                                    @if ($content->status == 1)
-                                        <a href="{{ route('users.destroy', $content->id) }}">
-                                            <i class="fas fa-times-circle" title="Desativar"></i>
-                                        </a>
-                                    @else
-                                        <a href="{{ route('users.destroy', $content->id) }}">
-                                            <i class="fas fa-redo" title="Reativar"></i>
-                                        </a>
-                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -62,10 +56,5 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="mt-5">
-        <a href="{{ route('users.create') }}">
-            <label class="btn btn-primary btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
-        </a>
     </div>
 @endsection

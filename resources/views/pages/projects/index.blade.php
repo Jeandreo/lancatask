@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('Page Title', 'Lançamentos & Projetos')
+@section('Page Title', 'Projetos')
 
 @section('content')
     <div class="card">
@@ -26,20 +26,14 @@
                                 </a>
                             </td>
                             <td>
-                                @if ($content->type == 'Lançamento')
                                 <span class="badge badge-light-primary">
-                                    Lançamento
+                                    {{ $content->type->name }}
                                 </span>
-                                @else
-                                <span class="badge badge-light-info">
-                                    Time
-                                </span>
-                                @endif
                             </td>
                             <td>
                                 <div class="symbol-group symbol-hover flex-nowrap">
                                 @foreach ($content->users as $user)
-                                <div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" aria-label="Michael Eberon" data-bs-original-title="{{ $user->name }}">
+                                <div class="symbol symbol-30px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="{{ $user->name }}">
                                     <img alt="Pic" src="{{ findImage('users/photos/' . $user->id . '.jpg') }}">
                                 </div>
                                 @endforeach
@@ -81,7 +75,7 @@
     </div>
     <div class="mt-5">
         <a href="{{ route('projects.create') }}">
-            <label class="btn btn-primary btn-active-danger btn-sm text-uppercase fw-bolder">Adicionar</label>
+            <label class="btn btn-primary btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>
 @endsection

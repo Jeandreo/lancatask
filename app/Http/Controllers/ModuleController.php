@@ -33,7 +33,7 @@ class ModuleController extends Controller
         $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
-        return view('pages.projects.index')->with([
+        return view('pages.modules.index')->with([
             'contents' => $contents,
         ]);
 
@@ -101,27 +101,6 @@ class ModuleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-
-        // Obtém projeto
-        if(!$project = $this->repository->find($id)){
-            return redirect()->route('projects.index');
-        }
-
-        // RETURN VIEW WITH DATA
-        return view('pages.projects.show')->with([
-            'project' => $project,
-            'pageClean' => true,
-        ]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -185,8 +164,15 @@ class ModuleController extends Controller
         // STORING NEW DATA
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
-        // REDIRECT AND MESSAGES
-        return response()->json();
+        if($status == true){
+            // REDIRECT AND MESSAGES
+            return redirect()
+                    ->route('projects.show', $content->project_id)
+                    ->with('message', 'Módulo reativado com sucesso.');
+        } else {
+            // REDIRECT AND MESSAGES
+            return response()->json();
+        }
 
     }
 }

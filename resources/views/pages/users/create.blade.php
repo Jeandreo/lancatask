@@ -12,7 +12,7 @@
 						@include('pages.users._form')
 						<div class="d-flex justify-content-between">
 							<a href="{{ route('users.index') }}" class="btn btn-light mt-2">Voltar</a>
-							<button type="submit" class="btn btn-primary btn-active-danger mt-2">Cadastrar</button>
+							<button type="submit" class="btn btn-primary btn-active-success mt-2">Cadastrar</button>
 						</div>
 					</form>
 				</div>

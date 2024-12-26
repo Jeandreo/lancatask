@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
 
         // Obtém minhas tarefas
-        $tasks = Task::where('designated_id', Auth::id())->get();
+        $tasks = Task::where('designated_id', Auth::id())->where('checked', false)->where('status', true)->orderBy('date', 'ASC')->get();
         $users = User::where('status', true)->get();
 
         // RETURN VIEW WITH DATA

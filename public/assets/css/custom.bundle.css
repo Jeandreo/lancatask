@@ -10,18 +10,27 @@ body {
     border: 0;
 }
 
+:root {
+    --bs-primary: #1e9cf0;
+    --bs-success-active: #1f9e00
+}
+
 input[type="color"] {
 border-radius: 5px;
 padding: 0;
 border: 5px solid #DDD;
 }
 .form-check-input:checked {
-    background-color: #90c536;
-    border-color: #90c536;
+    background-color: #88bd03;
+    border-color: #88bd03;
 }
 /* Substitui o outline padrão por uma borda personalizada */
 :focus {
     outline: none;
+}
+
+.badge-light {
+    color: #7b8295;
 }
 
 input[type="color"]::-moz-color-swatch {
@@ -442,4 +451,15 @@ input[type=text]:disabled {
 
 .icons-table a {
     margin-left: 5px;
+}
+
+
+#toastr-container {
+    bottom: 20px;
+    right: 20px;
+}
+
+.btn.btn-success {
+    border-color: #88bd03;
+    background-color: #88bd03;
 }

@@ -1,5 +1,5 @@
 
-<div class="mb-2 ms-12 draggable-sub dmk-div-task" data-separator="{{ $subtask->separator }}">
+<div class="mb-2 ms-12 draggable-sub div-task" data-separator="{{ $subtask->separator }}">
     <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask z-index-1" data-task="{{ $subtask->id }}">
        <div class="d-flex align-items-center justify-content-between w-100 h-100">
           <div class="d-flex align-items-center h-100 w-100 task-left-side">

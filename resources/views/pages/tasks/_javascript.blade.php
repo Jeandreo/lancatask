@@ -59,45 +59,6 @@
         draggableSubTasks('#' + zoneId);
     })
 
-    // Sistema que transforma subtarefa em separador
-    $(document).on('click', '.transform-in-separator', function(){
-        // Encontra subtarefa
-        var subtask = $(this).closest('.dmk-div-task');
-        var subtaskId = subtask.find('.task-on-subtask').data('task');
-        var isSeparator = subtask.data('separator');
-
-        if (isSeparator == 1) {
-            subtask.find('.sub-task-icons').toggleClass('rounded rounded-start');
-            subtask.find('.separator-name').fadeOut('slow', function(){
-                subtask.find('.separator-name').css('width', '0');
-                subtask.find('.not-separator-after').fadeIn('slow', function(){
-                    subtask.find('.sub-task-icons').css('width', '');
-                    subtask.find('.not-separator').css('width', '');
-                    subtask.find('.not-separator').fadeIn('slow');
-                });
-            });
-            subtask.data('separator', 0);
-        } else {
-            // Transformar em separador
-            subtask.find('.sub-task-icons').toggleClass('rounded-start rounded');
-
-            subtask.find('.not-separator').fadeOut('slow', function(){
-                subtask.find('.sub-task-icons').css('width', '100%');
-                subtask.find('.not-separator-after').fadeOut('slow', function(){
-                    subtask.find('.separator-name').css('width', '100%');
-                    subtask.find('.separator-name').fadeIn('slow');
-                });
-            });
-            subtask.data('separator', 1);
-        }
-
-        // AJAX
-        $.ajax({
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type: 'PUT',
-            url: "{!! route('tasks.separator', '') !!}/" + subtaskId,
-        });
-    });
 
     // UPDATE STATUS
     $(document).on('click', '.send-tasks-projects', function(e){
@@ -181,7 +142,7 @@
         // IF TASK MAIN
         if(isMain){
             // SELECT DIV OF TASK
-            var taskDiv = $(this).closest('.dmk-div-task');
+            var taskDiv = $(this).closest('.div-task');
 
             // ADD ANIMATION AND REMOVE TASK
             taskDiv.addClass('slide-up');
@@ -512,9 +473,11 @@
         // Som
         remove.play();
 
+        toastr.info('Módulo desativado');
+
         // AJAX
         $.ajax({
-            type:'PUT',
+            type:'GET',
             url: "{{ route('modules.destroy', '') }}/" + moduleId,
             data: {_token: @json(csrf_token())},
         });
@@ -613,7 +576,7 @@
         var task = $(this).data('task');
 
         // GET DIV TASK
-        var taskDiv = $(this).closest('.dmk-div-task');
+        var taskDiv = $(this).closest('.div-task');
 
         // PLAY SOUND
         remove.play();

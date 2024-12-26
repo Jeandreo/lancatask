@@ -46,6 +46,7 @@
 			var globalUrl = "{{ route('dashboard.index') }}";
 			var csrf = "{{ csrf_token() }}";
         </script>
+        <script src="{{ asset('assets/js/sidebar.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
 		<script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
@@ -53,6 +54,47 @@
 		<script src="{{ asset('assets/js/custom.bundle.js') }}"></script>
         <script src="{{ asset('assets/plugins/custom/ckeditor5/ckeditor-classic.bundle.js') }}"></script>
         <script>
+			// CONFIRGURAÇÕES NOTIFICAÇÕES
+			toastr.options = {
+				"closeButton": false,
+				"debug": false,
+				"newestOnTop": false,
+				"progressBar": true,
+				"positionClass": "toast-top-right",
+				"preventDuplicates": false,
+				"onclick": null,
+				"showDuration": "300",
+				"hideDuration": "1500",
+				"timeOut": "8000",
+				"extendedTimeOut": "2000",
+				"showEasing": "swing",
+				"hideEasing": "linear",
+				"showMethod": "fadeIn",
+				"hideMethod": "fadeOut"
+			};
+
+			// VERIFICA SE TEM ALERTA
+			var message = '{!! session("message") !!}';
+
+			// SE EXISTIR EXIBIR
+			if(message != ""){
+
+				// PEGA O TIPO DA NOTIFICAÇÃO
+				var type = "{!! session('type') !!}";
+				var title = "{!! session('title') !!}";
+
+				// EXIBE NOTIFICAÇÃO
+				if(type == 'success'){
+					toastr.success(message, title);
+				} else if(type == 'error') {
+					toastr.error(message, title);
+				} else if(type == 'warning') {
+					toastr.warning(message, title);
+				} else {
+					toastr.info(message, title);
+				}
+
+			}
             // SAVE STATE SIDEBAR
             $(document).on('click', '.toggle-sidebar', function(){
                 $.ajax({

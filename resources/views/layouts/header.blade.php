@@ -279,9 +279,9 @@
                                 <div class="symbol symbol-40px me-4">
                                     <img alt="Logo" src="{{ findImage('users/photos/' . Auth::id() . '.jpg') }}" />
                                 </div>
-                                <div class="d-flex flex-column">
+                                <div class="d-flex flex-column" id="clear-sidebar">
                                     <div class="fw-bold d-flex align-items-center fs-5">{{ Auth::user()->name }}</div>
-                                    <a href="#" class="fw-semibold text-muted fs-7">{{ Str::limit(Auth::user()->email, 12) }}</a>
+                                    <span class="fw-semibold text-muted fs-7">{{ Str::limit(Auth::user()->email, 12) }}</span>
                                 </div>
                             </div>
                         </div>

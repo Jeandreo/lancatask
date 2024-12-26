@@ -28,7 +28,9 @@
             </div>
             <div class="card-body p-5">
                 @foreach ($tasks as $task)
+                <div class="div-task">
                     @include('pages.tasks._task', ['hideMove' => true])
+                </div>
                 @endforeach
             </div>
         </div>

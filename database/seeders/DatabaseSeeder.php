@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ProjectType;
 use App\Models\User;
 use App\Models\UserPosition;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -37,6 +38,21 @@ class DatabaseSeeder extends Seeder
 
         UserPosition::create([
             'name' => 'Analista de Marketing Digital',
+            'created_by' => 1,
+        ]);
+
+        ProjectType::create([
+            'name' => 'Lançamentos',
+            'created_by' => 1,
+        ]);
+
+        ProjectType::create([
+            'name' => 'Times',
+            'created_by' => 1,
+        ]);
+
+        ProjectType::create([
+            'name' => 'Gestão',
             'created_by' => 1,
         ]);
 

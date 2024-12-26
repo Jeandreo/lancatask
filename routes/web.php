@@ -18,7 +18,10 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Lançamentos
-    Route::prefix('lancamentos')->group(function () {
+    Route::get('/lancamentos', [ProjectController::class, 'releases'])->name('releases');
+
+    // Projetos
+    Route::prefix('projetos')->group(function () {
         Route::name('projects.')->group(function () {
             Route::get('/', [ProjectController::class, 'index'])->name('index');
             Route::get('/adicionar', [ProjectController::class, 'create'])->name('create');
@@ -33,7 +36,7 @@ Route::middleware(['auth'])->group(function () {
     // TASKS
     Route::prefix('tarefas')->group(function () {
         Route::name('tasks.')->group(function () {
-            Route::post('/', [TaskController::class, 'index'])->name('index');
+            Route::GET('/', [TaskController::class, 'index'])->name('index');
             Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
             Route::get('/visualizando/{id}', [TaskController::class, 'show'])->name('show');
             Route::get('/visualizando-lista/{id}', [TaskController::class, 'showOne'])->name('show.one');
@@ -62,9 +65,9 @@ Route::middleware(['auth'])->group(function () {
     // COMMENTS
     Route::prefix('modulos')->group(function () {
         Route::name('modules.')->group(function () {
+            Route::get('/', [ModuleController::class, 'index'])->name('index');
             Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
-            Route::post('/visualizando', [ModuleController::class, 'show'])->name('show');
-            Route::put('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
+            Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
             Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
         });
     });

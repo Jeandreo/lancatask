@@ -24,7 +24,7 @@ class Project extends Model
      */
     protected $fillable = [
         'name',
-        'type',
+        'type_id',
         'description',
         'start',
         'end',
@@ -74,9 +74,9 @@ class Project extends Model
     /**
      * Get the brand associated with the user.
      */
-     public function manager(): HasOne
+     public function type(): HasOne
     {
-        return $this->HasOne(User::class, 'id', 'manager_id');
+        return $this->HasOne(ProjectType::class, 'id', 'type_id');
     }
 
     /**

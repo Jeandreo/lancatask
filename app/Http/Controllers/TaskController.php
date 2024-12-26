@@ -28,20 +28,15 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
 
         // GET ALL DATA
-        $contents = Project::orderBy('name', 'ASC');
-        $contents = $request->project_id == 0 ? $contents : $contents->where('id', $request->project_id);
-        $contents = $contents->get();
-
-        $users = User::where('status', 1)->get();
+        $contents = $this->repository->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.index')->with([
             'contents' => $contents,
-            'users' => $users,
         ]);
 
     }
@@ -233,8 +228,8 @@ class TaskController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->back()
-            ->with('message', $message);
+                ->back()
+                ->with('message', $message);
 
     }
 
