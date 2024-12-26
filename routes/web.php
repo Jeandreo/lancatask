@@ -7,6 +7,8 @@ use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPositionController;
+use App\Models\UserPosition;
 use Illuminate\Support\Facades\Route;
 
 // AUTH
@@ -92,6 +94,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
             Route::put('/barra-lateral', [UserController::class, 'sidebar'])->name('sidebar');
+        });
+    });
+
+    // COMMENTS
+    Route::prefix('cargos')->group(function () {
+        Route::name('positions.')->group(function () {
+            Route::get('/', [UserPositionController::class, 'index'])->name('index');
+            Route::get('/adicionar', [UserPositionController::class, 'create'])->name('create');
+            Route::post('/adicionar', [UserPositionController::class, 'store'])->name('store');
+            Route::get('/desabilitar/{id}', [UserPositionController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [UserPositionController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [UserPositionController::class, 'update'])->name('update');
         });
     });
 

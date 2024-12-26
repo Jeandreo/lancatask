@@ -32,7 +32,7 @@ class ProjectController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->get();
+        $contents = $this->repository->orderBy('id', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.projects.index')->with([
@@ -50,7 +50,7 @@ class ProjectController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->where('status', true)->where('type_id', 1)->orderBy('name', 'ASC')->get();
+        $contents = $this->repository->where('status', true)->where('type_id', 1)->orderBy('id', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.projects.releases')->with([

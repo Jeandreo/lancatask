@@ -11,9 +11,9 @@
         <label class="form-label fw-bold required">Grupo de usuário:</label>
         <select class="form-select form-select-solid" name="role" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
-            <option value="Administrador" @if(isset($content) && $content->type == 'Administrador') selected @endif>Administrador</option>
-            <option value="Gerente" @if(isset($content) && $content->type == 'Time') selected @endif>Gerente</option>
-            <option value="Colaborador" @if(isset($content) && $content->type == 'Time') selected @endif>Colaborador</option>
+            <option value="Administrador" @if(isset($content) && $content->role == 'Administrador') selected @endif>Administrador</option>
+            <option value="Gerente" @if(isset($content) && $content->role == 'Gerente') selected @endif>Gerente</option>
+            <option value="Colaborador" @if(isset($content) && $content->role == 'Colaborador') selected @endif>Colaborador</option>
         </select>
     </div>
     <div class="col-4 mb-5">

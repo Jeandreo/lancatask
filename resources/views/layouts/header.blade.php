@@ -275,11 +275,11 @@
                 <div class="app-navbar-item ms-1 ms-md-4" id="kt_header_user_menu_toggle">
                     <div class="cursor-pointer" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
                         <div class="menu-item px-3">
-                            <div class="menu-content d-flex align-items-center px-3">
+                            <div class="menu-content d-flex align-items-center px-3" id="clear-sidebar">
                                 <div class="symbol symbol-40px me-4">
                                     <img alt="Logo" src="{{ findImage('users/photos/' . Auth::id() . '.jpg') }}" />
                                 </div>
-                                <div class="d-flex flex-column" id="clear-sidebar">
+                                <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5">{{ Auth::user()->name }}</div>
                                     <span class="fw-semibold text-muted fs-7">{{ Str::limit(Auth::user()->email, 12) }}</span>
                                 </div>

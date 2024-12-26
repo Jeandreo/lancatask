@@ -26,8 +26,6 @@ class Project extends Model
         'name',
         'type_id',
         'description',
-        'start',
-        'end',
         'status',
         'filed_by',
         'created_by',

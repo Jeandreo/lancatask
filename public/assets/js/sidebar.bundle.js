@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Limpar o cache da barra lateral
     document.getElementById('clear-sidebar').addEventListener('click', function () {
-        localStorage.removeItem('sidebarHTML');
+        localStorage.removeItem('sidebarHTML'); // Remove o estado salvo da barra lateral
+        location.reload(); // Recarrega a página
     });
 });

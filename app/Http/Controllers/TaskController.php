@@ -32,7 +32,7 @@ class TaskController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->get();
+        $contents = $this->repository->orderBy('id', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.index')->with([

@@ -69,8 +69,10 @@
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Usuários</span></a>
                            </div>
+                           <div  class="menu-item" >
+                              <a class="menu-link" href="{{ route('positions.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Cargos</span></a>
+                           </div>
                         </div>
-                        <!--end:Menu sub-->
                      </div>
                      @if (Auth::user()->groupProjects()->count())
                      @foreach (Auth::user()->groupProjects() as $group => $projects)

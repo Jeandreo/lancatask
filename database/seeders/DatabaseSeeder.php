@@ -2,7 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Module;
+use App\Models\Project;
 use App\Models\ProjectType;
+use App\Models\ProjectUser;
+use App\Models\Status;
+use App\Models\Task;
 use App\Models\User;
 use App\Models\UserPosition;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -100,6 +105,142 @@ class DatabaseSeeder extends Seeder
             'name' => 'Analista de Dados',
             'created_by' => 1,
         ]);
+
+        Project::create([
+            'name' => '6em7 do João',
+            'type_id' => 1,
+            'created_by' => 1,
+        ]);
+
+        ProjectUser::create([
+            'user_id' => 1,
+            'project_id' => 1,
+        ]);
+
+        ProjectUser::create([
+            'user_id' => 2,
+            'project_id' => 1,
+        ]);
+
+        Project::create([
+            'name' => 'Financias',
+            'type_id' => 3,
+            'created_by' => 1,
+        ]);
+
+        ProjectUser::create([
+            'user_id' => 1,
+            'project_id' => 1,
+        ]);
+
+        ProjectUser::create([
+            'user_id' => 2,
+            'project_id' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Estratégia e definições',
+            'project_id' => 1,
+            'color' => '#A64D79',
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'A Fazer',
+            'color' => '#009ef7',
+            'module_id' => 1,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Em andamento',
+            'color' => '#79bc17',
+            'module_id' => 1,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Concluído',
+            'color' => '#282c43',
+            'module_id' => 1,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+
+        Module::create([
+            'name' => 'Preparação para captação',
+            'project_id' => 1,
+            'color' => '#674EA7',
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'INICIO DA CAPTAÇÃO',
+            'project_id' => 1,
+            'color' => '#674EA7',
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Preparação para o evento',
+            'project_id' => 1,
+            'color' => '#85200C',
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'EVENTO NO AR',
+            'project_id' => 1,
+            'color' => '#85200C',
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Preparação do curso',
+            'project_id' => 1,
+            'color' => randomColor(),
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Preparação para venda',
+            'project_id' => 1,
+            'color' => randomColor(),
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Preparação curso Segredos',
+            'project_id' => 1,
+            'color' => randomColor(),
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'VENDAS',
+            'project_id' => 1,
+            'color' => randomColor(),
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Fechamento',
+            'project_id' => 1,
+            'color' => randomColor(),
+            'created_by' => 1,
+        ]);
+
+        Module::create([
+            'name' => 'Entrega',
+            'project_id' => 1,
+            'color' => randomColor(),
+            'created_by' => 1,
+        ]);
+
+        Task::factory(20)->create();
 
     }
 }

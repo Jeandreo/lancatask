@@ -27,11 +27,23 @@
                 </div>
             </div>
             <div class="card-body p-5">
-                @foreach ($tasks as $task)
-                <div class="div-task">
-                    @include('pages.tasks._task', ['hideMove' => true])
-                </div>
-                @endforeach
+                @if ($tasks->count())
+                    @foreach ($tasks as $task)
+                    <div class="div-task">
+                        @include('pages.tasks._task', ['hideMove' => true])
+                    </div>
+                    @endforeach
+                @else
+                    <div class="w-100 bg-light border border-dashed border-1 border-gray-200 h-200px rounded d-flex justify-content-center align-items-center">
+                        <div class="d-flex">
+                            <i class="fa-regular fa-face-smile-wink text-success fs-3x me-4"></i>
+                            <div>
+                                <h2 class="fw-bold text-gray-700 mb-0">Sem tarefas no momento</h2>
+                                <p class="m-0 text-gray-600">Nenhuma tarefa atribuida a você no momento, volte em breve.</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
