@@ -71,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/subtarefa', [TaskController::class, 'subtask'])->name('subtask');
             Route::post('/concluidas', [TaskController::class, 'checkeds'])->name('checkeds');
             Route::post('/prazo', [TaskController::class, 'time'])->name('time');
+            Route::get('/historico/{id}', [TaskController::class, 'historic'])->name('historic');
         });
     });
 

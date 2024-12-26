@@ -211,7 +211,7 @@
     });
 
     // UPDATE TITLE AND PHRASE
-    $(document).on('change', '.input-name, .task-phrase, .task-description', function(){
+    $(document).on('change', '.input-name, .task-description', function(){
 
         // GET DATA
         var input = $(this).attr('name');
@@ -423,6 +423,31 @@
         });
 
     });
+
+    $(document).on('click', '#see-historic', function(){
+
+        // GET DATA
+        var taskId = $(this).data('task');
+
+        // AJAX
+        $.ajax({
+            type:'get',
+            url: "{{ route('tasks.historic', '') }}/" + taskId,
+            success:function(data) {
+                $('#task-details, #see-historic').hide();
+                $('#task-historic').html(data);
+                $('#task-historic, #see-details').show();
+            }
+        });
+    });
+
+    $(document).on('click', '#see-details', function(){
+        $('#task-details, #see-historic').show();
+        $('#task-historic, #see-details').hide();
+    });
+
+
+
     // SHOW TASK
     $(document).on('change', '.module-colors', function(){
 

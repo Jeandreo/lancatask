@@ -6,6 +6,7 @@ use App\Models\Module;
 use App\Models\Project;
 use App\Models\Status;
 use App\Models\Task;
+use App\Models\TaskHistoric;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -122,14 +123,39 @@ class TaskController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
+        // Input
+        $input = $request->input;
+
         // UPDATE VALUE
         $data[$request->input] = $request->value;
+
+        // Valor antigo
+        $previousValue = $content->$input;
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
 
         // STORING NEW DATA
         $content->update($data);
+
+        // Cria histórico
+        if($data['input'] == 'name'){
+            TaskHistoric::create([
+                'task_id'      => $id,
+                'action'       => 'nome',
+                'previous_key' => $previousValue,
+                'key'          => $request->value,
+                'created_by'   => Auth::id(),
+            ]);
+        } elseif ($data['input'] == 'description') {
+            TaskHistoric::create([
+                'task_id'      => $id,
+                'action'       => 'descrição',
+                'previous_key' => $previousValue,
+                'key'          => $request->value,
+                'created_by'   => Auth::id(),
+            ]);
+        }
 
         // REDIRECT AND MESSAGES
         return response()->json('Success', 200);
@@ -324,8 +350,17 @@ class TaskController extends Controller
 
         // UPDATE TASK STATUS
         $content = Task::find($request->task_id);
+        $previousValue = $content->date;
         $content->date = $request->date;
         $content->save();
+
+        TaskHistoric::create([
+            'task_id'      => $request->task_id,
+            'action'       => 'data',
+            'previous_key' => $previousValue,
+            'key'          => $request->date,
+            'created_by'   => Auth::id(),
+        ]);
 
         // RETURN
         return response()->json('Sucesso', 200);
@@ -475,5 +510,23 @@ class TaskController extends Controller
             'users' => $users,
             'projects' => $projects,
         ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function historic($id)
+    {
+
+        // GET ALL DATA
+        $contents = $this->repository->find($id);
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._historic')->with([
+            'contents' => $contents,
+        ]);
+
     }
 }

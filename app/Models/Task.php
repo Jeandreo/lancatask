@@ -45,6 +45,14 @@ class Task extends Model
     }
 
     /**
+     * Get the comments associated with the tasks.
+     */
+    public function historic(): HasMany
+    {
+        return $this->hasMany(TaskHistoric::class, 'task_id', 'id');
+    }
+
+    /**
      * Get the subtask associated with the tasks.
      */
     public function subtasks(): HasMany
