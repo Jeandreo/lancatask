@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('priority')->default(0);
             $table->dateTime('date')->nullable();
             $table->string('name')->nullable();
-            $table->string('phrase')->nullable();
             $table->longText('description')->nullable();
             $table->integer('status')->default(1);
             $table->foreignId('filed_by')->nullable()->constrained('users');

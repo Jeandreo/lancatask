@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasOne(UserPosition::class, 'id', 'position_id');
     }
 
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'tasks_participants');
+    }
+
     public function groupProjects()
     {
         // Obtém os IDs dos projetos que o usuário está associado
