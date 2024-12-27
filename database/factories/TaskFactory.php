@@ -75,7 +75,6 @@ class TaskFactory extends Factory
         return [
             'module_id' => Module::inRandomOrder()->first()->id,
             'status_id' => 1,
-            'designated_id' => User::inRandomOrder()->first()->id,
             'date' => fake()->dateTimeBetween('-1 week', '+1 month'),
             'name' => $tasks[array_rand($tasks)],
             'phrase' => fake()->sentence,

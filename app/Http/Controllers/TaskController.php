@@ -56,7 +56,7 @@ class TaskController extends Controller
         $data = $request->all();
 
         // CREATED BY
-        $data['created_by'] = $data['designated_id'] = Auth::id();
+        $data['created_by'] = Auth::id();
 
         // Obtém Módulo
         $module = Module::find($data['module_id']);
@@ -64,6 +64,12 @@ class TaskController extends Controller
 
         // SEND DATA
         $created = $this->repository->create($data);
+
+        // Adiciona participante
+        TaskParticipant::create([
+            'user_id' => $data['created_by'],
+            'task_id' => $created->id,
+        ]);
 
         // REDIRECT AND MESSAGES
         return response()->json($created->toArray(), 200);
@@ -79,11 +85,11 @@ class TaskController extends Controller
     public function show($id)
     {
         // GET ALL DATA
-        $contents = $this->repository->find($id);
+        $task = $this->repository->find($id);
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.show')->with([
-            'contents' => $contents,
+            'task' => $task,
         ]);
     }
 
@@ -323,36 +329,6 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function designated(Request $request)
-    {
-
-        // GET ALL DATA
-        $contents = Task::find($request->task_id);
-        $previousValue = $contents->designated_id;
-        $contents->designated_id = $request->designated_id;
-        $contents->save();
-
-        TaskHistoric::create([
-            'task_id'      => $request->task_id,
-            'action'       => 'designado',
-            'previous_key' => $previousValue,
-            'key'          => $request->designated_id,
-            'created_by'   => Auth::id(),
-        ]);
-
-        // GET IMAGE
-        $img = findImage('users/photos/' . $request->designated_id . '.jpg');
-
-        // RETURN
-        return response()->json($img, 200);
-
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function status(Request $request)
     {
 
@@ -459,34 +435,6 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function subtask(Request $request)
-    {
-
-        // GET TASK
-        $created = Task::create([
-            'task_id' => $request->task_id,
-            'project_id' => $request->project_id,
-            'designated_id' => Auth::id(),
-            'created_by' => Auth::id(),
-        ]);
-
-        // GET USERS
-        $users = User::where('status', 1)->get();
-        $task = Task::find($created->id);
-
-        // RETURN VIEW WITH DATA
-        return view('pages.tasks._subtask')->with([
-            'subtask' => $task,
-            'users' => $users,
-        ]);
-
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function checkeds(Request $request)
     {
 
@@ -558,6 +506,23 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function participants($id)
+    {
+
+        // GET ALL DATA
+        $task = $this->repository->find($id);
+
+        // RETURN VIEW WITH DATA
+        return view('pages.tasks._participants')->with([
+            'task' => $task,
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function addParticipants($id)
     {
 
@@ -581,14 +546,25 @@ class TaskController extends Controller
      */
     public function addParticipant(Request $request, $id)
     {
+        // Verifica se o participante já está na tarefa
+        $existingParticipant = TaskParticipant::where('user_id', $request->user_id)
+            ->where('task_id', $id)
+            ->first();
 
-        // Adiciona Tarefa
-        TaskParticipant::create([
-            'user_id' => $request->user_id,
-            'task_id' => $id,
-        ]);
-
+        if ($existingParticipant) {
+            // Remove o participante existente
+            $existingParticipant->delete();
+            return response()->json(['message' => 'Participante removido da tarefa.']);
+        } else {
+            // Adiciona o participante à tarefa
+            TaskParticipant::create([
+                'user_id' => $request->user_id,
+                'task_id' => $id,
+            ]);
+            return response()->json(['message' => 'Participante adicionado à tarefa.']);
+        }
     }
+
 
     /**
      * Display a listing of the resource.

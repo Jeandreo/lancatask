@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('module_id')->constrained('modules');
             $table->foreignId('task_id')->nullable()->constrained('tasks');
             $table->foreignId('status_id')->default(1)->constrained('statuses');
-            $table->foreignId('designated_id')->constrained('users');
             $table->boolean('checked')->default(false);
             $table->dateTime('checked_at')->nullable();
             $table->integer('order')->default(0);

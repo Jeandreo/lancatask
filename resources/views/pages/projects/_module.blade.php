@@ -6,7 +6,7 @@
         </div>
         <div class="d-none d-md-flex align-items-center">
             <div class="w-125px text-center text-gray-700 fs-7 text-uppercase fw-bold">
-                Responsável
+                Responsáveis
             </div>
             <div class="d-flex align-items-center justify-content-center w-150px text-gray-700 fs-7 text-uppercase fw-bold">
                 Status

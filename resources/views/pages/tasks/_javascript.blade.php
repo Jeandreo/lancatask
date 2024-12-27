@@ -238,6 +238,11 @@
 
         var taskId = $(this).data('task');
 
+        loadListParticipants(taskId);
+
+    });
+
+    function loadListParticipants(taskId){
         // AJAX
         $.ajax({
             type: 'GET',
@@ -247,7 +252,18 @@
                 $('#add_user').modal('show');
             }
         });
-    });
+    }
+
+    function loadParticipants(taskId){
+        // AJAX
+        $.ajax({
+            type: 'GET',
+            url: "{{ route('tasks.participants', '') }}/" + taskId,
+            success: function(data){
+                $('.list-participants-' + taskId).html(data);
+            }
+        });
+    }
 
     // SHOW INPUT PHRASE
     $(document).on('click', '.add-user', function(){
@@ -262,7 +278,8 @@
             url: "{{ route('tasks.add.participant', '') }}/" + taskId,
             data: {user_id: userId},
             success: function(data){
-                alert('sucesso');
+                loadListParticipants(taskId);
+                loadParticipants(taskId);
             }
         });
     });

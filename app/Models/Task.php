@@ -22,7 +22,6 @@ class Task extends Model
         'module_id',
         'task_id',
         'status_id',
-        'designated_id',
         'checked',
         'checked_at',
         'order',
@@ -50,7 +49,7 @@ class Task extends Model
      */
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'tasks_participants', 'user_id', 'task_id');
+        return $this->belongsToMany(User::class, 'tasks_participants', 'task_id', 'user_id');
     }
 
     /**
@@ -83,14 +82,6 @@ class Task extends Model
     public function author(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_by');
-    }
-
-    /**
-     * Get the creator associated with the tasks.
-     */
-    public function designated(): HasOne
-    {
-        return $this->hasOne(User::class, 'id', 'designated_id');
     }
 
     /**

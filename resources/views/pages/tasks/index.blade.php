@@ -30,14 +30,14 @@
                             </span>
                         </td>
                         <td>
-                            <div class="d-flex align-items-center">
+                            {{-- <div class="d-flex align-items-center">
                                 <div class="symbol symbol-25px symbol-circle me-2" data-bs-toggle="tooltip" data-bs-original-title="{{ $content->name }}">
                                     <img alt="Pic" src="{{ findImage('users/photos/' . $content->designated_id . '.jpg') }}" class="object-fit-cover">
                                 </div>
                                 <span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="{{ $content->id }}">
                                     {{ $content->name }}
                                 </span>
-                            </div>
+                            </div> --}}
                         </td>
                         <td>
                             @if ($content->date)

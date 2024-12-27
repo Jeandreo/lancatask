@@ -45,28 +45,8 @@
     </div>
     <div class="d-flex align-items-center h-100 d-none d-md-flex">
         <div class="separator-vertical h-100"></div>
-        <div class="w-125px text-center designated-div">
-            <div class="symbol symbol-30px symbol-circle cursor-pointer" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                <div class="symbol symbol-25px symbol-circle me-2">
-                    <img alt="Pic" src="{{ findImage('users/photos/' . $task->designated_id . '.jpg') }}" class="designated object-fit-cover">
-                </div>
-                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true">
-                @foreach ($users as $user)
-                <div class="menu-item px-3">
-                    <a href="{{ route('tasks.designated') }}" class="menu-link px-3 py-1 task-designated" data-task="{{ $task->id }}" data-designated="{{ $user->id }}">
-                        <div class="cursor-pointer symbol symbol-25px symbol-md-35px">
-                            <div class="symbol symbol-25px symbol-circle me-2">
-                                <img alt="Pic" src="{{ findImage('users/photos/' . $user->id . '.jpg') }}">
-                            </div>
-                        </div>
-                        <span class="ms-4">
-                        {{ $user->name }}
-                        </span>
-                    </a>
-                </div>
-                @endforeach
-                </div>
-            </div>
+        <div class="w-125px symbol-group symbol-hover flex-nowrap justify-content-center list-participants-{{ $task->id }} opacity-1">
+            @include('pages.tasks._participants', ['opacity0' => true])
         </div>
         <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusProject->color }}">
             <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">

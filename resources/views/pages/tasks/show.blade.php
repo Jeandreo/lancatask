@@ -7,31 +7,26 @@
 			<div class="px-8 h-md-500px pb-4 mb-md-0">
 				<div class="h-md-300px">
 					<div class="d-flex mb-4 mt-7">
-						<span class="badge text-white" style="background-color: {{ $contents->module->color }};">{{ $contents->module->name }}</span>
-						@if ($contents->status == 0)
+						<span class="badge text-white" style="background-color: {{ $task->module->color }};">{{ $task->module->name }}</span>
+						@if ($task->status == 0)
 						<span class="badge badge-danger text-white ms-2">Arquivada</span>
 						@endif
-						@if ($contents->subtasks->count())
+						@if ($task->subtasks->count())
 						<div class="form-check form-switch form-check-custom form-check-solid ms-4">
-							<input class="form-check-input h-20px w-30px cursor-pointer" name="challenge" data-task="{{ $contents->id }}" type="checkbox" @if($contents->challenge) checked @endif id="challenge_task"/>
+							<input class="form-check-input h-20px w-30px cursor-pointer" name="challenge" data-task="{{ $task->id }}" type="checkbox" @if($task->challenge) checked @endif id="challenge_task"/>
 							<label class="form-check-label fw-bold cursor-pointer" for="challenge_task">
 								Subtarefas
 							</label>
 						</div>
 						@endif
 					</div>
-                    <textarea class="form-control form-control-flush fs-2x my-4 px-0 text-white py-0 lh-1 auto-height input-name" name="name" style="resize: none; height: auto; overflow: hidden;" rows="1" data-task="{{ $contents->id }}">{{ $contents->name }}</textarea>
-					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description mh-100px mh-md-300px" @if ($contents->status == 0) disabled @endif placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $contents->id }}">@if($contents->description){{ $contents->description }}@endif</textarea>
+                    <textarea class="form-control form-control-flush fs-2x my-4 px-0 text-white py-0 lh-1 auto-height input-name" name="name" style="resize: none; height: auto; overflow: hidden;" rows="1" data-task="{{ $task->id }}">{{ $task->name }}</textarea>
+					<textarea class="text-gray-200 fs-6 bg-transparent p-0 border-0 w-100 task-description mh-100px mh-md-300px" @if ($task->status == 0) disabled @endif placeholder="anotações aqui..." style="resize: none;" name="description" rows="8" data-task="{{ $task->id }}">@if($task->description){{ $task->description }}@endif</textarea>
 				</div>
 				<div class="h-md-50px d-flex align-items-center mb-2">
                     <span class="fw-bold text-white cursor-pointer">Participantes:</span>
-                    <div class="symbol-group symbol-hover flex-nowrap ms-5">
-                        <div class="symbol symbol-25px symbol-circle">
-                            <img alt="Pic" src="{{ findImage('users/photos/' . $contents->designated->id . '.jpg') }}">
-                        </div>
-                        <div class="symbol symbol-25px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Adicionar participante" data-task="{{ $contents->id }}" id="add-participants">
-                            <span class="symbol-label bg-primary bg-hover-success text-inverse-primary fw-bold">+</span>
-                        </div>
+                    <div class="symbol-group symbol-hover flex-nowrap ms-5 list-participants-{{ $task->id }}">
+                        @include('pages.tasks._participants')
                     </div>
                 </div>
 				{{-- ALINHAR EM BAIXO  --}}
@@ -42,7 +37,7 @@
 								<p class="text-white fw-bolder m-0 text-uppercase fs-8">Autor</p>
 							</div>
 							<div class="col-8">
-								<p class="text-white text-end m-0">{{ $contents->author->name }}</p>
+								<p class="text-white text-end m-0">{{ $task->author->name }}</p>
 							</div>
 						</div>
 						<div class="row pb-3 mb-2" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
@@ -50,7 +45,7 @@
 								<p class="text-white fw-bolder m-0 text-uppercase fs-8">Projeto</p>
 							</div>
 							<div class="col-8">
-								<p class="text-white text-end m-0">{{ $contents->module->project->name }}</p>
+								<p class="text-white text-end m-0">{{ $task->module->project->name }}</p>
 							</div>
 						</div>
 						<div class="row pb-3 mb-2">
@@ -58,11 +53,11 @@
 								<p class="text-white fw-bolder m-0 text-uppercase fs-8">Criado as</p>
 							</div>
 							<div class="col-8">
-								<p class="text-white text-end m-0">{{ $contents->created_at->format('d/m/Y H:i') }}</p>
+								<p class="text-white text-end m-0">{{ $task->created_at->format('d/m/Y H:i') }}</p>
 							</div>
 						</div>
 						<div class="row" style="border-bottom: solid 1px rgba(0, 0, 0, 0.1)">
-                            <p class="btn btn-sm btn-primary fw-bold text-uppercase mb-0" id="see-historic" data-task="{{ $contents->id }}">Ver Histórico</p>
+                            <p class="btn btn-sm btn-primary fw-bold text-uppercase mb-0" id="see-historic" data-task="{{ $task->id }}">Ver Histórico</p>
                             <p class="btn btn-sm btn-success fw-bold text-uppercase mb-0" id="see-details" style="display: none;">Ver Detalhes</p>
                         </div>
 					</div>
@@ -84,8 +79,8 @@
                     {{-- COMMENTS HERE --}}
                 </div>
                 <div class="h-100px p-3">
-                    @if ($contents->status != 0)
-                    <form action="" method="POST" class="position-relative ck-tiny" id="send-comment" data-task="{{ $contents->id }}">
+                    @if ($task->status != 0)
+                    <form action="" method="POST" class="position-relative ck-tiny" id="send-comment" data-task="{{ $task->id }}">
                         @csrf
                         <div class="pt-0" data-bs-theme="light">
                             <textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>
