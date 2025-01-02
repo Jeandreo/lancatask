@@ -98,7 +98,6 @@ class ProjectController extends Controller
 
         // Cria módulo inicial
         Module::create([
-            'name' => 'Primeiro Módulo de ' . $created['name'],
             'project_id' => $created->id,
             'color' => '#348feb',
             'created_by' => Auth::id(),

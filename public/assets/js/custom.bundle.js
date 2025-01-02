@@ -59,21 +59,102 @@ function generateFlatpickr(options = null, calendarSelector = '.flatpickr') {
      * Define opções padrões para o calendário.
      */
     var defaultOptions = {
-        // allowInput:true,
-        altInput: true,
-        altFormat: "d/m/Y",
-        dateFormat: "Y-m-d",
         locale: "pt",
-        // minDate: "today",
+        timePicker: false,
+        startDate: moment().startOf("hour"),
+        endDate: moment().startOf("hour").add(32, "hour"),
+        autoUpdateInput: false,
+        locale: {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "de",
+            "toLabel": "até",
+            "customRangeLabel": "Personalizado",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sáb"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro",
+            ],
+            "firstDay": 0
+        },
     };
 
-    // Sobrescreve as opções personalizadas nas padrões
-    var options = { ...defaultOptions, ...options };
+    // Combina as opções personalizadas com as padrões
+    var finalOptions = { ...defaultOptions, ...options };
 
-    // Inicia calendário
-    $(calendarSelector).flatpickr(options);
+    // Inicializa o calendário para cada input de forma independente
+    $(calendarSelector).each(function() {
+        var inputElement = $(this); // Elemento específico do input
+        var inputValue = inputElement.val(); // Obtém o valor atual do input
 
+        // Se o valor do input existir, defina o startDate e endDate com base nele
+        if (inputValue) {
+            var dates = inputValue.split(' até ');
+            if (dates.length === 2) {
+                var startDate = moment(dates[0], 'DD/MM/YYYY');
+                var endDate = moment(dates[1], 'DD/MM/YYYY');
+                finalOptions.startDate = startDate;
+                finalOptions.endDate = endDate;
+            }
+        }
+
+        // Configura o daterangepicker para o input específico
+        inputElement.daterangepicker(finalOptions, function(start, end, label) {
+            // Se o usuário não selecionar nenhuma data, deixa o input vazio
+            if (!start || !end) {
+                inputElement.val('');
+            } else {
+                // Caso contrário, preenche com o intervalo de datas selecionado
+                inputElement.val(start.format('DD/MM') + ' até ' + end.format('DD/MM'));
+            }
+        });
+
+        // Evento de aplicar a data
+        inputElement.on('apply.daterangepicker', function(ev, picker) {
+            // Verifica se as datas estão no mesmo dia
+            var formattedValue = picker.startDate.isSame(picker.endDate, 'day')
+                ? picker.startDate.format('DD/MM/YYYY')
+                : picker.startDate.format('DD/MM') + ' até ' + picker.endDate.format('DD/MM');
+
+            inputElement.val(formattedValue); // Preenche o valor do input
+
+            // Função de callback opcional
+            if (typeof onChange !== 'undefined' && onChange === true) {
+                flatpickrRangeFunction();
+            }
+        });
+    });
+
+    // Evento de aplicar a data no daterangepicker
+    $(calendarSelector).on('apply.daterangepicker', function(ev, picker) {
+        var dateStart = picker.startDate.format('YYYY-MM-DD');
+        var dateEnd = picker.endDate.format('YYYY-MM-DD');
+        var taskId = $(this).data('task');
+        changeDate(taskId, dateStart, dateEnd);
+    });
 }
+
+
 
 
 // CUSTOM UPLOAD
@@ -173,6 +254,32 @@ function loadEditorText(selector = '.load-editor') {
     }).then(function (editor) {
         // ALOW ACCESS TO CLEAR
         textarea = editor;
+
+        // Detectar seleção de arquivo
+        const fileInput = document.querySelector('#file-textarea');
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                // Criar um link ou uma imagem dependendo do tipo de arquivo
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const fileContent = e.target.result;
+
+                    // Criar um elemento de imagem a partir da URL de dados
+                    const imageElement = `<img src="${fileContent}" alt="Uploaded Image" />`;
+
+                    // Inserir a imagem no editor
+                    editor.model.change(writer => {
+                        const imageElementNode = writer.createElement('imageBlock', {
+                            src: fileContent
+                        });
+                        const insertPosition = editor.model.document.selection.getFirstPosition();
+                        editor.model.insertContent(imageElementNode, insertPosition);
+                    });
+                };
+                reader.readAsDataURL(file); // Lê o arquivo como URL de dados
+            }
+        });
     });
 
 }

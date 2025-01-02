@@ -368,7 +368,8 @@ class TaskController extends Controller
         // UPDATE TASK STATUS
         $content = Task::find($request->task_id);
         $previousValue = $content->date;
-        $content->date = $request->date;
+        $content->date_start = $request->date_start;
+        $content->date_end = $request->date_end;
         $content->save();
 
         TaskHistoric::create([

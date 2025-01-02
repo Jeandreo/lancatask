@@ -50,13 +50,13 @@
                         </span>
                         <div  class="menu-sub menu-sub-accordion">
                            <div  class="menu-item">
-                              <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Projetos</span></a>
+                              <a class="menu-link" href="{{ route('projects.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gestão de Projetos</span></a>
                            </div>
                            <div  class="menu-item">
-                              <a class="menu-link" href="{{ route('modules.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Módulos</span></a>
+                              <a class="menu-link" href="{{ route('modules.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gestão de módulos</span></a>
                            </div>
                            <div  class="menu-item" >
-                            <a class="menu-link" href="{{ route('tasks.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tarefas</span></a>
+                            <a class="menu-link" href="{{ route('tasks.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gestão de tarefas</span></a>
                            </div>
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('projects.types.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tipos de projetos</span></a>
@@ -74,7 +74,7 @@
                                 </i>
                             </span>
                             <span  class="menu-title" >
-                                Usuários
+                                Membros
                             </span>
                             <span  class="menu-arrow" ></span>
                         </span>
@@ -88,9 +88,10 @@
                         </div>
                      </div>
                      @if (Auth::user()->groupProjects()->count())
-                     @foreach (Auth::user()->groupProjects() as $group => $projects)
+                     <div class="p-2" style="">
+                        @foreach (Auth::user()->groupProjects() as $group => $projects)
                         <div class="menu-item opacity-1">
-                            <div class="menu-content pt-8 pb-2 pe-0 d-flex justify-content-between align-items-center">
+                            <div class="menu-content pb-2 pe-0 d-flex justify-content-between align-items-center">
                                 <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">{{ $group }}</span>
                                 <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
                                     +
@@ -114,6 +115,7 @@
                             @endif
                         @endforeach
                      @endforeach
+                     </div>
                      @else
                      <div class="menu-item opacity-1">
                         <div class="menu-content pt-8 pb-2 pe-0 d-flex justify-content-between align-items-center">

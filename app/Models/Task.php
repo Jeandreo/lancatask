@@ -27,6 +27,8 @@ class Task extends Model
         'order',
         'priority',
         'date',
+        'date_start',
+        'date_end',
         'name',
         'phrase',
         'description',

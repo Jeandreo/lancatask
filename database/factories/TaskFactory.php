@@ -77,7 +77,6 @@ class TaskFactory extends Factory
             'status_id' => 1,
             'date' => fake()->dateTimeBetween('-1 week', '+1 month'),
             'name' => $tasks[array_rand($tasks)],
-            'phrase' => fake()->sentence,
             'description' => fake()->paragraph,
             'created_by' => 1,
         ];

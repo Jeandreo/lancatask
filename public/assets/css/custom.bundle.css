@@ -212,6 +212,12 @@ button:focus {
     opacity: 1;
 }
 
+.image-limited {
+    max-width: 100px;
+    width: 100%;
+    height: auto;
+}
+
 p:last-child {
     margin-bottom: 0;
 }
@@ -222,8 +228,12 @@ p:last-child {
 }
 
 .ck-tiny .ck-content {
-    min-height: 80px;
-    height: 80px;
+    min-height: 125px;
+    height: 125px;
+}
+
+.ck-tiny .ck-content figure {
+    width: 250px;
 }
 
 .ck-tiny .ck-editor__top {
@@ -464,7 +474,7 @@ input[type=text]:disabled {
 
 
 #results-comments figure img {
-    max-height: 300px;
+    max-height: 250px;
 }
 
 

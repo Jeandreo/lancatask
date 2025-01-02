@@ -73,23 +73,27 @@
                         <i class="fa-solid fa-xmark text-white text-gray-400 fs-5"></i>
                     </div>
                 </div>
-                <div class="rounded scroll-y scroll-dark h-md-425px p-3 show-image-div" id="results-comments">
+                <div class="rounded scroll-y scroll-dark h-md-375px p-3 show-image-div" id="results-comments">
                     {{-- COMMENTS HERE --}}
                     {{-- COMMENTS HERE --}}
                     {{-- COMMENTS HERE --}}
                 </div>
-                <div class="h-100px p-3">
+                <div class="h-150px p-3">
                     @if ($task->status != 0)
                     <form action="" method="POST" class="position-relative ck-tiny" id="send-comment" data-task="{{ $task->id }}">
                         @csrf
                         <div class="pt-0" data-bs-theme="light">
                             <textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>
                         </div>
-                        <div class="text-end position-absolute" style="bottom: 5px; right: 5px;">
-                            <button class="btn btn-sm btn-primary btn-active-success fw-bold text-uppercase mt-2">
+                        <div class="text-end position-absolute z-index-3" style="bottom: 5px; right: 5px;">
+                            <button class="btn btn-sm btn-icon" type="button" id="attach-file">
+                                <i class="fa-solid fa-paperclip"></i>
+                            </button>
+                            <button class="btn btn-sm btn-primary btn-active-success fw-bold text-uppercase">
                                 Enviar
                                 <i class="fa-regular fa-paper-plane fs-5 pe-0"></i>
                             </button>
+                            <input type="file" accept="image/*" id="file-textarea" style="display: none;" />
                         </div>
                     </form>
                     @endif

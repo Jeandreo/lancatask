@@ -2,7 +2,7 @@
     <div class="card-header min-h-50px ps-2 pe-6 position-relative opacity-1">
         <div class="d-flex align-items-center ps-3 pe-5 w-50">
             <input type="color" class="form-control form-control-flush p-0 w-20px h-20px border-0 min-h-10px rounded module-colors" data-module="{{ $module->id }}" value="{{ $module->color }}">
-            <input class="form-control form-control-flush bg-hover-light rounded py-2 px-3 text-gray-700 fs-5 fw-bold p-0 module-title" data-module="{{ $module->id }}" value="{{ $module->name }}">
+            <input class="form-control form-control-flush bg-hover-light rounded py-2 px-3 text-gray-700 fs-5 fw-bold p-0 module-title" data-module="{{ $module->id }}" value="{{ $module->name }}" placeholder="Digite o nome do módulo">
         </div>
         <div class="d-none d-md-flex align-items-center">
             <div class="w-125px text-center text-gray-700 fs-7 text-uppercase fw-bold">
