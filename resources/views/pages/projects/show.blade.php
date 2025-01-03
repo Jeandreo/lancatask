@@ -109,9 +109,7 @@
 		});
 
 	}
-
 	draggable();
-
 </script>
 @include('pages.tasks._javascript')
 @endsection
