@@ -11,6 +11,8 @@ use App\Models\TaskParticipant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class TaskController extends Controller
 {
@@ -41,6 +43,226 @@ class TaskController extends Controller
             'contents' => $contents,
         ]);
 
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function processing(Request $request)
+    {
+
+        // Obtém dados
+        $data = $request->all();
+
+        // Inicia consulta
+        $query = DB::table('tasks')
+        ->leftJoin('modules', 'tasks.module_id', '=', 'modules.id');
+
+        // // SEARCH BY
+        // if ($data['searchBy'] != '') {
+        //         // Continuar buscando por usuários, fornecedores ou clientes
+        //         $query->orWhere('crm_businesses.name', 'like', "%{$data['searchBy']}%")
+        //                 ->orWhere('users.name', 'like', "%{$data['searchBy']}%")
+        //                 ->orWhere('clients.name', 'like', "%{$data['searchBy']}%");
+        // }
+
+        // // Ordena
+        // if ($data['order']) {
+
+        //     // ORDER & COLUMN
+        //     $direction = $request->order[0]['dir'];
+        //     $orderThis = $request->order_by;
+        //     $column = $orderThis;
+
+        //     // FORMATA COLUNAS
+        //     switch ($column) {
+        //         case 'agenda':
+        //             $column = DB::raw('IFNULL(latest_agenda.last_agenda_date, "0000-00-00")');
+        //             break;
+        //         case 'name':
+        //             $column = 'crm_businesses.name';
+        //             break;
+        //         case 'value':
+        //             $column = 'crm_businesses.predicted_value';
+        //             break;
+        //         case 'is_client':
+        //             $column = 'clients.is_client';
+        //             break;
+        //         case 'user':
+        //             $column = 'users.name';
+        //             break;
+        //         case 'funnel':
+        //             $column = 'crm_funnels.name';
+        //             break;
+        //         case 'stage':
+        //             $column = 'crm_stages.name';
+        //             break;
+        //         default:
+        //             $column = 'crm_businesses.id';
+        //             break;
+        //     }
+        //     $query->orderBy($column, $direction);
+
+        // }
+
+        // // Se quiser filtrar por data de registro
+        // if(isset($data['register'])){
+
+        //     // Extrai a data
+        //     $dates = explode(" - ", $data['register']);
+
+        //     // Formata
+        //     $dateFormated[0] = convertDateFormat($dates[0]);
+        //     $dateFormated[1] = convertDateFormat($dates[1]);
+
+        //     // Incluí na consulta
+        //     $query->whereBetween('crm_businesses.created_at', $dateFormated);
+
+        // }
+
+        // // Se quiser filtrar por data de atualização
+        // if(isset($data['agenda'])){
+
+        //     // Extrai a data
+        //     $dates = explode(" - ", $data['agenda']);
+
+        //     // Formata
+        //     $dateFormated[0] = convertDateFormat($dates[0]);
+        //     $dateFormated[1] = convertDateFormat($dates[1]);
+
+        //     // Incluí na consulta
+        //     $query->whereBetween(DB::raw('IFNULL(latest_agenda.last_agenda_date, "0000-00-00")'), $dateFormated);
+
+        // }
+
+        // // Se quiser filtrar por data de atualização
+        // if(isset($data['millestones'])){
+        //     $query->join('crm_historics', 'crm_businesses.id', '=', 'crm_historics.business_id')
+        //         ->where('crm_historics.type', 'marco')
+        //         ->whereIn('key_id', $data['millestones'])
+        //         ->groupBy('crm_businesses.id');
+        // }
+
+        // // Filtra Status
+        // if(isset($data['stages'])){
+        //     $query->whereIn('stage_id', $data['stages']);
+        // }
+
+        // // Filtra Status
+        // if(isset($data['funnels'])){
+        //     $query->whereIn('crm_businesses.funnel_id', $data['funnels']);
+        // }
+
+        // // Filtra Status
+        // if(isset($data['stores'])){
+        //     $query->whereIn('sgore_id', $data['stores']);
+        // }
+
+        // // Filtra Status
+        // if(isset($data['campaigns'])){
+        //     $query->whereIn('campaign_id', $data['campaigns']);
+        // }
+
+        // // Filtra Status
+        // if(isset($data['sellers'])){
+        //     $query->whereIn('user_id', $data['sellers']);
+        // }
+
+        // // Filtra Status
+        // if(isset($data['origins'])){
+        //     $query->whereIn('origin_id', $data['origins']);
+        // }
+
+        // Add the necessary columns to the GROUP BY clause
+        $query->groupBy(
+            'tasks.id',
+            'tasks.name',
+            'tasks.date_start',
+            'tasks.checked',
+            'tasks.status',
+            'modules.name',
+        );
+
+        // COUNT TOTAL RECORDS
+        $totalRecords = $query->select('tasks.id')->count();
+
+        // ITENS PER PAGE AND PAGINATE
+        $pages = $query->paginate($request->per_page);
+
+        // Seleciona os dados
+        $query->select(
+            'tasks.id as id',
+            'tasks.name as name',
+            'tasks.date_start as date_start',
+            'tasks.checked as checked',
+            'tasks.status as status',
+            'modules.name as mname',
+        );
+
+        return DataTables::of($query)
+            ->addColumn('id', function ($row) {
+                $html = 
+                '<span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="' . $row->id .  '">
+                    ' . $row->id .  '
+                </span>';
+                return $html;
+            })
+            ->addColumn('name', function ($row) {
+                $html = 
+                '<span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="' . $row->id .  '">
+                    ' . $row->name .  '
+                </span>';
+                return $html;
+            })
+            ->addColumn('when', function ($row) {
+                if ($row->date_start){
+                    $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) .  '</span>';
+                } else {
+                    $html = '<span class="badge badge-light">Sem data</span>';
+                }
+                return $html;
+            })
+            ->addColumn('checked', function ($row) {
+                if ($row->checked == true){
+                    $html = '<span class="badge badge-light-success">Concluída</span>';
+                } else {
+                    $html = '<span class="badge badge-light-danger">Não concluída</span>';
+                }
+                return $html;
+            })
+            ->addColumn('project', function ($row) {
+                return '';
+            })
+            ->addColumn('module', function ($row) {
+                return $row->mname;
+            })
+            ->addColumn('status', function ($row) {
+                if ($row->checked == true){
+                    $html = '<span class="badge badge-light-success">Ativo</span>';
+                } else {
+                    $html = '<span class="badge badge-light-danger">Inativo</span>';
+                }
+                return $html;
+            })
+            ->addColumn('actions', function ($row) {
+                if ($row->status == 1){
+                    $btnToogle = '<i class="fas fa-times-circle" title="Desativar"></i>';
+                } else {
+                    $btnToogle = '<i class="fas fa-redo" title="Reativar"></i>';
+                }
+                $html = '<div class="d-flex align-items-center icons-table">
+                            <a href="' . route('tasks.destroy', $row->id) . '">
+                                ' . $btnToogle . '
+                            </a>
+                        </div>';
+                return $html;
+            })
+            ->rawColumns(['id', 'name', 'when', 'checked', 'project', 'module', 'status', 'actions'])
+            ->setTotalRecords($totalRecords)
+            ->setFilteredRecords($pages->total())
+            ->toJson();
     }
 
     /**

@@ -9,100 +9,178 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <table id="datatables" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle datatables no-footer">
+        <table id="datatables" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle no-footer">
             <thead>
                 <tr class="fw-bold fs-6 text-gray-800 px-7">
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Quando</th>
                     <th>Concluída</th>
-                    <th>Projeto > Módulo</th>
+                    <th>Projeto</th>
+                    <th>Módulo</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody class="table-pd">
-                @foreach ($contents as $content)
-                    <tr>
-                        <td>
-                            <span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="{{ $content->id }}">
-                                {{ $content->id }}
-                            </span>
-                        </td>
-                        <td>
-                            {{-- <div class="d-flex align-items-center">
-                                <div class="symbol symbol-25px symbol-circle me-2" data-bs-toggle="tooltip" data-bs-original-title="{{ $content->name }}">
-                                    <img alt="Pic" src="{{ findImage('users/photos/' . $content->designated_id . '.jpg') }}" class="object-fit-cover">
-                                </div>
-                                <span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="{{ $content->id }}">
-                                    {{ $content->name }}
-                                </span>
-                            </div> --}}
-                        </td>
-                        <td>
-                            @if ($content->date)
-                                <span class="text-gray-600">{{ $content->date->format('d/m/Y') }}</span>
-                            @else
-                                <span class="badge badge-light">Sem data</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if ($content->checked == 1)
-                                <span class="badge badge-light-success">Concluída</span>
-                            @else
-                                <span class="badge badge-light-danger">Não concluída</span>
-                            @endif
-                        </td>
-                        <td>
-                            <a href="{{ route('projects.show', $content->module->project_id) }}" class="text-gray-700 text-hover-primary fw-bolder">
-                                {{ $content->module->project->name }} >
-                                <span class="text-gray-600 fw-normal">
-                                    {{ Str::limit($content->module->name, 25) }}
-                                </span>
-                            </a>
-                        </td>
-                        <td>
-                            @if ($content->status == 1)
-                                <span class="badge badge-light-success">Ativo</span>
-                            @else
-                                <span class="badge badge-light-danger">Inativo</span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center icons-table">
-                                @if ($content->module->status == 1)
-                                <a href="{{ route('tasks.destroy', $content->id) }}">
-                                    @if ($content->status == 1)
-                                    <i class="fas fa-times-circle" title="Desativar"></i>
-                                    @else
-                                    <i class="fas fa-redo" title="Reativar"></i>
-                                    @endif
-                                </a>
-                                @else
-                                <span class="badge badge-light" data-bs-toggle="tooltip" data-bs-original-title="Esta tarefa esta em um módulo desativado.">
-                                    -
-                                </span>
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
+                {{-- RESULTS HERE --}}
             </tbody>
         </table>
     </div>
 </div>
-<div class="modal fade" data-bs-focus="false" id="modal_task">
-    <div class="modal-dialog modal-dialog-centered rounded">
-        <div class="modal-content rounded bg-transparent" id="load-task">
-            {{-- LOAP TASK HERE --}}
-            {{-- LOAP TASK HERE --}}
-            {{-- LOAP TASK HERE --}}
-        </div>
-    </div>
-</div>
+@include('pages.tasks._modals')
 @endsection
 
 @section('custom-footer')
 @parent
 @include('pages.tasks._javascript')
+
+
+<script>
+    // COLUMNS
+    var columnTable = [{
+            data: "id",
+            className: 'id',
+            orderable: true,
+            searchable: false
+        },
+        {
+            data: "name",
+            className: 'name',
+            orderable: true,
+            searchable: true
+        },
+        {
+            data: "when",
+            className: 'when',
+            orderable: true,
+            searchable: true
+        },
+        {
+            data: "checked",
+            className: 'checked',
+            orderable: true,
+            searchable: false
+        },
+        {
+            data: "project",
+            className: 'project',
+            orderable: true,
+            searchable: false
+        },
+        {
+            data: "module",
+            className: 'module',
+            orderable: true,
+            searchable: false
+        },
+        {
+            data: "status",
+            className: 'status',
+            orderable: true,
+            searchable: false
+        },
+        {
+            data: "actions",
+            className: 'actions',
+            orderable: true,
+            searchable: false
+        },
+    ];
+
+    // URL TO PROCESSING
+    var url = "{{ route('tasks.processing') }}";
+
+    // PARAMETERS
+    var parameters = {
+        columns: columnTable,
+        url: url,
+    }
+
+    // OPTIONS
+    var options = {
+        selector: '#datatables',
+        items: 25,
+        order: [
+            [0, 'desc']
+        ]
+    }
+
+    // SELECT TABLE
+    const table = $(options['selector']);
+
+    // CONFIG TABLE
+    const dataTableOptions = {
+        serverSide: true,
+        ajax: {
+            url: parameters['url'],
+            data: function(data) {
+                data.register = $('#register').val();
+                data.agenda = $('#last-agenda').val();
+                data.stages = $('#stage').val();
+                data.funnels = $('#funnels').val();
+                data.stores = $('#stores').val();
+                data.origins = $('#origins').val();
+                data.sellers = $('#sellers').val();
+                data.campaigns = $('#campaigns').val();
+                data.millestones = $('#millestones').val();
+                data.searchBy = data.search.value;
+                data.order_by = data.columns[data.order[0].column].data;
+                data.per_page = data.length
+            }
+        },
+        buttons: false,
+        searching: true,
+        order: options['order'],
+        pageLength: options['items'],
+        columns: parameters['columns'],
+        "language": {
+            "search": "Pesquisar:",
+            "lengthMenu": "Mostrando _MENU_ registros por página",
+            "zeroRecords": "Ops, não encontramos nenhum resultado :(",
+            "info": "Mostrando _START_ até _END_ de _TOTAL_ registros",
+            "infoEmpty": "Nenhum registro disponível",
+            "infoFiltered": "(Filtrando _MAX_ registros)",
+            "processing": "Filtrando dados",
+            "paginate": {
+                "previous": "Anterior",
+                "next": "Próximo",
+                "first": '<i class="fa-solid fa-angles-left text-gray-300 text-hover-primary cursor-pointer"></i>',
+                "last": '<i class="fa-solid fa-angles-right text-gray-300 text-hover-primary cursor-pointer"></i>',
+            }
+        },
+        "dom": "<'row'" +
+            "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+            "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+            ">" +
+
+            "<'table-responsive'tr>" +
+
+            "<'row'" +
+            "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+            "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+            ">",
+    };
+
+    // Gera tabela
+    table.DataTable(dataTableOptions);
+
+    // // Ajusta o tooltip ao atualizar tabela
+    // table.on('xhr.dt', function (e, settings, json) {
+    //     $('body').tooltip({
+    //         selector: '[data-bs-toggle="tooltip"]',
+    //         html: true,
+    //     });
+    // });
+
+    // // Filtrar dados
+    // $('#section-bussiness input, #section-bussiness select').on('change', function() {
+    //     table.DataTable().ajax.reload();
+    // });
+
+    // // Filtrar dados
+    // $('#filtrar').on('click', function() {
+    //     table.DataTable().ajax.reload();
+    // });
+</script>
 @endsection

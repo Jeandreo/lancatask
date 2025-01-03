@@ -53,7 +53,8 @@ Route::middleware(['auth'])->group(function () {
     // TASKS
     Route::prefix('tarefas')->group(function () {
         Route::name('tasks.')->group(function () {
-            Route::GET('/', [TaskController::class, 'index'])->name('index');
+            Route::get('/', [TaskController::class, 'index'])->name('index');
+            Route::get('/processar', [TaskController::class, 'processing'])->name('processing');
             Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
             Route::get('/visualizando/{id}', [TaskController::class, 'show'])->name('show');
             Route::get('/visualizando-lista/{id}', [TaskController::class, 'showOne'])->name('show.one');

@@ -56,3 +56,11 @@ function findImage($pathAndFile, $default = 'user')
 
     return $url;
 }
+
+// CONVERT DATA PT TO US
+if (! function_exists('convertDateFormat')) {
+    function convertDateFormat($date){
+        $dateObj = DateTime::createFromFormat('d/m/Y', $date);
+        return $dateObj->format('Y-m-d');
+    }
+}
