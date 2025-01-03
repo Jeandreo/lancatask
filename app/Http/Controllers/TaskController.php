@@ -37,10 +37,16 @@ class TaskController extends Controller
 
         // GET ALL DATA
         $contents = $this->repository->orderBy('id', 'ASC')->get();
+        $projects = Project::where('status', 1)->get();
+        $modules = Module::where('status', 1)->get();
+        $status = Status::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.index')->with([
             'contents' => $contents,
+            'projects' => $projects,
+            'modules' => $modules,
+            'status' => $status,
         ]);
 
     }
@@ -59,6 +65,7 @@ class TaskController extends Controller
         // Inicia consulta
         $query = DB::table('tasks')
         ->leftJoin('modules', 'tasks.module_id', '=', 'modules.id')
+        ->leftJoin('statuses', 'tasks.status_id', '=', 'statuses.id')
         ->leftJoin('projects', 'modules.project_id', '=', 'projects.id');
 
         // SEARCH BY
@@ -95,7 +102,7 @@ class TaskController extends Controller
                     $column = 'modules.name';
                     break;
                 case 'status':
-                    $column = 'tasks.status';
+                    $column = 'statuses.name';
                     break;
                 default:
                     $column = 'tasks.id';
@@ -103,6 +110,20 @@ class TaskController extends Controller
             }
             $query->orderBy($column, $direction);
 
+        }
+        
+        // Filtra Status
+        if (isset($data['projects'])) {
+            $query->whereIn('modules.project_id', $data['projects']);
+        }
+
+        // Filtra Status
+        if(isset($data['modules'])){
+            $query->whereIn('module_id', $data['modules']);
+        }
+        // Filtra Status
+        if(isset($data['status'])){
+            $query->whereIn('status_id', $data['status']);
         }
 
         // Se quiser filtrar por data de registro
@@ -116,61 +137,8 @@ class TaskController extends Controller
             $dateFormated[1] = convertDateFormat($dates[1]);
 
             // Incluí na consulta
-            $query->whereBetween('crm_businesses.created_at', $dateFormated);
+            $query->whereBetween('tasks.date_start', $dateFormated);
 
-        }
-
-        // Se quiser filtrar por data de atualização
-        if(isset($data['agenda'])){
-
-            // Extrai a data
-            $dates = explode(" - ", $data['agenda']);
-
-            // Formata
-            $dateFormated[0] = convertDateFormat($dates[0]);
-            $dateFormated[1] = convertDateFormat($dates[1]);
-
-            // Incluí na consulta
-            $query->whereBetween(DB::raw('IFNULL(latest_agenda.last_agenda_date, "0000-00-00")'), $dateFormated);
-
-        }
-
-        // Se quiser filtrar por data de atualização
-        if(isset($data['millestones'])){
-            $query->join('crm_historics', 'crm_businesses.id', '=', 'crm_historics.business_id')
-                ->where('crm_historics.type', 'marco')
-                ->whereIn('key_id', $data['millestones'])
-                ->groupBy('crm_businesses.id');
-        }
-
-        // Filtra Status
-        if(isset($data['stages'])){
-            $query->whereIn('stage_id', $data['stages']);
-        }
-
-        // Filtra Status
-        if(isset($data['funnels'])){
-            $query->whereIn('crm_businesses.funnel_id', $data['funnels']);
-        }
-
-        // Filtra Status
-        if(isset($data['stores'])){
-            $query->whereIn('sgore_id', $data['stores']);
-        }
-
-        // Filtra Status
-        if(isset($data['campaigns'])){
-            $query->whereIn('campaign_id', $data['campaigns']);
-        }
-
-        // Filtra Status
-        if(isset($data['sellers'])){
-            $query->whereIn('user_id', $data['sellers']);
-        }
-
-        // Filtra Status
-        if(isset($data['origins'])){
-            $query->whereIn('origin_id', $data['origins']);
         }
 
         // Add the necessary columns to the GROUP BY clause
@@ -181,7 +149,8 @@ class TaskController extends Controller
             'tasks.checked',
             'tasks.status',
             'modules.name',
-            'projects.name'
+            'projects.name',
+            'statuses.name',
         );
 
         // COUNT TOTAL RECORDS
@@ -199,6 +168,7 @@ class TaskController extends Controller
             'tasks.status as status',
             'modules.name as module_name',
             'projects.name as project_name',
+            'statuses.name as status_name',
         );
 
         return DataTables::of($query)
@@ -239,12 +209,7 @@ class TaskController extends Controller
                 return $row->module_name;
             })
             ->addColumn('status', function ($row) {
-                if ($row->status == true){
-                    $html = '<span class="badge badge-light-success">Ativo</span>';
-                } else {
-                    $html = '<span class="badge badge-light-danger">Inativo</span>';
-                }
-                return $html;
+                return $row->status_name;
             })
             ->addColumn('actions', function ($row) {
                 if ($row->status == 1){

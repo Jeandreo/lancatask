@@ -14,13 +14,13 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-        // // // Percorre todos os módulos e cria entre 2 e 5 tarefas para cada um
-        // // Module::all()->each(function ($module) {
-        // //     $taskCount = rand(2, 5); // Número aleatório de tarefas (2 a 5)
+        // Percorre todos os módulos e cria entre 2 e 5 tarefas para cada um
+        Module::all()->each(function ($module) {
+            $taskCount = rand(2, 5); // Número aleatório de tarefas (2 a 5)
 
-        // //     Task::factory()->count($taskCount)->create([
-        // //         'module_id' => $module->id, // Associar a tarefa ao módulo atual
-        // //     ]);
-        // // });
+            Task::factory()->count($taskCount)->create([
+                'module_id' => $module->id, // Associar a tarefa ao módulo atual
+            ]);
+        });
     }
 }

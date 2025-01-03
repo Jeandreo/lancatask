@@ -340,3 +340,81 @@ $(document).ready(function() {
     select2Images();
     generateFlatpickr();
 });
+
+
+function loadFlatpickrRange(selector = '.flatpickr-ranges', startAndEnd = 'default', onChange = false) {
+
+    $(selector).on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        if(onChange == true){
+            flatpickrRangeFunction();
+        }
+
+    });
+
+    $(selector).on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
+    // Definir as datas de início e fim com base no parâmetro startAndEnd
+    let startDate = null;
+    let endDate = null;
+
+    if (startAndEnd === 'month' || startAndEnd === 'default') {
+        startDate = moment().startOf('month');
+        endDate = moment().endOf('month');
+    } else if (startAndEnd === 'week') {
+        startDate = moment().startOf('week');
+        endDate = moment().endOf('week');
+    }
+
+    // Inicializar o daterangepicker com as datas configuradas, se houver
+    $(selector).daterangepicker({
+        autoUpdateInput: false,
+        startDate: startDate,
+        endDate: endDate,
+        ranges: {
+            "Hoje": [moment(), moment()],
+            "Últimos 7 Dias": [moment().subtract(6, "days"), moment()],
+            "Mês passado": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")],
+            "Este mês": [moment().startOf("month"), moment().endOf("month")],
+            "Próximo mês": [moment().startOf("month").add(1, 'months'), moment().endOf("month").add(1, 'months')],
+            "Este ano": [moment().startOf('year'), moment().endOf('year')],
+        },
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "de",
+            "toLabel": "até",
+            "customRangeLabel": "Personalizado",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sáb"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro",
+            ],
+            "firstDay": 0
+        },
+    });
+}
+
+loadFlatpickrRange();
