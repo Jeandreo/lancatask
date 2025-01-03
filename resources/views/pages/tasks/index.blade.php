@@ -42,49 +42,41 @@
             data: "id",
             className: 'id',
             orderable: true,
-            searchable: false
         },
         {
             data: "name",
             className: 'name',
             orderable: true,
-            searchable: true
         },
         {
             data: "when",
             className: 'when',
             orderable: true,
-            searchable: true
         },
         {
             data: "checked",
             className: 'checked',
             orderable: true,
-            searchable: false
         },
         {
             data: "project",
             className: 'project',
             orderable: true,
-            searchable: false
         },
         {
             data: "module",
             className: 'module',
             orderable: true,
-            searchable: false
         },
         {
             data: "status",
             className: 'status',
             orderable: true,
-            searchable: false
         },
         {
             data: "actions",
             className: 'actions',
-            orderable: true,
-            searchable: false
+            orderable: false,
         },
     ];
 

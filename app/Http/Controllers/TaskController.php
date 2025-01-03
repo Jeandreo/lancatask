@@ -58,122 +58,120 @@ class TaskController extends Controller
 
         // Inicia consulta
         $query = DB::table('tasks')
-        ->leftJoin('modules', 'tasks.module_id', '=', 'modules.id');
+        ->leftJoin('modules', 'tasks.module_id', '=', 'modules.id')
+        ->leftJoin('projects', 'modules.project_id', '=', 'projects.id');
 
-        // // SEARCH BY
-        // if ($data['searchBy'] != '') {
-        //         // Continuar buscando por usuários, fornecedores ou clientes
-        //         $query->orWhere('crm_businesses.name', 'like', "%{$data['searchBy']}%")
-        //                 ->orWhere('users.name', 'like', "%{$data['searchBy']}%")
-        //                 ->orWhere('clients.name', 'like', "%{$data['searchBy']}%");
-        // }
+        // SEARCH BY
+        if ($data['searchBy'] != '') {
+                $query->where('tasks.name', 'like', "%{$data['searchBy']}%");
+        }
 
-        // // Ordena
-        // if ($data['order']) {
+        // Ordena
+        if ($data['order']) {
 
-        //     // ORDER & COLUMN
-        //     $direction = $request->order[0]['dir'];
-        //     $orderThis = $request->order_by;
-        //     $column = $orderThis;
+            // ORDER & COLUMN
+            $direction = $request->order[0]['dir'];
+            $orderThis = $request->order_by;
+            $column = $orderThis;
 
-        //     // FORMATA COLUNAS
-        //     switch ($column) {
-        //         case 'agenda':
-        //             $column = DB::raw('IFNULL(latest_agenda.last_agenda_date, "0000-00-00")');
-        //             break;
-        //         case 'name':
-        //             $column = 'crm_businesses.name';
-        //             break;
-        //         case 'value':
-        //             $column = 'crm_businesses.predicted_value';
-        //             break;
-        //         case 'is_client':
-        //             $column = 'clients.is_client';
-        //             break;
-        //         case 'user':
-        //             $column = 'users.name';
-        //             break;
-        //         case 'funnel':
-        //             $column = 'crm_funnels.name';
-        //             break;
-        //         case 'stage':
-        //             $column = 'crm_stages.name';
-        //             break;
-        //         default:
-        //             $column = 'crm_businesses.id';
-        //             break;
-        //     }
-        //     $query->orderBy($column, $direction);
+            // FORMATA COLUNAS
+            switch ($column) {
+                case 'id':
+                    $column = 'tasks.id';
+                    break;
+                case 'name':
+                    $column = 'tasks.name';
+                    break;
+                case 'when':
+                    $column = 'tasks.date_start';
+                    break;
+                case 'checked':
+                    $column = 'tasks.checked';
+                    break;
+                case 'project':
+                    $column = 'projects.name';
+                    break;
+                case 'module':
+                    $column = 'modules.name';
+                    break;
+                case 'status':
+                    $column = 'tasks.status';
+                    break;
+                default:
+                    $column = 'tasks.id';
+                    break;
+            }
+            $query->orderBy($column, $direction);
 
-        // }
+        }
 
-        // // Se quiser filtrar por data de registro
-        // if(isset($data['register'])){
+        // Se quiser filtrar por data de registro
+        if(isset($data['register'])){
 
-        //     // Extrai a data
-        //     $dates = explode(" - ", $data['register']);
+            // Extrai a data
+            $dates = explode(" - ", $data['register']);
 
-        //     // Formata
-        //     $dateFormated[0] = convertDateFormat($dates[0]);
-        //     $dateFormated[1] = convertDateFormat($dates[1]);
+            // Formata
+            $dateFormated[0] = convertDateFormat($dates[0]);
+            $dateFormated[1] = convertDateFormat($dates[1]);
 
-        //     // Incluí na consulta
-        //     $query->whereBetween('crm_businesses.created_at', $dateFormated);
+            // Incluí na consulta
+            $query->whereBetween('crm_businesses.created_at', $dateFormated);
 
-        // }
+        }
 
-        // // Se quiser filtrar por data de atualização
-        // if(isset($data['agenda'])){
+        // Se quiser filtrar por data de atualização
+        if(isset($data['agenda'])){
 
-        //     // Extrai a data
-        //     $dates = explode(" - ", $data['agenda']);
+            // Extrai a data
+            $dates = explode(" - ", $data['agenda']);
 
-        //     // Formata
-        //     $dateFormated[0] = convertDateFormat($dates[0]);
-        //     $dateFormated[1] = convertDateFormat($dates[1]);
+            // Formata
+            $dateFormated[0] = convertDateFormat($dates[0]);
+            $dateFormated[1] = convertDateFormat($dates[1]);
 
-        //     // Incluí na consulta
-        //     $query->whereBetween(DB::raw('IFNULL(latest_agenda.last_agenda_date, "0000-00-00")'), $dateFormated);
+            // Incluí na consulta
+            $query->whereBetween(DB::raw('IFNULL(latest_agenda.last_agenda_date, "0000-00-00")'), $dateFormated);
 
-        // }
+        }
 
-        // // Se quiser filtrar por data de atualização
-        // if(isset($data['millestones'])){
-        //     $query->join('crm_historics', 'crm_businesses.id', '=', 'crm_historics.business_id')
-        //         ->where('crm_historics.type', 'marco')
-        //         ->whereIn('key_id', $data['millestones'])
-        //         ->groupBy('crm_businesses.id');
-        // }
+        // Se quiser filtrar por data de atualização
+        if(isset($data['millestones'])){
+            $query->join('crm_historics', 'crm_businesses.id', '=', 'crm_historics.business_id')
+                ->where('crm_historics.type', 'marco')
+                ->whereIn('key_id', $data['millestones'])
+                ->groupBy('crm_businesses.id');
+        }
 
-        // // Filtra Status
-        // if(isset($data['stages'])){
-        //     $query->whereIn('stage_id', $data['stages']);
-        // }
+        // Filtra Status
+        if(isset($data['stages'])){
+            $query->whereIn('stage_id', $data['stages']);
+        }
 
-        // // Filtra Status
-        // if(isset($data['funnels'])){
-        //     $query->whereIn('crm_businesses.funnel_id', $data['funnels']);
-        // }
+        // Filtra Status
+        if(isset($data['funnels'])){
+            $query->whereIn('crm_businesses.funnel_id', $data['funnels']);
+        }
 
-        // // Filtra Status
-        // if(isset($data['stores'])){
-        //     $query->whereIn('sgore_id', $data['stores']);
-        // }
+        // Filtra Status
+        if(isset($data['stores'])){
+            $query->whereIn('sgore_id', $data['stores']);
+        }
 
-        // // Filtra Status
-        // if(isset($data['campaigns'])){
-        //     $query->whereIn('campaign_id', $data['campaigns']);
-        // }
+        // Filtra Status
+        if(isset($data['campaigns'])){
+            $query->whereIn('campaign_id', $data['campaigns']);
+        }
 
-        // // Filtra Status
-        // if(isset($data['sellers'])){
-        //     $query->whereIn('user_id', $data['sellers']);
-        // }
+        // Filtra Status
+        if(isset($data['sellers'])){
+            $query->whereIn('user_id', $data['sellers']);
+        }
 
-        // // Filtra Status
-        // if(isset($data['origins'])){
-        //     $query->whereIn('origin_id', $data['origins']);
-        // }
+        // Filtra Status
+        if(isset($data['origins'])){
+            $query->whereIn('origin_id', $data['origins']);
+        }
 
         // Add the necessary columns to the GROUP BY clause
         $query->groupBy(
@@ -183,6 +181,7 @@ class TaskController extends Controller
             'tasks.checked',
             'tasks.status',
             'modules.name',
+            'projects.name'
         );
 
         // COUNT TOTAL RECORDS
@@ -198,7 +197,8 @@ class TaskController extends Controller
             'tasks.date_start as date_start',
             'tasks.checked as checked',
             'tasks.status as status',
-            'modules.name as mname',
+            'modules.name as module_name',
+            'projects.name as project_name',
         );
 
         return DataTables::of($query)
@@ -233,13 +233,13 @@ class TaskController extends Controller
                 return $html;
             })
             ->addColumn('project', function ($row) {
-                return '';
+                return $row->project_name;
             })
             ->addColumn('module', function ($row) {
-                return $row->mname;
+                return $row->module_name;
             })
             ->addColumn('status', function ($row) {
-                if ($row->checked == true){
+                if ($row->status == true){
                     $html = '<span class="badge badge-light-success">Ativo</span>';
                 } else {
                     $html = '<span class="badge badge-light-danger">Inativo</span>';
