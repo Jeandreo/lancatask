@@ -105,8 +105,16 @@ class ProjectController extends Controller
         ]);
 
         Status::create([
-            'name' => 'A Fazer',
-            'color' => '#009ef7',
+            'name' => 'Não Iniciado',
+            'color' => '#7391B7',
+            'project_id' => $created->id,
+            'order' => 1,
+            'created_by' => 1,
+        ]);
+
+        Status::create([
+            'name' => 'Parado',
+            'color' => '#DE7687',
             'project_id' => $created->id,
             'order' => 1,
             'created_by' => 1,
@@ -114,15 +122,15 @@ class ProjectController extends Controller
 
         Status::create([
             'name' => 'Em andamento',
-            'color' => '#79bc17',
+            'color' => '#F4CE7A',
             'project_id' => $created->id,
             'order' => 1,
             'created_by' => 1,
         ]);
 
         Status::create([
-            'name' => 'Concluído',
-            'color' => '#282c43',
+            'name' => 'Feito',
+            'color' => '#3BDFA5',
             'project_id' => $created->id,
             'order' => 1,
             'created_by' => 1,
