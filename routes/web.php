@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [ProjectController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [ProjectController::class, 'update'])->name('update');
             Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
+            Route::get('/duplicar/{id}', [ProjectController::class, 'duplicate'])->name('duplicate');
+            Route::get('/excluir/{id}', [ProjectController::class, 'delete'])->name('delete');
         });
     });
 

@@ -1,9 +1,9 @@
-<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-45px task-list task-on-subtask" data-task="{{ $task->id }}">
+<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask" data-task="{{ $task->id }}">
     <div class="d-flex align-items-center justify-content-between w-100 h-100">
         <div class="d-flex align-items-center h-100 w-100">
             <div style="background: {{ $task->checked == false ? $task->module->color : '#d5d5d5' }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons task-module-{{ $task->module_id }}">
-                <div class="form-check form-check-custom form-check-solid py-2 ps-4 me-5">
-                    <input class="form-check-input w-20px h-20px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
+                <div class="form-check form-check-custom form-check-solid py-2 ps-5 me-5">
+                    <input class="form-check-input w-15px h-15px cursor-pointer check-task task-main" data-task="{{ $task->id }}" type="checkbox" value="1" style="border-radius: 3px" @if($task->checked == true) checked @endif/>
                     <span class="show-task" data-task="{{ !$task->task_id ? $task->id : $task->task_id }}">
                         <i class="fa-solid fa-eye p-1 fs-5 text-white ms-5 cursor-pointer zoom-hover zoom-hover-03"></i>
                     </span>
@@ -14,7 +14,7 @@
             </div>
             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
-                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-5" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">{{ $task->name }}</p>
+                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-3" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">{{ $task->name }}</p>
                 </div>
             </div>
         </div>

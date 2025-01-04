@@ -56,6 +56,9 @@
                                     <a href="{{ route('projects.edit', $content->id) }}">
                                         <i class="fas fa-edit" title="Editar"></i>
                                     </a>
+                                    <a href="{{ route('projects.duplicate', $content->id) }}">
+                                        <i class="fa-solid fa-copy" title="Copiar"></i>
+                                    </a>
                                     @if ($content->status == 1)
                                         <a href="{{ route('projects.destroy', $content->id) }}">
                                             <i class="fas fa-times-circle" title="Desativar"></i>
@@ -65,6 +68,9 @@
                                             <i class="fas fa-redo" title="Reativar"></i>
                                         </a>
                                     @endif
+                                    <a href="#" onclick="confirmDelete('{{ route('projects.delete', $content->id) }}')">
+                                        <i class="fas fa-trash-alt" title="Apagar permanentemente"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -78,4 +84,12 @@
             <label class="btn btn-primary btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>
+
+    <script>
+        function confirmDelete(url) {
+            if (confirm("Tem certeza de que deseja apagar este projeto permanentemente?")) {
+                window.location.href = url;
+            }
+        }
+    </script>
 @endsection
