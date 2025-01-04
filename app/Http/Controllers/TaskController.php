@@ -111,7 +111,7 @@ class TaskController extends Controller
             $query->orderBy($column, $direction);
 
         }
-        
+
         // Filtra Status
         if (isset($data['projects'])) {
             $query->whereIn('modules.project_id', $data['projects']);
@@ -149,8 +149,10 @@ class TaskController extends Controller
             'tasks.checked',
             'tasks.status',
             'modules.name',
+            'modules.color',
             'projects.name',
             'statuses.name',
+            'statuses.color',
         );
 
         // COUNT TOTAL RECORDS
@@ -167,20 +169,22 @@ class TaskController extends Controller
             'tasks.checked as checked',
             'tasks.status as status',
             'modules.name as module_name',
+            'modules.color as module_color',
             'projects.name as project_name',
             'statuses.name as status_name',
+            'statuses.color as status_color',
         );
 
         return DataTables::of($query)
             ->addColumn('id', function ($row) {
-                $html = 
+                $html =
                 '<span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="' . $row->id .  '">
                     ' . $row->id .  '
                 </span>';
                 return $html;
             })
             ->addColumn('name', function ($row) {
-                $html = 
+                $html =
                 '<span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="' . $row->id .  '">
                     ' . $row->name .  '
                 </span>';
@@ -203,13 +207,13 @@ class TaskController extends Controller
                 return $html;
             })
             ->addColumn('project', function ($row) {
-                return $row->project_name;
+                return '<span class="fw-bold text-gray-700">'.$row->project_name.'</span>';
             })
             ->addColumn('module', function ($row) {
-                return $row->module_name;
+                return '<span class="badge" style="background: '.hex2rgb($row->module_color, 5).'; color: '.$row->module_color.'">'.$row->module_name.'</span>';
             })
             ->addColumn('status', function ($row) {
-                return $row->status_name;
+                return '<span class="badge" style="background: '.hex2rgb($row->status_color, 12).'; color: '.$row->status_color.'">'.$row->status_name.'</span>';
             })
             ->addColumn('actions', function ($row) {
                 if ($row->status == 1){

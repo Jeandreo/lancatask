@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Module;
 use App\Models\Project;
 use App\Models\Status;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -148,6 +149,60 @@ class ModuleController extends Controller
             // REDIRECT AND MESSAGES
             return response()->json();
         }
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request, $id)
+    {
+        // GET ALL DATA
+        $content = Project::find($id);
+
+        // Obtém dados
+        $data = $request->all();
+
+        // VERIFY IF EXISTS
+        if(!$content) return redirect()->back();
+
+        // Obtém módulos
+        $modules = $content->modules;
+
+        // Busca tarefas
+        $newModules = [];
+
+        // Loop
+        foreach ($modules as $module) {
+
+            // Busca tarefas
+            $tasks = Task::where('module_id', $module->id)->where('status', 1);
+
+            // Filtra pelo nome
+            if($data['name']){
+                $tasks = $tasks->where('name', 'LIKE', '%' . $data['name'] . '%');
+            }
+
+            // Filtra status
+            if(isset($data['status'])){
+                $tasks = $tasks->whereIn('status_id', $data['status']);
+            }
+
+            // Ordena
+            $tasks = $tasks->orderBy('order', 'ASC')->orderBy('updated_at', 'DESC')->get();
+
+            // Modulo e tareafas
+            $taskSection['id']   = $module->id;
+            $taskSection['html'] = view('pages.projects._module_zone')->with([
+                'tasks' => $tasks,
+            ])->render();
+            $newModules[] = $taskSection;
+        }
+
+        return $newModules;
 
     }
 }

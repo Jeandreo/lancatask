@@ -8,6 +8,7 @@ use App\Models\ProjectType;
 use App\Models\ProjectUser;
 use App\Models\Status;
 use App\Models\Task;
+use App\Models\TaskParticipant;
 use App\Models\User;
 use App\Models\UserPosition;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -269,6 +270,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Task::factory(30)->create();
+
+        $tasksCount = Task::count();
+
+        for ($i=1; $i <= $tasksCount; $i++) {
+            TaskParticipant::create([
+                'user_id' => rand(1, 2),
+                'task_id' => $i,
+            ]);
+        }
 
     }
 }

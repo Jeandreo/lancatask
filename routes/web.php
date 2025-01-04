@@ -87,6 +87,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
             Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
+            Route::get('/carregar/{id}', [ModuleController::class, 'filter'])->name('filter');
         });
     });
 

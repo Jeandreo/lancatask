@@ -10,10 +10,10 @@
 <div class="card mb-4" id="section-filters">
     <div class="card-body">
         <div class="row">
-            <div class="col mb-5">
+            <div class="col mb-5 mb-md-0">
                 <input class="form-control form-control-solid cursor-pointer text-center flatpickr-ranges" readonly placeholder="Data da tarefa" id="register"/>
             </div>
-            <div class="col mb-5">
+            <div class="col mb-5 mb-md-0">
                 <select class="form-select form-select-solid" data-control="select2" data-placeholder="Filtrar projetos" name="projects[]" multiple id="projects">
                     <option value=""></option>
                     @foreach ($projects as $project)
@@ -21,7 +21,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col mb-5">
+            <div class="col mb-5 mb-md-0">
                 <select class="form-select form-select-solid" data-control="select2" data-placeholder="Filtrar módulo" name="modules[]" multiple id="modules">
                     <option value=""></option>
                     @foreach ($modules as $module)
@@ -29,7 +29,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col mb-5">
+            <div class="col mb-5 mb-md-0">
                 <select class="form-select form-select-solid" data-control="select2" data-placeholder="Status" name="status[]" multiple id="status">
                     <option value=""></option>
                     @foreach ($status as $statu)
@@ -37,12 +37,9 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col mb-5">
+            <div class="col-1 mb-5 mb-md-0">
                 <div class="d-flex justify-content-between">
-                    <div>
-                        <input type="button" class="btn btn-primary btn-active-danger" value="Filtrar" id="filtrar"></input>
-                        <button type="reset" class="btn btn-light text-muted">Limpar filtros</button>
-                    </div>
+                    <input type="button" class="btn btn-primary btn-active-danger w-100" value="Filtrar" id="filtrar"></input>
                 </div>
             </div>
         </div>

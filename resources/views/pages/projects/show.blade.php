@@ -7,6 +7,26 @@
 @endsection
 
 @section('content')
+<div class="card mb-4" id="section-filters">
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <input class="form-control form-control-solid" placeholder="Nome da tarefa" id="name"/>
+            </div>
+            <div class="col">
+                <select class="form-select form-select-solid cursor-pointer" data-control="select2" data-placeholder="Status" name="status[]" multiple id="status">
+                    <option value=""></option>
+                    @foreach ($project->statuses as $statu)
+                        <option value="{{ $statu->id }}">{{ $statu->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-1">
+                <input type="button" class="btn btn-primary btn-active-danger me-4 w-100" value="Filtrar" id="filtrar"></input>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modules">
     @if ($project->modules()->where('status', true)->count())
         @foreach ($project->modules()->where('status', true)->get() as $module)
@@ -110,6 +130,47 @@
 
 	}
 	draggable();
+
+    // SHOW TASK
+    $(document).on('click', '#filtrar', function(e){
+        filterModules();
+    });
+
+
+    // Filtrar dados
+    $('#section-filters input, #section-filters select').on('change', function() {
+        filterModules();
+    });
+
+    // Obtém tarefas dos módulos
+    filterModules();
+
+    // Filtra módulos
+    function filterModules(){
+
+        // Projeto
+        var projectId = "{{ $project->id }}";
+
+        // AJAX
+        $.ajax({
+            type:'GET',
+            url: "{{ route('modules.filter', '') }}/" + projectId,
+            data: {
+                name: $('#name').val(),
+                status: $('#status').val(),
+            },
+            success:function(data) {
+                data.forEach(element => {
+                    $('#project-tasks-' + element.id).html(element.html);
+                    generateFlatpickr();
+                    KTMenu.createInstances();
+                });
+            }
+        });
+
+    }
+
+
 </script>
 @include('pages.tasks._javascript')
 @endsection

@@ -88,10 +88,10 @@
                         </div>
                      </div>
                      @if (Auth::user()->groupProjects()->count())
-                     <div class="p-2" style="">
+                     <div class="p-2 rounded" style="background: rgba(0, 0, 0, 0.164)">
                         @foreach (Auth::user()->groupProjects() as $group => $projects)
                         <div class="menu-item opacity-1">
-                            <div class="menu-content pb-2 pe-0 d-flex justify-content-between align-items-center">
+                            <div class="menu-content pb-2 pt-2 pe-0 d-flex justify-content-between align-items-center">
                                 <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">{{ $group }}</span>
                                 <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
                                     +

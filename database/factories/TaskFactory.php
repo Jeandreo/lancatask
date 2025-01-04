@@ -72,10 +72,19 @@ class TaskFactory extends Factory
             'Criar cronograma de publicação de conteúdos',
         ];
 
+        $date = fake()->dateTimeBetween('-1 week', '+1 month');
+
+        if(rand(true, false)){
+            $dateEnd = $date;
+        } else {
+            $dateEnd = fake()->dateTimeBetween('1 week', '+1 month');
+        }
+
         return [
             'module_id' => Module::inRandomOrder()->first()->id,
             'status_id' => 1,
-            'date_start' => fake()->dateTimeBetween('-1 week', '+1 month'),
+            'date_start' => $date,
+            'date_end' => $dateEnd,
             'name' => $tasks[array_rand($tasks)],
             'description' => fake()->paragraph,
             'created_by' => 1,
