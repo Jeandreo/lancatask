@@ -88,7 +88,7 @@
                         </div>
                      </div>
                      @if (Auth::user()->groupProjects()->count())
-                     <div class="p-2 rounded" style="background: rgba(0, 0, 0, 0.164)">
+                     <div class="p-2 rounded" style="background: rgba(0, 0, 0, 0.2)">
                         @foreach (Auth::user()->groupProjects() as $group => $projects)
                         <div class="menu-item opacity-1">
                             <div class="menu-content pb-2 pt-2 pe-0 d-flex justify-content-between align-items-center">

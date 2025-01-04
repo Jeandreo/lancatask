@@ -25,7 +25,7 @@
                 <select class="form-select form-select-solid" data-control="select2" data-placeholder="Filtrar módulo" name="modules[]" multiple id="modules">
                     <option value=""></option>
                     @foreach ($modules as $module)
-                        <option value="{{ $module->id }}">{{ $module->name }}</option>
+                        <option value="{{ $module['values'] }}">{{ $module['name'] }}</option>
                     @endforeach
                 </select>
             </div>
@@ -33,7 +33,7 @@
                 <select class="form-select form-select-solid" data-control="select2" data-placeholder="Status" name="status[]" multiple id="status">
                     <option value=""></option>
                     @foreach ($status as $statu)
-                        <option value="{{ $statu->id }}">{{ $statu->name }}</option>
+                        <option value="{{ $statu['values'] }}">{{ $statu['name'] }}</option>
                     @endforeach
                 </select>
             </div>

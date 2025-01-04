@@ -38,15 +38,29 @@ class TaskController extends Controller
         // GET ALL DATA
         $contents = $this->repository->orderBy('id', 'ASC')->get();
         $projects = Project::where('status', 1)->get();
-        $modules = Module::where('status', 1)->get();
-        $status = Status::where('status', 1)->get();
+        $modules = Module::where('status', 1)->get()->groupBy('name');
+        $status = Status::where('status', 1)->get()->groupBy('name');
+
+        $modulesFormated = [];
+        foreach ($modules as $key => $value) {
+            $newModule['name'] = $key;
+            $newModule['values'] = implode(',', $value->pluck('id')->toArray());
+            $modulesFormated[] = $newModule;
+        }
+
+        $statusFormated = [];
+        foreach ($status as $key => $value) {
+            $newStatus['name'] = $key;
+            $newStatus['values'] = implode(',', $value->pluck('id')->toArray());
+            $statusFormated[] = $newStatus;
+        }
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks.index')->with([
             'contents' => $contents,
             'projects' => $projects,
-            'modules' => $modules,
-            'status' => $status,
+            'modules' => $modulesFormated,
+            'status' => $statusFormated,
         ]);
 
     }
@@ -146,6 +160,7 @@ class TaskController extends Controller
             'tasks.id',
             'tasks.name',
             'tasks.date_start',
+            'tasks.date_end',
             'tasks.checked',
             'tasks.status',
             'modules.name',
@@ -166,6 +181,7 @@ class TaskController extends Controller
             'tasks.id as id',
             'tasks.name as name',
             'tasks.date_start as date_start',
+            'tasks.date_end as date_end',
             'tasks.checked as checked',
             'tasks.status as status',
             'modules.name as module_name',
@@ -191,10 +207,10 @@ class TaskController extends Controller
                 return $html;
             })
             ->addColumn('when', function ($row) {
-                if ($row->date_start){
+                if ($row->date_start == $row->date_end){
                     $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) .  '</span>';
                 } else {
-                    $html = '<span class="badge badge-light">Sem data</span>';
+                    $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) . ' até ' . date('d/m/Y', strtotime($row->date_end)) .  '</span>';
                 }
                 return $html;
             })
