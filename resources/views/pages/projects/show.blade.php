@@ -2,10 +2,6 @@
 
 @section('Page Title', $project->name)
 
-@section('custom-head')
-<script src="{{ asset('assets/plugins/custom/draggable/draggable.bundle.js') }}"></script>
-@endsection
-
 @section('content')
 <div class="card mb-4" id="section-filters">
     <div class="card-body">
@@ -51,6 +47,7 @@
 @endsection
 
 @section('custom-footer')
+@parent
 <script>
 	// PROJECT ID
 	var projectId = {{ $contents->id ?? 0 }};

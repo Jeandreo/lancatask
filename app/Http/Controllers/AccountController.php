@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserPreferrence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -94,6 +95,35 @@ class AccountController extends Controller
         $openOrClose = $content->sidebar == true ? false : true;
         $content->sidebar = $openOrClose;
         $content->save();
+
+        // RETURN
+        return response()->json('Success', 200);
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function sidebarOrder(Request $request, $type)
+    {
+
+        // Obtém dados
+        $data = $request->all();
+
+        // Limpa as preferencias atuais
+        UserPreferrence::where('type', $type)->delete();
+
+        // Cria as preferencias do usuário
+        foreach ($data['list'] as $value) {
+            UserPreferrence::create([
+                'type' => $type,
+                'value' => $value,
+                'created_by' => Auth::id(),
+            ]);
+        }
 
         // RETURN
         return response()->json('Success', 200);

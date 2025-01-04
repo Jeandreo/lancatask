@@ -69,23 +69,55 @@ class User extends Authenticatable
         return $this->belongsToMany(Task::class, 'tasks_participants');
     }
 
+    public function preferences()
+    {
+        return $this->hasMany(UserPreferrence::class, 'created_by');
+    }
+
     public function groupProjects()
     {
         // Obtém os IDs dos projetos que o usuário está associado
         $projectsIds = ProjectUser::where('user_id', Auth::id())->pluck('project_id')->toArray();
 
-        // Obtém os projetos ativos com os tipos carregados
+        // Busca ordem que o usuário deseja para os grupos
+        $orderGroupSidebar = $this->preferences()
+            ->where('type', 'sidebarGroupOrder')
+            ->get()
+            ->pluck('value')
+            ->toArray();
+
+        // Busca ordem que o usuário deseja para os projetos
+        $orderProjectSidebar = $this->preferences()
+            ->where('type', 'sidebarProjectsOrder')
+            ->get()
+            ->pluck('value')
+            ->toArray();
+
+        // Obtém os projetos e ordena primeiro pelos grupos e depois pelos projetos
         $projects = Project::whereIn('id', $projectsIds)
             ->where('status', true)
-            ->with('type') // Carrega a relação de tipo
-            ->get();
+            ->with('type')
+            ->get()
+            ->sortBy(function ($project) use ($orderGroupSidebar, $orderProjectSidebar) {
+                // Ordena primeiro pelos grupos e depois pelos projetos
+                $groupOrder = array_search($project->type_id, $orderGroupSidebar);
+                $projectOrder = array_search($project->id, $orderProjectSidebar);
 
-        // Agrupa os projetos pelo nome do tipo
+                return [$groupOrder, $projectOrder];
+            });
+
+        // Agrupa os projetos pelo nome do tipo e estrutura como [id => ['name', 'items']]
         $groupedProjects = $projects->groupBy(function ($project) {
-            return $project->type->name;
+            return $project->type->id; // Agrupa pelo ID do tipo
+        })->map(function ($items, $id) {
+            return [
+                'name' => $items->first()->type->name, // Nome do tipo
+                'items' => $items // Projetos pertencentes ao tipo
+            ];
         });
 
         return $groupedProjects;
     }
+
 
 }

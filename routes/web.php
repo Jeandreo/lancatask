@@ -130,6 +130,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [AccountController::class, 'index'])->name('index');
             Route::put('/', [AccountController::class, 'update'])->name('update');
             Route::put('/barra-lateral', [AccountController::class, 'sidebar'])->name('sidebar');
+            Route::put('/barra-lateral-ordem/{type}', [AccountController::class, 'sidebarOrder'])->name('sidebar.order');
             Route::put('/sons', [AccountController::class, 'sounds'])->name('sounds');
         });
     });

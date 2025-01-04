@@ -84,5 +84,6 @@
 @endsection
 
 @section('custom-footer')
-@include('pages.tasks._javascript')
+    @parent
+    @include('pages.tasks._javascript')
 @endsection

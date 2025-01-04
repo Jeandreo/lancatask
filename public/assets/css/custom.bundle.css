@@ -236,6 +236,10 @@ p:last-child {
     width: 250px;
 }
 
+.draggable-projects-zone > .menu-accordion:last-child .separator {
+    display: none;
+}
+
 .ck-tiny .ck-editor__top {
     display: none;
 }
