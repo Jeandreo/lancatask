@@ -10,6 +10,7 @@
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
                         <th>Tipo</th>
+                        <th>Grupo</th>
                         <th>Time</th>
                         <th>Tarefas</th>
                         <th>Status</th>
@@ -24,6 +25,17 @@
                                    class="text-gray-700 fw-bold text-hover-primary fs-6">
                                     {{ $content->name }}
                                 </a>
+                            </td>
+                            <td>
+                                @if ($content->type_is == 'time')
+                                <span class="badge badge-light-primary">
+                                    Time
+                                </span>
+                                @else
+                                <span class="badge badge-light-primary">
+                                    Pessoal
+                                </span>
+                                @endif
                             </td>
                             <td>
                                 <span class="badge badge-light-primary">

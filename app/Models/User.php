@@ -77,7 +77,7 @@ class User extends Authenticatable
     public function groupProjects()
     {
         // Obtém os IDs dos projetos que o usuário está associado
-        $projectsIds = ProjectUser::where('user_id', Auth::id())->pluck('project_id')->toArray();
+        $menuProjectsIds = ProjectUser::where('user_id', Auth::id())->pluck('project_id')->toArray();
 
         // Busca ordem que o usuário deseja para os grupos
         $orderGroupSidebar = $this->preferences()
@@ -94,21 +94,21 @@ class User extends Authenticatable
             ->toArray();
 
         // Obtém os projetos e ordena primeiro pelos grupos e depois pelos projetos
-        $projects = Project::whereIn('id', $projectsIds)
+        $menuProjects = Project::whereIn('id', $menuProjectsIds)
             ->where('status', true)
             ->with('type')
             ->get()
-            ->sortBy(function ($project) use ($orderGroupSidebar, $orderProjectSidebar) {
+            ->sortBy(function ($menuProject) use ($orderGroupSidebar, $orderProjectSidebar) {
                 // Ordena primeiro pelos grupos e depois pelos projetos
-                $groupOrder = array_search($project->type_id, $orderGroupSidebar);
-                $projectOrder = array_search($project->id, $orderProjectSidebar);
+                $groupOrder = array_search($menuProject->type_id, $orderGroupSidebar);
+                $menuProjectOrder = array_search($menuProject->id, $orderProjectSidebar);
 
-                return [$groupOrder, $projectOrder];
+                return [$groupOrder, $menuProjectOrder];
             });
 
         // Agrupa os projetos pelo nome do tipo e estrutura como [id => ['name', 'items']]
-        $groupedProjects = $projects->groupBy(function ($project) {
-            return $project->type->id; // Agrupa pelo ID do tipo
+        $groupedProjects = $menuProjects->groupBy(function ($menuProject) {
+            return $menuProject->type->id; // Agrupa pelo ID do tipo
         })->map(function ($items, $id) {
             return [
                 'name' => $items->first()->type->name, // Nome do tipo

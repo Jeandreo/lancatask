@@ -3,6 +3,14 @@
     var savedSidebar = localStorage.getItem('sidebarHTML');
     var url = localStorage.getItem('sidebarMenuActive');
 
+    // Verifica se a URL termina com '/projetos'
+    if (window.location.pathname.endsWith('/projetos')) {
+        // Limpa o cache da sidebar
+        localStorage.removeItem('sidebarHTML');
+        localStorage.removeItem('sidebarMenuActive');
+        return;
+    }
+
     // Restaura o HTML da barra lateral
     if (savedSidebar) {
         document.getElementById('kt_app_sidebar').innerHTML = savedSidebar;

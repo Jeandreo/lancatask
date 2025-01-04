@@ -94,8 +94,10 @@ class ProjectController extends Controller
         // SEND DATA
         $created = $this->repository->create($data);
 
-        // Sincroniza time
-        $created->users()->sync($data['team']);
+         // Sincroniza time
+         if($data['type_is'] == 'time'){
+            $created->users()->sync($data['team']);
+        }
 
         // Cria módulo inicial
         Module::create([
@@ -157,6 +159,12 @@ class ProjectController extends Controller
             return redirect()->route('projects.index');
         }
 
+        // Verifica se o usuário autenticado está no projeto
+        if (!$project->users->contains(Auth::user()) && $project->created_by != Auth::id()) {
+            // Redireciona para a página inicial ou exibe um erro
+            return redirect()->route('projects.index')->with('message', 'Você não tem permissão para acessar este projeto.');
+        }
+
         // GET USERS
         $users = User::where('status', 1)->get();
 
@@ -216,7 +224,11 @@ class ProjectController extends Controller
         $content->update($data);
 
         // Sincroniza time
-        $content->users()->sync($data['team']);
+        if($data['type_is'] == 'time'){
+            $content->users()->sync($data['team']);
+        } else {
+            $content->users()->sync(Auth::id());
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()

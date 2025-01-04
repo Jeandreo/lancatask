@@ -41,7 +41,12 @@
         <form action="#" method="POST" class="send-tasks">
             @csrf
             <input type="hidden" name="module_id" value="{{ $module->id }}">
-            <input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-5" placeholder="Inserir nova tarefa" required>
+            <div class="position-relative">
+                <input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-4" placeholder="Inserir nova tarefa" required>
+                <button class="btn btn-sm btn-icon btn-success fw-bold text-uppercase position-absolute" style="top: 5px; right: 5px;">
+                    <i class="fa-regular fa-paper-plane fs-5 pe-0"></i>
+                </button>
+            </div>
         </form>
     </div>
 </div>

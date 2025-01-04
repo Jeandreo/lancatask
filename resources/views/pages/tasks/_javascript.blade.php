@@ -678,6 +678,7 @@
             data: {_token: @json(csrf_token()), project_id: projectId},
             success:function(data) {
                 $('.modules').append(data['html']);
+                filterModules();
             }
         });
 

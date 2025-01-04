@@ -91,24 +91,26 @@
                      <div class="p-2 rounded draggable-sidebar-zone" style="background: rgba(0, 0, 0, 0.2)">
                         @foreach (Auth::user()->groupProjects() as $key => $group)
                         <div class="menu-item opacity-1 draggable-sidebar group-list" data-group="{{ $key }}">
-                            <div class="menu-content pb-2 pt-2 pe-0 d-flex justify-content-between align-items-center">
-                                <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">{{ $group['name'] }}</span>
+                            <div class="menu-content pb-2 pt-2 pe-0 d-flex justify-content-between align-items-center position-relative">
+                                <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">
+                                    {{ $group['name'] }}
+                                    <i class="fa-solid fa-arrows-to-dot text-white opacity-0 fs-9 draggable-sidebar-handle"></i>
+                                </span>
                                 <div class="d-flex align-items-center justify-content-end me-2">
-                                    <span class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center opacity-0 draggable-sidebar-handle me-1">
-                                        <i class="fa-solid fa-arrows-to-dot text-white fs-8"></i>
-                                    </span>
-                                    <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-primary bg-hover-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
+                                    <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
                                         +
                                     </a>
                                 </div>
                             </div>
                             <div class="draggable-projects-zone">
                                 @foreach ($group['items'] as $project)
-                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion draggable-project group-project" data-project="{{ $project->id }}">
+                                <div data-kt-menu-trigger="click" class="menu-item menu-accordion draggable-project group-project position-relative opacity-sub-1" data-project="{{ $project->id }}">
                                     <a class="menu-link position-relative" href="{{ route('projects.show', $project->id) }}">
+                                        @if (count($group['items']) > 1)
                                         <span class="w-20px h-20px cursor-move fw-bolder d-flex align-items-center justify-content-center opacity-0 draggable-project-handle position-absolute" style="left: -3px;">
                                             <i class="fa-solid fa-arrows-to-dot text-white opacity-25 fs-8"></i>
                                         </span>
+                                        @endif
                                         <span class="menu-icon">
                                             <i class="ki-duotone ki-element-7 fs-3">
                                                 <span class="path1"></span>
@@ -117,6 +119,16 @@
                                         </span>
                                         <span class="menu-title">{{ Str::limit($project->name, 18) }}</span>
                                     </a>
+                                    <div class="position-absolute" style="right: 0px; top: 50%; transform: translateY(-50%);">
+                                        <div class="d-flex opacity-sub-0">
+                                            <a href="{{ route('projects.edit', $project->id) }}" class="w-20px h-20px text-white cursor-pointer">
+                                                <i class="fa-solid fa-pen-to-square text-white fs-8"></i>
+                                            </a>
+                                            <a href="{{ route('projects.destroy', $project->id) }}" class="w-20px h-20px text-white cursor-pointer">
+                                                <i class="fa-solid fa-trash-alt text-white fs-8"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                     <div class="separator separator-dashed mx-6" style="opacity: 0.15;"></div>
                                 </div>
                                 @endforeach
