@@ -24,12 +24,11 @@
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{{ route('agenda.index') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-calendar-days fs-4"></i>
                             </span>
                             <span class="menu-title">Agenda
-                                <span class="badge badge-light-danger ms-2">Em Breve</span>
                             </span>
                         </a>
                     </div>

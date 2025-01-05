@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
@@ -38,6 +39,24 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/duplicar/{id}', [ProjectController::class, 'duplicate'])->name('duplicate');
             Route::get('/excluir/{id}', [ProjectController::class, 'delete'])->name('delete');
         });
+    });
+
+
+    // PROFILE USER
+    Route::prefix('agendas')->group(function () {
+
+        // PROJECTS
+        Route::name('agenda.')->group(function () {
+            Route::get('/', [AgendaController::class, 'index'])->name('index');
+            Route::get('/adicionar', [AgendaController::class, 'create'])->name('create');
+            Route::post('/adicionar', [AgendaController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}', [AgendaController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}', [AgendaController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}', [AgendaController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id?}', [AgendaController::class, 'update'])->name('update');
+            Route::put('/calendario/{id?}', [AgendaController::class, 'changeCalendar'])->name('calendar.update');
+        });
+
     });
 
     // COMMENTS

@@ -53,14 +53,14 @@ function loadTables(seletor = '.datatables', items = 25, order = undefined) {
  * Metronic:  https://preview.keenthemes.com/html/metronic/docs/forms/flatpickr
  * Website:   https://flatpickr.js.org/examples/
  */
-function generateFlatpickr(options = null, calendarSelector = '.flatpickr') {
+function generateFlatpickr(options = null, calendarSelector = '.flatpickr', time = false) {
 
     /**
      * Define opções padrões para o calendário.
      */
     var defaultOptions = {
         locale: "pt",
-        timePicker: false,
+        timePicker: time,
         startDate: moment().startOf("hour"),
         endDate: moment().startOf("hour").add(32, "hour"),
         autoUpdateInput: false,
@@ -417,4 +417,36 @@ function loadFlatpickrRange(selector = '.flatpickr-ranges', startAndEnd = 'defau
     });
 }
 
+
+/**
+ * Função responsável por gerar calendários no Core.
+ *
+ * Metronic:  https://preview.keenthemes.com/html/metronic/docs/forms/flatpickr
+ * Website:   https://flatpickr.js.org/examples/
+ */
+function generateFlatpickrBase(options = null, calendarSelector = '.flatpickr') {
+
+    /**
+     * Define opções padrões para o calendário.
+     */
+    var defaultOptions = {
+        allowInput: false,
+        altInput: true,
+        altFormat: "d/m/Y H:i",
+        dateFormat: "Y-m-d H:i:s",
+        locale: "pt",
+        enableTime: false,
+        dateFormat: "Y-m-d H:i",
+        // minDate: "today",
+    };
+
+    // Sobrescreve as opções personalizadas nas padrões
+    var options = { ...defaultOptions, ...options };
+
+    // Inicia calendário
+    $(calendarSelector).flatpickr(options);
+
+}
+
 loadFlatpickrRange();
+generateFlatpickrBase({enableTime: true}, '.flatpickr-with-time');
