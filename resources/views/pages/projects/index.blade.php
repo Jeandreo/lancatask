@@ -11,7 +11,7 @@
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>Grupo</th>
-                        <th>Time</th>
+                        <th>Membros</th>
                         <th>Tarefas</th>
                         <th>Status</th>
                         <th>Ações</th>
@@ -28,11 +28,11 @@
                             </td>
                             <td>
                                 @if ($content->type_is == 'time')
-                                <span class="badge badge-light-primary">
+                                <span class="badge badge-light-info">
                                     Time
                                 </span>
                                 @else
-                                <span class="badge badge-light-primary">
+                                <span class="badge badge-light-success">
                                     Pessoal
                                 </span>
                                 @endif

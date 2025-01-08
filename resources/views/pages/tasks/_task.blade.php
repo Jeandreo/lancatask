@@ -68,11 +68,12 @@
         <div class="position-relative opacity-1">
             <input type="text"
                 class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }}
+
                 @if(date('Y-m-d', strtotime($task->date_end)) == date('Y-m-d'))
                     text-success
                 @elseif(strtotime($task->date_end) < time())
                     text-danger
-                @elseif(\Carbon\Carbon::parse($task->date_end)->diffInDays() <= 2)
+                @elseif(-(\Carbon\Carbon::parse($task->date_end)->diffInDays()) <= 2)
                     text-primary
                 @else
                     text-gray-700
@@ -80,7 +81,7 @@
                 data-task="{{ $task->id }}"
                 placeholder="Prazo da tarefa"
                 value="@if(isset($task->date_start) && $task->date_start == $task->date_end){{ date('d/m/Y', strtotime($task->date_start)) }}@elseif(isset($task->date_start)){{ date('d/m', strtotime($task->date_start)) }} até {{ date('d/m', strtotime($task->date_end)) }}@endif"/>
-            <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-300 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task="{{ $task->id }}" style="top: 15%; right: 0"></i>
+            {{-- <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-300 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task="{{ $task->id }}" style="top: 15%; right: 0"></i> --}}
         </div>
         @if (!isset($hideMove))
         <div class="separator-vertical h-100"></div>

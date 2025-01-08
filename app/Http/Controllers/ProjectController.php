@@ -94,9 +94,11 @@ class ProjectController extends Controller
         // SEND DATA
         $created = $this->repository->create($data);
 
-         // Sincroniza time
-         if($data['type_is'] == 'time'){
+        // Sincroniza time
+        if($data['type_is'] == 'time'){
             $created->users()->sync($data['team']);
+        } else {
+            $created->users()->sync(Auth::id());
         }
 
         // Cria módulo inicial

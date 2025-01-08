@@ -5,7 +5,7 @@
     </head>
     <body id="kt_body" class="app-blank" cz-shortcut-listen="true">
         <div class="d-flex flex-column flex-root" id="kt_app_root">
-            <div class="d-flex flex-column flex-lg-row flex-column-fluid bgi-size-cover bgi-position-center" style="background-image: url({{ asset('assets/media/images/background.jpg') }})">
+            <div class="d-flex flex-column flex-lg-row flex-column-fluid bgi-size-cover bgi-position-center" style="background-image: url({{ asset('assets/media/images/login.png') }})">
                 <div class="d-flex flex-column flex-lg-row-fluid">
                     <div class="d-flex flex-center flex-column flex-lg-row-fluid">
                         <div class="w-lg-500px p-10">
@@ -14,15 +14,13 @@
                                     <form action="{{ route('login') }}" class="form" method="POST">
                                         @csrf
                                         <div class="text-center mb-11">
+                                            <img src="{{ asset('assets/media/images/logo.png') }}" class="w-75 mb-4">
                                             <h1 class="text-gray-700 fw-bolder mb-3 fs-2x text-uppercase">
                                                 Acessar Lança Task
                                             </h1>
                                             <div class="text-gray-500 fw-semibold fs-6">
                                                 A ferramenta ideal para disparar sua performance nos lançamentos digitais!
                                             </div>
-                                        </div>
-                                        <div class="separator separator-content my-14">
-                                            <span class="w-125px text-gray-500 fw-semibold fs-7">Ou com email</span>
                                         </div>
                                         <div class="fv-row mb-8 fv-plugins-icon-container">
                                             <input type="email" placeholder="E-mail" name="email" autocomplete="off" class="form-control form-control-solid" value="{{ old('email') }}" required>
@@ -37,7 +35,7 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="fv-row mb-8 fv-plugins-icon-container">
+                                        <div class="fv-row mb-4 fv-plugins-icon-container">
                                             <label class="form-check form-check-inline">
                                                 <input class="form-check-input cursor-pointer" type="checkbox" name="remember" value="1">
                                                 <span class="form-check-label fw-semibold text-gray-700 fs-base ms-1 cursor-pointer">

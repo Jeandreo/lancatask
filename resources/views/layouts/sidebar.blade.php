@@ -79,10 +79,10 @@
                         </span>
                         <div  class="menu-sub menu-sub-accordion">
                            <div  class="menu-item" >
-                              <a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Usuários</span></a>
+                              <a class="menu-link" href="{{ route('users.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gerenciar Membros</span></a>
                            </div>
                            <div  class="menu-item" >
-                              <a class="menu-link" href="{{ route('positions.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Cargos</span></a>
+                              <a class="menu-link" href="{{ route('positions.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gerenciar Cargos</span></a>
                            </div>
                         </div>
                      </div>
