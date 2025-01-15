@@ -3,7 +3,7 @@ body {
 }
 
 .app-default, body {
-    background-color: #281C44;
+    background-color: #E8E3D9;
 }
 
 .card {
@@ -498,4 +498,9 @@ input[type=text]:disabled {
 
 .form-check.form-check-solid .form-check-input:not(:checked) {
     background-color: #00000025;
+}
+
+
+.fc .fc-daygrid-day-frame {
+    height: 150px !important;
 }

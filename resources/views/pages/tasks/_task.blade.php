@@ -1,4 +1,4 @@
-<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask" data-task="{{ $task->id }}">
+<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask div-task" data-task="{{ $task->id }}">
     <div class="d-flex align-items-center justify-content-between w-100 h-100">
         <div class="d-flex align-items-center h-100 w-100">
             <div style="background: {{ $task->checked == false ? $task->module->color : '#d5d5d5' }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons task-module-{{ $task->module_id }}">
@@ -14,7 +14,12 @@
             </div>
             <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
                 <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
-                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-3" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">{{ $task->name }}</p>
+                    <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-3" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
+                        @if (isset($showProject))
+                        <span class="fw-bold text-gray-600 fs-6">{{ $task->module->project->name }} - </span>
+                        @endif
+                        {{ $task->name }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -68,7 +73,6 @@
         <div class="position-relative opacity-1">
             <input type="text"
                 class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }}
-
                 @if(date('Y-m-d', strtotime($task->date_end)) == date('Y-m-d'))
                     text-success
                 @elseif(strtotime($task->date_end) < time())

@@ -181,6 +181,13 @@ class ModuleController extends Controller
             // Busca tarefas
             $tasks = Task::where('module_id', $module->id)->where('status', 1);
 
+            // Filtra participantes
+            if (isset($data['users'])) {
+                $tasks = $tasks->whereHas('participants', function ($query) use ($data) {
+                    $query->whereIn('users.id', $data['users']);
+                });
+            }
+
             // Filtra pelo nome
             if($data['name']){
                 $tasks = $tasks->where('name', 'LIKE', '%' . $data['name'] . '%');

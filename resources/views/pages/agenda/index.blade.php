@@ -67,7 +67,7 @@
                 selectable: false,
                 selectMirror: false,
                 editable: false,
-                dayMaxEvents: false,
+                dayMaxEvents: 3,
                 nowIndicator: false,
                 events: events,
                 businessHours: {
@@ -161,7 +161,7 @@
                     let div = document.createElement('div');
 
                     // Obtém título HTML e insere na DIV
-                    div.className = 'p-1';
+                    div.className = 'p-0 px-1';
 
                     // Cria badge
                     var color = arg.event.backgroundColor;
@@ -173,8 +173,8 @@
                     // Formata as horas de início e fim
                     var start = arg.event.start;
                     var end = arg.event.end;
-                    var startTime = start ? start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                    var endTime = end ? end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    var startTime = start ? start.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '';
+                    var endTime = end ? end.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '';
 
                     // Adiciona as horas ao título
                     if (startTime && endTime) {
@@ -186,9 +186,9 @@
                     // Monta a string com o título e horários
                     var eventTitle = '';
                     if (type === 'meetings') {
-                        eventTitle = time + '<div class="d-flex align-items-center overflow-hidden mt-n1">' + badge + arg.event.extendedProps.htmlTitle + '</div>';
+                        eventTitle = time + '<span class="d-flex align-items-center overflow-hidden mt-n2">' + badge + arg.event.extendedProps.htmlTitle + '</span>';
                     } else {
-                        eventTitle = time + '<div class="d-flex align-items-center overflow-hidden mt-n1">' + badge + arg.event.title + '</div>';
+                        eventTitle = time + '<span class="d-flex align-items-center overflow-hidden mt-n2">' + badge + arg.event.title + '</span>';
                     }
 
                     // Define o conteúdo da DIV

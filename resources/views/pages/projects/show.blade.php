@@ -17,6 +17,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="col">
+                <select class="form-select form-select-solid cursor-pointer" data-control="select2" data-placeholder="Usuários" name="users[]" multiple id="users">
+                    <option value=""></option>
+                    @foreach ($project->users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="col-1">
                 <input type="button" class="btn btn-primary btn-active-danger me-4 w-100" value="Filtrar" id="filtrar"></input>
             </div>
@@ -155,6 +163,7 @@
             data: {
                 name: $('#name').val(),
                 status: $('#status').val(),
+                users: $('#users').val(),
             },
             success:function(data) {
                 data.forEach(element => {

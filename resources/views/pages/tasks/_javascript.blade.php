@@ -504,6 +504,11 @@
         var taskId = $(this).data('task');
         var text = $(this).find('[name="text"]').val();
 
+        sendComment(taskId, text);
+
+    });
+
+    function sendComment(taskId, text){
         // AJAX
         $.ajax({
             type:'POST',
@@ -515,8 +520,7 @@
                 $('#results-comments').scrollTop(0);
             }
         });
-
-    });
+    }
 
     $(document).on('click', '#see-historic', function(){
 

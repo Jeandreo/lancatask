@@ -41,17 +41,17 @@ class Task extends Model
     /**
      * Get the comments associated with the tasks.
      */
-    public function comments(): HasMany
+    public function participants(): BelongsToMany
     {
-        return $this->hasMany(Comment::class, 'task_id', 'id');
+        return $this->belongsToMany(User::class, 'tasks_participants', 'task_id', 'user_id');
     }
 
     /**
      * Get the comments associated with the tasks.
      */
-    public function participants(): BelongsToMany
+    public function comments(): HasMany
     {
-        return $this->belongsToMany(User::class, 'tasks_participants', 'task_id', 'user_id');
+        return $this->hasMany(Comment::class, 'task_id', 'id');
     }
 
     /**

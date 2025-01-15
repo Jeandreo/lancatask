@@ -245,14 +245,13 @@ function UploadPlugin(editor) {
 }
 
 
-// FUNCTION CKE EDITOR
 function loadEditorText(selector = '.load-editor') {
 
     ClassicEditor.create(document.querySelector(selector), {
         extraPlugins: [UploadPlugin],
         removePlugins: ["MediaEmbedToolbar"],
     }).then(function (editor) {
-        // ALOW ACCESS TO CLEAR
+        // Permitir acesso ao editor
         textarea = editor;
 
         // Detectar seleção de arquivo
@@ -260,15 +259,11 @@ function loadEditorText(selector = '.load-editor') {
         fileInput.addEventListener('change', function (event) {
             const file = event.target.files[0];
             if (file) {
-                // Criar um link ou uma imagem dependendo do tipo de arquivo
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const fileContent = e.target.result;
 
-                    // Criar um elemento de imagem a partir da URL de dados
-                    const imageElement = `<img src="${fileContent}" alt="Uploaded Image" />`;
-
-                    // Inserir a imagem no editor
+                    // Criar um elemento de imagem
                     editor.model.change(writer => {
                         const imageElementNode = writer.createElement('imageBlock', {
                             src: fileContent
@@ -277,11 +272,27 @@ function loadEditorText(selector = '.load-editor') {
                         editor.model.insertContent(imageElementNode, insertPosition);
                     });
                 };
-                reader.readAsDataURL(file); // Lê o arquivo como URL de dados
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Detectar a tecla Enter
+        editor.editing.view.document.on('keydown', (event, data) => {
+            if (data.keyCode === 13) { // 13 é o código da tecla Enter
+                data.preventDefault(); // Evita o comportamento padrão (quebrar linha)
+                const content = editor.getData(); // Obtém o conteúdo do editor
+                console.log('Conteúdo enviado:', content); // Exibe o conteúdo no console
+
+                var taskId = $('#send-comment').data('task');
+
+                // Aqui você pode adicionar a lógica de envio, como uma requisição AJAX
+                sendComment(taskId, content);
+
+                // Limpa o editor após enviar
+                editor.setData('');
             }
         });
     });
-
 }
 
 $(document).on('click', '.show-image, .show-image-div img, figure img', function(){
