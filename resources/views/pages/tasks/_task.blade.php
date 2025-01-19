@@ -1,4 +1,4 @@
-<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-2 shadow-list dmk-tasks h-35px task-list task-on-subtask div-task" data-task="{{ $task->id }}">
+<div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-0 shadow-list dmk-tasks h-35px task-list task-on-subtask " data-task="{{ $task->id }}">
     <div class="d-flex align-items-center justify-content-between w-100 h-100">
         <div class="d-flex align-items-center h-100 w-100">
             <div style="background: {{ $task->checked == false ? $task->module->color : '#d5d5d5' }};" class="rounded-start h-100 d-flex align-items-center color-task task-icons task-module-{{ $task->module_id }}">

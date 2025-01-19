@@ -29,12 +29,4 @@ class Agenda extends Model
         'color',
         'created_by',
     ];
-
-    /**
-     * Get the infos associated with the user.
-    */
-    public function usersParticipants(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'agenda_users', 'agenda_id', 'user_id');
-    }
 }

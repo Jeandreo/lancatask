@@ -22,6 +22,20 @@ function randomColor()
     return $color;
 }
 
+function formatLinks($text)
+{
+    // Regex para detectar URLs
+    $pattern = '/(https?:\/\/[^\s<]+)/i';
+
+    // Substituir URLs por links clicáveis
+    $formattedText = preg_replace_callback($pattern, function ($matches) {
+        $url = $matches[0];
+        return '<a href="' . $url . '" target="_blank" rel="noopener noreferrer">' . $url . '</a>';
+    }, $text);
+
+    return $formattedText;
+}
+
 // PUT THE BACKGROUND IN THE TEXT COLOR
 function hex2rgb($colour, $opacity)
 {

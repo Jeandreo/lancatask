@@ -15,7 +15,7 @@
                     @include('pages.agenda._form')
                 </div>
                 <div class="modal-footer py-3 bg-light">
-                    <button class="btn btn-primary btn-active-danger mb-3">
+                    <button class="btn btn-info btn-active-danger mb-3">
                         Cadastrar na agenda
                     </button>
                 </div>

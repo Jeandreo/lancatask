@@ -5,7 +5,7 @@
 @section('content')
     <div class="d-flex justify-content-between mb-6">
         <a href="{{ route('dashboard.index') }}" class="btn btn-sm fw-bold btn-secondary">Voltar</a>
-        <button class="btn btn-sm fw-bold btn-primary btn-active-danger" data-bs-toggle="modal" data-bs-target="#modal_meeting">Cadastrar na agenda</button>
+        <button class="btn btn-sm fw-bold btn-info btn-active-danger" data-bs-toggle="modal" data-bs-target="#modal_meeting">Cadastrar na agenda</button>
     </div>
     <div class="card">
         <div class="card-body">

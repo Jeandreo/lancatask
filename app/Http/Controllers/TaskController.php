@@ -207,7 +207,9 @@ class TaskController extends Controller
                 return $html;
             })
             ->addColumn('when', function ($row) {
-                if ($row->date_start == $row->date_end){
+                if(!$row->date_start){
+                    $html = '<span class="text-gray-600">Sem data</span>';
+                }else if ($row->date_start == $row->date_end){
                     $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) .  '</span>';
                 } else {
                     $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) . ' até ' . date('d/m/Y', strtotime($row->date_end)) .  '</span>';

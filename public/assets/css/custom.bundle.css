@@ -1,9 +1,9 @@
 body {
-  font-family: "Jost", serif;
+  font-family: "Montserrat", serif;
 }
 
 .app-default, body {
-    background-color: #E8E3D9;
+    background-color: #242625;
 }
 
 .card {
@@ -12,6 +12,7 @@ body {
 
 :root {
     --bs-primary: #1e9cf0;
+    --bs-info: #8e0dc0;
     --bs-text-primary: #1e9cf0;
     --bs-success-active: #1f9e00
 }
@@ -64,17 +65,10 @@ border: none;
     cursor: pointer;
 }
 
-body, html {
-    font-family: Jost, Helvetica, "sans-serif";
-}
-
 body {
     overflow-x: hidden;
 }
 
-.tooltip-inner {
-    font-family: Jost, Helvetica, "sans-serif";
-}
 
 :root {
     --bs-app-sidebar-width: 335px;
@@ -503,4 +497,11 @@ input[type=text]:disabled {
 
 .fc .fc-daygrid-day-frame {
     height: 150px !important;
+}
+
+.comment-ajax {
+    word-wrap: break-word; /* Quebra palavras longas */
+    word-break: break-word; /* Adicional para navegadores mais antigos */
+    overflow-wrap: break-word; /* Quebra em navegadores modernos */
+    white-space: normal; /* Garante que o texto ocupe várias linhas */
 }

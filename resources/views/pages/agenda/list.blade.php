@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('Page Title', 'Usuários')
+@section('Page Title', 'Eventos')
 
 @section('content')
     <div class="card">
@@ -9,8 +9,7 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
-                        <th>Grupo</th>
-                        <th>Cargo</th>
+                        <th>Data</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -19,21 +18,26 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <a href="{{ route('users.edit', $content->id) }}" class="text-gray-700 fw-bold text-hover-primary fs-6">
-                                    <img src="{{ findImage('users/photos/' . $content->id . '.jpg') }}" class="w-30px h-30px rounded me-2 object-fit-cover">
+                                <span class="text-gray-700 fw-bold fs-6">
                                     {{ $content->name }}
-                                </a>
-                            </td>
-                            <td>
-                                <span class="badge badge-light-primary">
-                                    {{ $content->role }}
                                 </span>
                             </td>
                             <td>
-                                <span class="badge badge-light-info">
-                                    {{ $content->position->name }}
+                                @if ($content->date_start != $content->date_end)
+                                <span class="fw-bold text-gray-700">
+                                 {{ date('d/m/Y H:i', strtotime($content->date_start . ' ' . $content->hour_start)) }}
+                                 até
+                                 {{ date('d/m/Y H:i', strtotime($content->date_end . ' ' . $content->hour_end)) }}
                                 </span>
+                                @else
+                                <span class="fw-bold text-gray-700">
+                                 {{ date('d/m/Y', strtotime($content->date_start)) }} das {{ date('H:i', strtotime($content->hour_start)) }}
+                                 até
+                                 {{ date('H:i', strtotime($content->date_end . ' ' . $content->hour_end)) }}
+                                </span>
+                                @endif
                             </td>
+
                             <td>
                                 @if ($content->status == 1)
                                     <span class="badge badge-light-success">Ativo</span>
@@ -43,15 +47,12 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center icons-table">
-                                    <a href="{{ route('users.edit', $content->id) }}">
-                                        <i class="fas fa-edit" title="Editar"></i>
-                                    </a>
                                     @if ($content->status == 1)
-                                        <a href="{{ route('users.destroy', $content->id) }}">
+                                        <a href="{{ route('agenda.destroy', $content->id) }}">
                                             <i class="fas fa-times-circle" title="Desativar"></i>
                                         </a>
                                     @else
-                                        <a href="{{ route('users.destroy', $content->id) }}">
+                                        <a href="{{ route('agenda.destroy', $content->id) }}">
                                             <i class="fas fa-redo" title="Reativar"></i>
                                         </a>
                                     @endif
@@ -64,8 +65,16 @@
         </div>
     </div>
     <div class="mt-5">
-        <a href="{{ route('users.create') }}">
+        <a href="{{ route('projects.create') }}">
             <label class="btn btn-info btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>
+
+    <script>
+        function confirmDelete(url) {
+            if (confirm("Tem certeza de que deseja apagar este projeto permanentemente?")) {
+                window.location.href = url;
+            }
+        }
+    </script>
 @endsection

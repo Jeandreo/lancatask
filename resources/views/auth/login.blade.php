@@ -16,16 +16,16 @@
                                         <div class="text-center mb-11">
                                             <img src="{{ asset('assets/media/images/logo.png') }}" class="w-75 mb-4">
                                             <h1 class="text-gray-700 fw-bolder mb-3 fs-2x text-uppercase">
-                                                Acessar Lança Task
+                                                ACESSAR FERRAMENTA
                                             </h1>
                                             <div class="text-gray-500 fw-semibold fs-6">
-                                                A ferramenta ideal para disparar sua performance nos lançamentos digitais!
+                                                A ferramenta ideal para escalar a performance dos seus lançamentos!
                                             </div>
                                         </div>
-                                        <div class="fv-row mb-8 fv-plugins-icon-container">
+                                        <div class="fv-row mb-3 fv-plugins-icon-container">
                                             <input type="email" placeholder="E-mail" name="email" autocomplete="off" class="form-control form-control-solid" value="{{ old('email') }}" required>
                                         </div>
-                                        <div class="fv-row mb-3 fv-plugins-icon-container">
+                                        <div class="fv-row mb-4 fv-plugins-icon-container">
                                             <div class="position-relative mb-3">
                                                 <input class="form-control form-control-lg form-control-solid" type="password" name="password" placeholder="Senha" required />
                                                 <span class="btn btn-sm btn-icon position-absolute translate-middle top-50 end-0 me-n2 eye-password"
@@ -39,12 +39,12 @@
                                             <label class="form-check form-check-inline">
                                                 <input class="form-check-input cursor-pointer" type="checkbox" name="remember" value="1">
                                                 <span class="form-check-label fw-semibold text-gray-700 fs-base ms-1 cursor-pointer">
-                                                    Mantenha-me conectado
+                                                    Mantenha-me conectado!
                                                 </span>
                                             </label>
                                         </div>
                                         <div class="d-grid mb-10">
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-info">
                                                 Acessar
                                             </button>
                                         </div>

@@ -56,7 +56,7 @@
     </div>
     <div class="mt-5">
         <a href="{{ route('positions.create') }}">
-            <label class="btn btn-primary btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
+            <label class="btn btn-info btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>
 @endsection

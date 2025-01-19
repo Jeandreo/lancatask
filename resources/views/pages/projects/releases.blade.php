@@ -50,7 +50,7 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <a href="{{ route('projects.show', $content->id) }}" class="btn btn-primary btn-sm fw-bold text-uppercase py-2">
+                                <a href="{{ route('projects.show', $content->id) }}" class="btn btn-info btn-sm fw-bold text-uppercase py-2">
                                     Acessar Projeto
                                 </a>
                             </td>

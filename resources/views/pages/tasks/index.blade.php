@@ -39,7 +39,7 @@
             </div>
             <div class="col-1 mb-5 mb-md-0">
                 <div class="d-flex justify-content-between">
-                    <input type="button" class="btn btn-primary btn-active-danger w-100" value="Filtrar" id="filtrar"></input>
+                    <input type="button" class="btn btn-info btn-active-danger w-100" value="Filtrar" id="filtrar"></input>
                 </div>
             </div>
         </div>

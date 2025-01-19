@@ -43,7 +43,7 @@
                                 </i>
                             </span>
                             <span  class="menu-title" >
-                                Projetos e Tarefas
+                                Gestão
                             </span>
                             <span  class="menu-arrow" ></span>
                         </span>
@@ -56,6 +56,9 @@
                            </div>
                            <div  class="menu-item" >
                             <a class="menu-link" href="{{ route('tasks.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gestão de tarefas</span></a>
+                           </div>
+                           <div  class="menu-item" >
+                            <a class="menu-link" href="{{ route('agenda.list') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Gestão de eventos</span></a>
                            </div>
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('projects.types.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tipos de projetos</span></a>

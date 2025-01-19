@@ -42,9 +42,17 @@
             @csrf
             <input type="hidden" name="module_id" value="{{ $module->id }}">
             <div class="position-relative">
-                <input type="text" name="name" class="form-control form-control-solid w-100 rounded mt-4" placeholder="Inserir nova tarefa" required>
+                <input
+                type="text"
+                name="name"
+                class="form-control form-control-solid w-100 rounded mt-4"
+                placeholder="Inserir nova tarefa"
+                required
+                autocomplete="off"
+                autocorrect="off"
+                spellcheck="false">
                 <button class="btn btn-sm btn-icon btn-success fw-bold text-uppercase position-absolute" style="top: 5px; right: 5px;">
-                    <i class="fa-regular fa-paper-plane fs-5 pe-0"></i>
+                    <i class="fa-solid fa-rocket fs-5 pe-0 mt-1"></i>
                 </button>
             </div>
         </form>

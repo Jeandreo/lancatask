@@ -24,11 +24,29 @@ class AgendaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function list()
+    {
+
+        // GET ALL DATA
+        $contents = $this->repository->orderBy('id', 'ASC')->get();
+
+        // RETURN VIEW WITH DATA
+        return view('pages.agenda.list')->with([
+            'contents' => $contents,
+        ]);
+
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('name', 'ASC')->get();
+        $contents = $this->repository->where('status', true)->orderBy('name', 'ASC')->get();
         $agenda = $this->meetingsToEvents($contents);
 
         // RETURN VIEW WITH DATA
@@ -85,7 +103,7 @@ class AgendaController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
                 ->back()
-                ->with('message', 'Catálogo adicionado com sucesso.');
+                ->with('message', 'Evento adicionado com sucesso.');
 
     }
 
@@ -135,7 +153,7 @@ class AgendaController extends Controller
 
         // Adiciona a reunião ao banco de dados
         $content->update($data);
-        
+
         // REDIRECT AND MESSAGES
         return redirect()
                 ->back()
@@ -193,9 +211,7 @@ class AgendaController extends Controller
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
-        return redirect()
-            ->back()
-            ->with('message', 'Catálogo ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+        return redirect()->back()->with('message', 'Evento ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
 
     }
 

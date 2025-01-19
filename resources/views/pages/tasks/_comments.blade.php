@@ -19,7 +19,7 @@
                <a href="{{ route('comments.destroy', $content->id) }}" class="destroy-comment position-absolute btn btn-sm btn-danger btn-active-primary rounded-circle btn-icon opacity-0 h-20px w-20px" data-task="{{ $content->task_id }}" style="right: -10px; top: -10px;">
                   <i class="fa-solid fa-trash-can text-white fs-9"></i>
                </a>
-               {!! $content->text !!}
+               {!! formatLinks($content->text) !!}
             </div>
          </div>
       </div>

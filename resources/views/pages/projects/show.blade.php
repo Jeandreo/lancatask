@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="col-1">
-                <input type="button" class="btn btn-primary btn-active-danger me-4 w-100" value="Filtrar" id="filtrar"></input>
+                <input type="button" class="btn btn-info btn-active-danger me-4 w-100" value="Filtrar" id="filtrar"></input>
             </div>
         </div>
     </div>
