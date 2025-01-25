@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use App\Models\ModuleOrder;
 use App\Models\Project;
 use App\Models\Status;
 use App\Models\Task;
@@ -52,11 +53,7 @@ class ModuleController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
-        // Obtém projeto
-        $project = Project::find($data['project_id']);
-
         // CREATED BY
-        $data['name'] = 'Novo Módulo em ' . $project->name . ' #' . str_pad(($project->modules()->count() + 1), 3, '0', STR_PAD_LEFT);
         $data['color'] = randomColor();
         $data['created_by'] = Auth::id();
 
@@ -210,6 +207,40 @@ class ModuleController extends Controller
         }
 
         return $newModules;
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function order(Request $request, $id)
+    {
+
+        // GET FORM DATA
+        $data = $request->all();
+
+        // Apaga a ordem atual
+        ModuleOrder::where('user_id', Auth::id())->where('project_id', $id)->delete();
+
+        // Cria nova ordenação
+        $count = 1;
+        foreach ($data['modulesOrder'] as $moduleId) {
+            // STORING NEW DATA
+            ModuleOrder::create([
+                'order' =>  $count,
+                'user_id' => Auth::id(),
+                'module_id' => $moduleId,
+                'project_id' => $id,
+            ]);
+            ++$count;
+        }
+
+        // REDIRECT AND MESSAGES
+        return response()->json();
 
     }
 }

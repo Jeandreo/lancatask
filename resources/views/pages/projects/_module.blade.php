@@ -1,4 +1,4 @@
-<div class="card mb-6">
+<div class="card mb-6 draggable-module module-list" data-module="{{ $module->id }}">
     <div class="card-header min-h-50px ps-2 pe-6 position-relative opacity-1">
         <div class="d-flex align-items-center ps-3 pe-5 w-50">
             <input type="color" class="form-control form-control-flush p-0 w-20px h-20px border-0 min-h-10px rounded module-colors" data-module="{{ $module->id }}" value="{{ $module->color }}">
@@ -15,7 +15,7 @@
                 Data
             </div>
             <div>
-                <i class="fa-solid fa-arrows-to-dot py-2 px-3 mx-3 fs-7 text-gray-700"></i>
+                <i class="fa-solid fa-arrows-to-dot py-2 px-3 mx-3 fs-7 text-gray-700 draggable-handle-module cursor-pointer"></i>
             </div>
         </div>
         <div class="position-absolute cursor-pointer module-remove" style="top: -10px; right: -10px;" data-module="{{ $module->id }}">

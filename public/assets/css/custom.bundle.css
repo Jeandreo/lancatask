@@ -17,10 +17,6 @@ body {
     --bs-success-active: #1f9e00
 }
 
-.div-task {
-    border-bottom: solid 2px white;
-}
-
 input[type="color"] {
 border-radius: 5px;
 padding: 0;

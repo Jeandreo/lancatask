@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Auth;
 
 class Project extends Model
 {
@@ -86,5 +87,22 @@ class Project extends Model
      public function type(): HasOne
     {
         return $this->HasOne(ProjectType::class, 'id', 'type_id');
+    }
+
+    /**
+     * Get the brand associated with the user.
+     */
+     public function orderModules()
+    {
+
+        // Obtém ordenaç~]ao do usuário
+        $order = ModuleOrder::where('user_id', Auth::id())->where('project_id', $this->id)->get()->pluck('module_id')->toArray();
+
+        // Caso não tenha retorna padrão 1
+        if(!$order){
+            $order = [1];
+        }
+
+        return $order;
     }
 }

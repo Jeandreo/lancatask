@@ -33,9 +33,9 @@
         </div>
     </div>
 </div>
-<div class="modules">
+<div class="modules draggable-zone-module">
     @if ($project->modules()->where('status', true)->count())
-        @foreach ($project->modules()->where('status', true)->get() as $module)
+        @foreach ($project->modules()->where('status', true)->orderByRaw('FIELD(id, ' . implode(',', $project->orderModules()) . ')')->get() as $module)
             @include('pages.projects._module')
         @endforeach
     @endif
@@ -59,8 +59,85 @@
 @section('custom-footer')
 @parent
 <script>
+
 	// PROJECT ID
-	var projectId = {{ $contents->id ?? 0 }};
+	var projectId = {{ $project->id ?? 0 }};
+
+    // DRAGGABLE
+    function draggableZone(){
+		var containers = document.querySelectorAll(".draggable-zone-module");
+		if (containers.length === 0) return false;
+		var swappable = new Sortable.default(containers, {
+			draggable: ".draggable-module",
+			handle: ".draggable-module .draggable-handle-module",
+			mirror: {
+				constrainDimensions: true,
+			},
+		});
+
+		// ON STOP DRAG
+		swappable.on('drag:stopped', function(event) {
+
+			// GET DIV OF ELEMENT
+			var movedDiv = event.originalSource;
+
+			// START
+			var modulesIds = [];
+
+			// GET IDS OF TASKS ONLY DRAGGABLE-ZONE
+			$('.module-list').each(function() {
+				var item = $(this).data('module');
+				modulesIds.push(item);
+			});
+
+			// AJAX
+			$.ajax({
+				headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+				type:'PUT',
+				url: "{{ route('modules.order', '') }}/" + projectId,
+				data: {
+					_token: @json(csrf_token()),
+					modulesOrder: modulesIds
+				},
+				success: function(response){
+                    console.log('Ordem ajustada');
+				}
+			});
+
+		});
+
+	}
+
+	draggableZone();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// DRAGGABLE
 	function draggable(){
@@ -136,7 +213,7 @@
 		});
 
 	}
-	draggable();
+	// draggable();
 
     // SHOW TASK
     $(document).on('click', '#filtrar', function(e){

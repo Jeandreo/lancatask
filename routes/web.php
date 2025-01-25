@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
             Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
             Route::get('/carregar/{id}', [ModuleController::class, 'filter'])->name('filter');
+            Route::put('/ordem/{id}', [ModuleController::class, 'order'])->name('order');
         });
     });
 
