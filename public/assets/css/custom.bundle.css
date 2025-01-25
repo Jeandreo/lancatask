@@ -3,7 +3,7 @@ body {
 }
 
 .app-default, body {
-    background-color: #242625;
+    background-color: #121115;
 }
 
 .card {
@@ -15,6 +15,10 @@ body {
     --bs-info: #8e0dc0;
     --bs-text-primary: #1e9cf0;
     --bs-success-active: #1f9e00
+}
+
+.div-task {
+    border-bottom: solid 2px white;
 }
 
 input[type="color"] {
@@ -49,7 +53,7 @@ border: none;
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar, .bg-dark {
-    background: linear-gradient(45deg, #0e081c, #291D47);
+    background: linear-gradient(45deg, #0f0e13, #0f0e13);
     border-right: 0;
 }
 

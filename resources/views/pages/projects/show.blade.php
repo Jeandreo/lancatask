@@ -25,8 +25,10 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-1">
-                <input type="button" class="btn btn-info btn-active-danger me-4 w-100" value="Filtrar" id="filtrar"></input>
+            <div class="col-2">
+                <button type="button" class="btn btn-info btn-active-danger me-4 w-100" id="filtrar">
+                    Filtrar
+                </button>
             </div>
         </div>
     </div>
