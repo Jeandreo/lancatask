@@ -1,4 +1,4 @@
-<div @if(!$loop->last) style="border-bottom: solid 3px #f0f0f0;" @endif>
+<div @if(!isset($loop) || !$loop->first) style="border-top: solid 3px #f0f0f0;" @endif>
     <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-0 shadow-list dmk-tasks h-35px task-list task-on-subtask " data-task="{{ $task->id }}">
         <div class="d-flex align-items-center justify-content-between w-100 h-100">
             <div class="d-flex align-items-center h-100 w-100">
@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center h-100 w-100 div-name-task z-index-9">
-                    <div class="d-block min-w-md-300px w-100 px-3 px-md-0 ms-5">
+                    <div class="d-block w-100 px-3 px-md-0 ms-5">
                         <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-3" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
                             @if (isset($showProject))
                             <span class="fw-bold text-gray-600 fs-6">{{ $task->module->project->name }} - </span>
