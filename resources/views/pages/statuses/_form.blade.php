@@ -16,4 +16,13 @@
             @endforeach
         </select>
     </div>
+    <div class="col-12 mb-4">
+        <div class="form-check form-check-custom form-check-solid">
+            <input type="hidden" name="done" value="0"/>
+            <input class="form-check-input" name="done" @if($content->done) checked @endif type="checkbox" value="1" id="taskDone"/>
+            <label class="form-check-label" for="taskDone">
+                Marcar Tarefa como Concluída?
+            </label>
+        </div>
+    </div>
 </div>

@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="card-body p-5">
-        <div class="draggable-zone load-tasks-project" data-type="project" style="min-height: 50px;" data-module="{{ $module->id }}" id="project-tasks-{{ $module->id }}">
+        <div class="draggable-zone load-tasks-project tasks-zones" data-type="project" style="min-height: 50px;" data-module="{{ $module->id }}" id="project-tasks-{{ $module->id }}">
             {{-- RESULTS HERE --}}
             {{-- RESULTS HERE --}}
             {{-- RESULTS HERE --}}

@@ -381,6 +381,9 @@
         // GET ACTUAL STATUS
         var status = $(this).closest('.actual-status');
 
+        // Obtém div
+        var divTask = $(this).closest('.div-task');
+
         // AJAX
         $.ajax({
             type:'PUT',
@@ -390,6 +393,16 @@
                 // CHANGE TO NEW COLOR AND NAME STATUS
                 status.css('background', data['color']);
                 status.find('.status-name').text(data['name']);
+                var checkBox = divTask.find('.task-main');
+                if (data['done']) {
+                    if (!checkBox.is(':checked')) { // Se não estiver marcado
+                        checkBox.trigger('click'); // Aciona o evento de clique
+                    }
+                } else {
+                    if (checkBox.is(':checked')) {
+                        checkBox.trigger('click');
+                    }
+                }
             }
         });
 

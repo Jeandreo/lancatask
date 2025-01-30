@@ -1,4 +1,4 @@
-<div @if(!isset($loop) || !$loop->first) style="border-top: solid 3px #f0f0f0;" @endif>
+<div class="border-top-tasks">
     <div class="bg-white rounded p-0 d-flex align-items-center justify-content-between mb-0 shadow-list dmk-tasks h-35px task-list task-on-subtask " data-task="{{ $task->id }}">
         <div class="d-flex align-items-center justify-content-between w-100 h-100">
             <div class="d-flex align-items-center h-100 w-100">

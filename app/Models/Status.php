@@ -21,6 +21,7 @@ class Status extends Model
         'project_id',
         'order',
         'status',
+        'done',
         'filed_by',
         'created_by',
         'updated_by',

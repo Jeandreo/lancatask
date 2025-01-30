@@ -562,6 +562,7 @@ class TaskController extends Controller
         return response()->json([
             "name" => $status->name,
             "color" => $status->color,
+            "done" => $status->done,
         ], 200);
 
     }

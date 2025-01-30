@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body p-5">
+            <div class="card-body p-5 tasks-zones">
                 @foreach ($tasks->where('date_end', '<', now()) as $task)
                 <div class="div-task" style="border-bottom: solid 2px white;">
                     @include('pages.tasks._task', ['hideMove' => true, 'showProject' => true])
@@ -53,15 +53,15 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body p-5">
+            <div class="card-body p-5 tasks-zones">
                 @if ($tasks->where('date_end', '>=', now())->count() || $tasks->where('date_end', null)->count())
                     @foreach ($tasks->where('date_end', null) as $task)
-                    <div class="div-task div-task">
+                    <div class="div-task">
                         @include('pages.tasks._task', ['hideMove' => true, 'showProject' => true])
                     </div>
                     @endforeach
                     @foreach ($tasks->where('date_end', '>=', now()) as $task)
-                    <div class="div-task div-task">
+                    <div class="div-task">
                         @include('pages.tasks._task', ['hideMove' => true, 'showProject' => true])
                     </div>
                     @endforeach

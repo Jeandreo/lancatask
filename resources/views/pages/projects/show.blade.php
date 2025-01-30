@@ -111,34 +111,6 @@
 	draggableZone();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// DRAGGABLE
 	function draggable(){
 		var containers = document.querySelectorAll(".draggable-zone");
@@ -213,7 +185,7 @@
 		});
 
 	}
-	// draggable();
+	draggable();
 
     // SHOW TASK
     $(document).on('click', '#filtrar', function(e){

@@ -17,6 +17,14 @@ body {
     --bs-success-active: #1f9e00
 }
 
+.tasks-zones .div-task:first-child .border-top-tasks:first-child {
+    border-top: none;
+}
+
+.tasks-zones .border-top-tasks {
+    border-top: solid 3px #f0f0f0;
+}
+
 input[type="color"] {
 border-radius: 5px;
 padding: 0;
