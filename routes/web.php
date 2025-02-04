@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/visualizando-lista/{id}', [TaskController::class, 'showOne'])->name('show.one');
             Route::post('/desabilitar', [TaskController::class, 'destroy'])->name('destroy');
             Route::get('/desabilitar/{id?}', [TaskController::class, 'destroy'])->name('destroy');
+            Route::get('/desabilitar-todas/{id}', [TaskController::class, 'destroyAll'])->name('destroy.all');
             Route::post('/exibir-subtarefas', [TaskController::class, 'showSubtasks'])->name('show.subtasks');
             Route::get('/editar/{id}', [TaskController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}', [TaskController::class, 'update'])->name('update');

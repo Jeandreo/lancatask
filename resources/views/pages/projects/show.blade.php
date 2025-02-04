@@ -25,8 +25,11 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-2">
-                <button type="button" class="btn btn-info btn-active-danger me-4 w-100" id="filtrar">
+            <div class="col-2 d-flex">
+                <a href="{{ route('tasks.destroy.all', $project->id) }}" type="button" class="btn btn-icon btn-info btn-active-danger me-4" data-bs-toggle="tooltip" data-bs-original-title="Arquivar Tarefas Realizadas">
+                    <i class="fa-solid fa-trash-can"></i>
+                </a>
+                <button type="button" class="btn btn-info btn-active-danger w-75" id="filtrar">
                     Filtrar
                 </button>
             </div>

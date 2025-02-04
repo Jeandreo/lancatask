@@ -425,6 +425,31 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function destroyAll($id)
+    {
+
+        // Obtém projeto
+        $project = Project::find($id);
+
+        // Módulos
+        $modules = $project->modules()->pluck('id')->toArray();
+        
+        // STORING NEW DATA
+        $this->repository->where('checked', true)->where('module_id', $modules)->update(['status' => false, 'updated_by' => Auth::id()]);
+
+        // REDIRECT AND MESSAGES
+        return redirect()
+                ->back()
+                ->with('message', 'Tarefas Arquivadas');
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function showSubtasks(Request $request)
     {
 
