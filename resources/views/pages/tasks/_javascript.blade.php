@@ -168,13 +168,13 @@
         // IF TASK MAIN
         if(isMain){
             // SELECT DIV OF TASK
-            var taskDiv = $(this).closest('.div-task');
+            var taskDiv = $(this).closest('.div-task-remove');
 
-            // // // ADD ANIMATION AND REMOVE TASK
-            // // taskDiv.addClass('slide-up');
-            // // setTimeout(function() {
-            // //     taskDiv.remove();
-            // // }, 500);
+            // ADD ANIMATION AND REMOVE TASK
+            taskDiv.addClass('slide-up');
+            setTimeout(function() {
+                taskDiv.remove();
+            }, 500);
 
         } else {
             subtask.toggleClass('text-decoration-line-through ');

@@ -24,8 +24,8 @@ function randomColor()
 
 function formatLinks($text)
 {
-    // Regex para detectar URLs
-    $pattern = '/(https?:\/\/[^\s<]+)/i';
+    // Regex para detectar URLs que não estão dentro de tags HTML
+    $pattern = '/(?<!<a href="|<img src=")(https?:\/\/[^\s<]+)/i';
 
     // Substituir URLs por links clicáveis
     $formattedText = preg_replace_callback($pattern, function ($matches) {
@@ -35,6 +35,7 @@ function formatLinks($text)
 
     return $formattedText;
 }
+
 
 // PUT THE BACKGROUND IN THE TEXT COLOR
 function hex2rgb($colour, $opacity)

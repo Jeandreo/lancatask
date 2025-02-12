@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'Administrador',
             'position_id' => 1,
             'email' => 'jeandreofur@gmail.com',
-            'password' => Hash::make('jean1010'),
+            'password' => Hash::make('@Sucesso1243'),
             'created_by' => 1,
         ]);
 
