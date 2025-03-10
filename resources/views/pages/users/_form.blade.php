@@ -24,7 +24,7 @@
         <select class="form-select form-select-solid" name="position_id" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
             @foreach ($positions as $position)
-            <option value="{{ $position->id }}" @if(isset($content) && $content->id == $position->id) selected @endif>{{ $position->name }}</option>
+            <option value="{{ $position->id }}" @if(isset($content) && $content->position_id == $position->id) selected @endif>{{ $position->name }}</option>
             @endforeach
         </select>
     </div>

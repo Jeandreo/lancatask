@@ -72,6 +72,9 @@ class UserController extends Controller
         $data['created_by'] = Auth::id();
         $data['password'] = Hash::make($data['password']);
 
+        // Email
+        if($this->repository->where('email', $data['email'])->exists()) return redirect()->back()->with('message', 'Email já cadastrado.') ;
+
         // SEND DATA
         $created = $this->repository->create($data);
 
@@ -130,6 +133,8 @@ class UserController extends Controller
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
+
+        if($this->repository->where('email', $data['email'])->exists()) return redirect()->back()->with('message', 'Email já cadastrado.') ;
 
         // Remove senha caso venha vazia
         if(!$data['password']){
