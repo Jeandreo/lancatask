@@ -764,7 +764,10 @@ class TaskController extends Controller
 
         // GET ALL DATA
         $contents = $this->repository->find($id);
-        $users = User::where('status', true)->get();
+
+        
+        // Obtém projeto da tarefa
+        $users = $contents->module->project->users;
 
         // RETURN VIEW WITH DATA
         return view('pages.tasks._add_participants')->with([
