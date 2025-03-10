@@ -80,7 +80,7 @@
                 </div>
                 <div class="h-150px p-3">
                     @if ($task->status != 0)
-                    <form action="" method="POST" class="position-relative ck-tiny" id="send-comment" data-task="{{ $task->id }}">
+                    <form action="" method="POST" class="position-relative ck-tiny">
                         @csrf
                         <div class="pt-0" data-bs-theme="light">
                             <textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>
@@ -89,7 +89,7 @@
                             <button class="btn btn-sm btn-icon" type="button" id="attach-file">
                                 <i class="fa-solid fa-paperclip"></i>
                             </button>
-                            <button class="btn btn-sm btn-info btn-active-success fw-bold text-uppercase">
+                            <button class="btn btn-sm btn-info btn-active-success fw-bold text-uppercase" id="send-comment" data-task="{{ $task->id }}">
                                 Enviar
                                 <i class="fa-regular fa-paper-plane fs-5 pe-0"></i>
                             </button>

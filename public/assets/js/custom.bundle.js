@@ -244,9 +244,7 @@ function UploadPlugin(editor) {
     };
 }
 
-
 function loadEditorText(selector = '.load-editor') {
-
     ClassicEditor.create(document.querySelector(selector), {
         extraPlugins: [UploadPlugin],
         removePlugins: ["MediaEmbedToolbar"],
@@ -278,22 +276,31 @@ function loadEditorText(selector = '.load-editor') {
 
         // Detectar a tecla Enter
         editor.editing.view.document.on('keydown', (event, data) => {
+            // Verifique se a tecla pressionada foi Enter
             if (data.keyCode === 13) { // 13 é o código da tecla Enter
-                data.preventDefault(); // Evita o comportamento padrão (quebrar linha)
-                const content = editor.getData(); // Obtém o conteúdo do editor
-                console.log('Conteúdo enviado:', content); // Exibe o conteúdo no console
 
-                var taskId = $('#send-comment').data('task');
+                // Verifique se Shift está pressionado usando data.domEvent
+                if (data.domEvent.shiftKey) {
+                    // Permite a quebra de linha com Shift + Enter
+                    return true; // Não previne o comportamento de quebra de linha
+                } else {
+                    // Impede o comportamento padrão com apenas Enter
+                    data.preventDefault();
+                    const content = editor.getData(); // Obtém o conteúdo do editor
 
-                // Aqui você pode adicionar a lógica de envio, como uma requisição AJAX
-                sendComment(taskId, content);
+                    var taskId = $('#send-comment').data('task');
 
-                // Limpa o editor após enviar
-                editor.setData('');
+                    // Aqui você pode adicionar a lógica de envio, como uma requisição AJAX
+                    sendComment(taskId, content);
+
+                    // Limpa o editor após enviar
+                    editor.setData('');
+                }
             }
         });
     });
 }
+
 
 $(document).on('click', '.show-image, .show-image-div img, figure img', function(){
 

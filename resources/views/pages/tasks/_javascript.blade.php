@@ -508,14 +508,14 @@
     }
 
     // SHOW TASK
-    $(document).on('submit', '#send-comment', function(e){
+    $(document).on('click', '#send-comment', function(e){
 
         // PARA EVENTO
         e.preventDefault();
 
         // GET DATA
         var taskId = $(this).data('task');
-        var text = $(this).find('[name="text"]').val();
+        var text = $(this).closest('form').find('.ck-content').html();
 
         sendComment(taskId, text);
 
