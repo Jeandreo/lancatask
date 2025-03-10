@@ -142,7 +142,6 @@ class UserController extends Controller
         } else {
             $data['password'] = Hash::make($data['password']);
         }
-        dd($data);
 
         // STORING NEW DATA
         $content->update($data);
