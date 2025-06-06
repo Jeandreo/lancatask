@@ -191,6 +191,14 @@
             }
         }
 
+        if(checked){
+            $(this).closest('.task-list').find('.task-no-check').hide();
+            $(this).closest('.task-list').find('.task-check').show();
+        } else {
+            $(this).closest('.task-list').find('.task-check').hide();
+            $(this).closest('.task-list').find('.task-no-check').show();
+        }
+
         // AJAX
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},

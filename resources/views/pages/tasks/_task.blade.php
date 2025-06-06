@@ -54,20 +54,29 @@
             <div class="w-125px symbol-group symbol-hover flex-nowrap justify-content-center list-participants-{{ $task->id }} opacity-1">
                 @include('pages.tasks._participants', ['opacity0' => true])
             </div>
-            <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusProject->color }}">
-                <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                    <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusProject->name }}</p>
-                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
-                        @foreach ($task->module->project->statuses->where('status', true) as $status)
-                        <div class="menu-item px-3 mb-2">
-                            <span data-task="{{ $task->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
-                                {{ $status->name }}
-                            </span>
+            <div class="task-check h-100" style="@if(!$task->checked) display: none; @endif">
+                <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 done-status" style="background: #44bd00;">
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <p class="text-white fw-bold m-0 text-center status-name">Concluído</p>
+                    </div>
+                </div>
+            </div>
+            <div class="task-no-check h-100" style="@if($task->checked) display: none; @endif">
+                <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 w-150px rounded-0 actual-status" style="background: {{ $task->statusProject->color }};">
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                        <p class="text-white fw-bold m-0 text-center status-name">{{ $task->statusProject->name }}</p>
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true" style="">
+                            @foreach ($task->module->project->statuses->where('status', true) as $status)
+                            <div class="menu-item px-3 mb-2">
+                                <span data-task="{{ $task->id }}" data-status="{{ $status->id }}" class="menu-link px-3 d-block text-center tasks-status" style="background: {{ $status->color }}; color: white">
+                                    {{ $status->name }}
+                                </span>
+                            </div>
+                            @endforeach
+                            <a href="{{ route('projects.edit', $task->module->project_id) }}" class="px-3 d-block text-center text-gray-600 text-hover-primary fw-semibold fs-8 text-uppercase redirect-this">
+                                Gerenciar Status
+                            </a>
                         </div>
-                        @endforeach
-                        <a href="{{ route('projects.edit', $task->module->project_id) }}" class="px-3 d-block text-center text-gray-600 text-hover-primary fw-semibold fs-8 text-uppercase redirect-this">
-                            Gerenciar Status
-                        </a>
                     </div>
                 </div>
             </div>

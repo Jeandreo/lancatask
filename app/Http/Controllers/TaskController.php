@@ -270,6 +270,7 @@ class TaskController extends Controller
         // Obtém Módulo
         $module = Module::find($data['module_id']);
         $data['status_id'] = $module->project->statuses()->first()->id ?? 1;
+        $data['date'] = $data['date_start'] = $data['date_end'] = now();
 
         // SEND DATA
         $created = $this->repository->create($data);
