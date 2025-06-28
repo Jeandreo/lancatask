@@ -17,7 +17,7 @@
                     <div class="d-block w-100 px-3 px-md-0 ms-5">
                         <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-3" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
                             @if (isset($showProject))
-                            <span class="fw-bold text-gray-600 fs-6">{{ $task->module->project->name }} - </span>
+                            <span class="fw-bold text-gray-600 fs-6">{{ $task->module->project->name }} - </span> @if($task->module->name) <span class="fw-bold text-gray-600 fs-6">{{ $task->module->name }} - </span> @endif
                             @endif
                             {{ $task->name }}
                         </p>
