@@ -83,7 +83,7 @@
             <div class="position-relative opacity-1">
                 <input type="text"
                     class="form-control border-0 form-control-sm flatpickr w-auto text-center w-200px task-date task-date-{{ $task->id }}
-                    @if(date('Y-m-d', strtotime($task->date_end)) == date('Y-m-d'))
+                    @if(date('Y-m-d', strtotime($task->date_end)) == date('Y-m-d') || $task->checked)
                         text-success
                     @elseif(strtotime($task->date_end) < time())
                         text-danger
