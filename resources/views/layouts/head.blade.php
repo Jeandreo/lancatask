@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/css/custom.bundle.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/css/custom.bundle.css?v=1.0.1') }}" rel="stylesheet" type="text/css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
