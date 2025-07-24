@@ -13,7 +13,7 @@ class GoogleController extends Controller
     {
         // dd(route('google.callback'));
         $client = new Google_Client();
-        $client->setAuthConfig(storage_path('app/google/credentiais.json'));
+        $client->setAuthConfig(storage_path('app/google/credentials.json'));
         $client->setAccessType('offline');
         $client->setPrompt('consent');
         $client->setScopes([
@@ -31,9 +31,11 @@ class GoogleController extends Controller
 
     public function callback()
     {
+
         $client = $this->getClient();
 
         if (request()->has('code')) {
+
             $token = $client->fetchAccessTokenWithAuthCode(request('code'));
 
             // Salva o token

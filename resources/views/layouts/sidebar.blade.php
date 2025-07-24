@@ -42,7 +42,7 @@
                         </a>
                     </div>
                     <div class="menu-item">
-                        <a class="menu-link" href="{{ route('google.auth') }}">
+                        <a class="menu-link" href="{{ route('configs.google.auth') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-user-group fs-4"></i>
                             </span>

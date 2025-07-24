@@ -13,6 +13,7 @@ class Agenda extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id_google',
         'name',
         'category_id',
         'description',

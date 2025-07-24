@@ -70,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}',          [AgendaController::class, 'edit'])->name('edit');
             Route::put('/editar/{id?}',         [AgendaController::class, 'update'])->name('update');
             Route::put('/calendario/{id?}',     [AgendaController::class, 'changeCalendar'])->name('calendar.update');
-            Route::get('/google',               [AgendaController::class, 'googleCalendar'])->name('google.event');
+            Route::get('/adicionar-evento-google', [AgendaController::class, 'googleCalendar'])->name('google.event');
         });
 
     });
@@ -191,6 +191,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('configuracoes')->group(function () {
         Route::name('configs.')->group(function () {
             Route::post('/cke-upload', [ConfigController::class, 'CKEupload']);
+            Route::get('/autenticar-google', [GoogleController::class, 'redirect'])->name('google.auth');
         });
     });
 
@@ -200,7 +201,6 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Autenticação com o Google
-Route::get('/google/auth', [GoogleController::class, 'redirect'])->name('google.auth');
 Route::get('/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
 

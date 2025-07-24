@@ -3,6 +3,7 @@ namespace App\Services;
 
 use Google_Client;
 use Google_Service_Calendar;
+use Illuminate\Support\Facades\Storage;
 
 class CalendarService
 {
@@ -12,8 +13,8 @@ class CalendarService
 
     public function __construct()
     {
-        $this->credentialsPath = storage_path('app/google/credenciais.json');
-        $this->tokenPath       = storage_path('app/google/calendar_token.json');
+        $this->credentialsPath = storage_path('app/google/credentials.json');
+        $this->tokenPath       = Storage::disk('local')->path('google/calendar_token.json');
 
         $client = new Google_Client();
         $client->setAuthConfig($this->credentialsPath);

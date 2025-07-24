@@ -202,22 +202,33 @@ class AgendaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function googleCalendar(Request $request)
+    public function googleCalendar(Request $request, CalendarService $calendar)
     {
-
-        // Inicia serviço google
-        $calendar = new CalendarService();
+        // (Opcional) validar entrada
+        $data = [
+            'summary'   => 'Teste através do LancaTask',
+            'start'     => '2025-07-24T08:00:00-03:00',
+            'end'       => '2025-07-24T09:00:00-03:00',
+            'email'     => 'jeandreofur@gmail.com',
+        ];
 
         $payload = [
-            'summary'     => 'Reunião',
-            'start'       => ['dateTime' => '2025-07-26T10:00:00-03:00', 'timeZone' => 'America/Sao_Paulo'],
-            'end'         => ['dateTime' => '2025-07-26T11:00:00-03:00', 'timeZone' => 'America/Sao_Paulo'],
-            'attendees'   => [['email' => 'jeandreofur@gmail.com']],
+            'summary'     => $data['summary'],
+            'start'       => ['dateTime' => $data['start'], 'timeZone' => 'America/Sao_Paulo'],
+            'end'         => ['dateTime' => $data['end'],   'timeZone' => 'America/Sao_Paulo'],
+            'attendees'   => [['email' => $data['email']]],
+            'reminders'   => [
+                'useDefault' => false,
+                'overrides'  => [
+                    ['method' => 'email', 'minutes' => 60 * 24],
+                    ['method' => 'email', 'minutes' => 30],
+                ],
+            ],
         ];
-    
-        $event = $calendar->insertEvent($payload);
-        return response()->json(['id' => $event->id]);
 
+        // $event = $calendar->insertEvent($payload, 'primary', 'all');
+
+        // return response()->json(['id' => $event->id], 201);
     }
 
     /**
