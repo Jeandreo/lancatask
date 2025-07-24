@@ -33,9 +33,57 @@
     </div>
 </div>
 
+@if (!isset($content))
+<div class="row py-2">
+    <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+        <label class="form-check-label form-label fs-6 fw-bold text-gray-700 mb-0 me-6" for="googleCalendar">
+            Incluir no Google Calendar
+        </label>
+        <input class="form-check-input cursor-pointer" type="checkbox" value="1" checked id="googleCalendar" name="send_google" @if(isset($content) && $content->id_google) checked @endif/>
+    </div>
+</div>
+<div class="row py-2 select-members">
+    <div class="col-2">
+        <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Membros do time:</label>
+    </div>
+    <div class="col-10">
+        <select class="form-select form-select-solid" name="users[]" multiple data-control="select2" data-placeholder="Selecione" required>
+            @foreach($users as $user)
+                <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="row py-2 select-clients">
+    <div class="col-2">
+        <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Clientes:</label>
+    </div>
+    <div class="col-10">
+        <select class="form-select form-select-solid" name="clients[]" multiple data-control="select2" data-placeholder="Selecione" required>
+            @foreach($clients as $client)
+                <option value="{{ $client->id }}">{{ $client->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+@endif
+
+
 @section('custom-footer')
 @parent
 <script>
+
+    $(document).on('change', '[name="send_google"]', function(){
+        if($(this).is(':checked')){
+            $('.select-members').show();
+            $('.select-clients').show();
+        } else {
+            $('.select-members').hide();
+            $('.select-clients').hide();
+        }
+    });
+
     // FORMAT OPTIONS
     var optionFormat = function(item) {
         if ( !item.id ) {

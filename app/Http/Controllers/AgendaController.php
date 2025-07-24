@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
-use App\Services\CalendarService;
+use App\Models\User;
+use App\Models\Client;
+use App\Services\GoogleCalendarService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,12 +14,14 @@ class AgendaController extends Controller
 {
     protected $request;
     private $repository;
+    private $GoogleCalendarService;
 
-    public function __construct(Request $request, Agenda $content)
+    public function __construct(Request $request, Agenda $content, GoogleCalendarService $GoogleCalendarService)
     {
 
         $this->request = $request;
         $this->repository = $content;
+        $this->GoogleCalendarService = $GoogleCalendarService;
 
     }
 
@@ -47,13 +52,17 @@ class AgendaController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->where('status', true)->orderBy('name', 'ASC')->get();
-        $agenda = $this->meetingsToEvents($contents);
+        $contents   = $this->repository->where('status', true)->orderBy('name', 'ASC')->get();
+        $agenda     = $this->meetingsToEvents($contents);
+        $users      = User::where('status', true)->orderBy('name', 'ASC')->get();
+        $clients    = Client::where('status', true)->orderBy('name', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.agenda.index')->with([
-            'contents' => $contents,
-            'agenda' => $agenda,
+            'contents'  => $contents,
+            'agenda'    => $agenda,
+            'users'     => $users,
+            'clients'   => $clients,
             'filterFor' => null,
         ]);
 
@@ -98,8 +107,41 @@ class AgendaController extends Controller
         $data['hour_start'] = $data['date_start'];
         $data['hour_end'] = $data['date_end'];
 
+        dd($data);
+
         // SEND DATA
-        $this->repository->create($data);
+        $created = $this->repository->create($data);
+
+     /*    // Se foi criado com sucesso e quero enviar para o google calendar
+        if($created && $data['send_google']){
+
+            $data = [
+                'summary'   => $data['name'],
+                'start'     => convertDateToISO($data['date_start']),
+                'end'       => convertDateToISO($data['date_end']),
+                'email'     => 'jeandreofur@gmail.com',
+            ];
+
+            $payload = [
+                'summary'     => $data['summary'],
+                'start'       => ['dateTime' => $data['start'], 'timeZone' => 'America/Sao_Paulo'],
+                'end'         => ['dateTime' => $data['end'],   'timeZone' => 'America/Sao_Paulo'],
+                'attendees'   => [['email' => $data['email']]],
+                'reminders'   => [
+                    'useDefault' => false,
+                    'overrides'  => [
+                        ['method' => 'email', 'minutes' => 60 * 24],
+                        ['method' => 'email', 'minutes' => 30],
+                    ],
+                ],
+            ];
+
+            $event = $this->GoogleCalendarService->insertEvent($payload, 'primary', 'all');
+
+            // Salva o id do google calendar
+            $created->google_id = $event->id;
+            $created->save();
+        } */
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -195,41 +237,6 @@ class AgendaController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function googleCalendar(Request $request, CalendarService $calendar)
-    {
-        // (Opcional) validar entrada
-        $data = [
-            'summary'   => 'Teste através do LancaTask',
-            'start'     => '2025-07-24T08:00:00-03:00',
-            'end'       => '2025-07-24T09:00:00-03:00',
-            'email'     => 'jeandreofur@gmail.com',
-        ];
-
-        $payload = [
-            'summary'     => $data['summary'],
-            'start'       => ['dateTime' => $data['start'], 'timeZone' => 'America/Sao_Paulo'],
-            'end'         => ['dateTime' => $data['end'],   'timeZone' => 'America/Sao_Paulo'],
-            'attendees'   => [['email' => $data['email']]],
-            'reminders'   => [
-                'useDefault' => false,
-                'overrides'  => [
-                    ['method' => 'email', 'minutes' => 60 * 24],
-                    ['method' => 'email', 'minutes' => 30],
-                ],
-            ],
-        ];
-
-        // $event = $calendar->insertEvent($payload, 'primary', 'all');
-
-        // return response()->json(['id' => $event->id], 201);
-    }
 
     /**
      * Remove the specified resource from storage.

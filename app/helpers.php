@@ -2,6 +2,7 @@
 
 // GET PROJECTS
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,6 +21,10 @@ function randomColor()
         $color .= $letters[rand(0, 15)];
     }
     return $color;
+}
+
+function convertDateToISO($date){
+    return Carbon::createFromFormat('Y-m-d H:i', $date, 'America/Sao_Paulo')->format('Y-m-d\TH:i:sP');
 }
 
 function formatLinks($text)
