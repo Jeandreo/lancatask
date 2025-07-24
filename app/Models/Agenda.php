@@ -30,4 +30,14 @@ class Agenda extends Model
         'color',
         'created_by',
     ];
+
+    function membersUsers()
+    {
+        return $this->hasMany(AgendaMember::class, 'agenda_id', 'id')->where('type', 'user')->with('user');
+    }
+
+    function membersClients()
+    {
+        return $this->hasMany(AgendaMember::class, 'agenda_id', 'id')->where('type', 'client')->with('client');
+    }
 }

@@ -20,4 +20,14 @@ class AgendaMember extends Model
         'agenda_id',
         'status',
     ];
+
+    function user()
+    {
+        return $this->belongsTo(User::class, 'member_id');
+    }
+
+    function client()
+    {
+        return $this->belongsTo(Client::class, 'member_id');
+    }
 }

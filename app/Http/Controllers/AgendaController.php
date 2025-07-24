@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
+use App\Models\AgendaMember;
 use App\Models\User;
 use App\Models\Client;
 use App\Services\GoogleCalendarService;
@@ -14,14 +15,12 @@ class AgendaController extends Controller
 {
     protected $request;
     private $repository;
-    private $GoogleCalendarService;
 
-    public function __construct(Request $request, Agenda $content, GoogleCalendarService $GoogleCalendarService)
+    public function __construct(Request $request, Agenda $content)
     {
 
         $this->request = $request;
         $this->repository = $content;
-        $this->GoogleCalendarService = $GoogleCalendarService;
 
     }
 
@@ -56,7 +55,7 @@ class AgendaController extends Controller
         $agenda     = $this->meetingsToEvents($contents);
         $users      = User::where('status', true)->orderBy('name', 'ASC')->get();
         $clients    = Client::where('status', true)->orderBy('name', 'ASC')->get();
-
+        
         // RETURN VIEW WITH DATA
         return view('pages.agenda.index')->with([
             'contents'  => $contents,
@@ -107,13 +106,39 @@ class AgendaController extends Controller
         $data['hour_start'] = $data['date_start'];
         $data['hour_end'] = $data['date_end'];
 
-        dd($data);
-
         // SEND DATA
         $created = $this->repository->create($data);
 
-     /*    // Se foi criado com sucesso e quero enviar para o google calendar
-        if($created && $data['send_google']){
+        // Adiciona usuários
+        if(count($data['users'])){
+
+            foreach($data['users'] as $user){
+                AgendaMember::create([
+                    'type'      => 'user',
+                    'member_id' => $user,
+                    'agenda_id' => $created->id,
+                ]);
+            }
+
+        }
+
+        // Adiciona clientes
+        if(count($data['clients'])){
+
+            foreach($data['clients'] as $client){
+                AgendaMember::create([
+                    'type'      => 'client',
+                    'member_id' => $client,
+                    'agenda_id' => $created->id,
+                ]);
+            }
+
+        }
+
+        // Se foi criado com sucesso e quero enviar para o google calendar
+      /*   if($created && $data['send_google']){
+
+            $googleCalendarService = GoogleCalendarService::class;
 
             $data = [
                 'summary'   => $data['name'],
@@ -136,7 +161,7 @@ class AgendaController extends Controller
                 ],
             ];
 
-            $event = $this->GoogleCalendarService->insertEvent($payload, 'primary', 'all');
+            $event = $googleCalendarService->insertEvent($payload, 'primary', 'all');
 
             // Salva o id do google calendar
             $created->google_id = $event->id;

@@ -29,7 +29,7 @@
             </div>
             <div class="card-body p-5 tasks-zones">
                 @foreach ($tasks->where('date_end', '<', date('Y-m-d')) as $task)
-                <div class="div-task div-task-remove" style="border-bottom: solid 2px white;">
+                <div class="div-task div-task-remove mb-2">
                     @include('pages.tasks._task', ['hideMove' => true, 'showProject' => true])
                 </div>
                 @endforeach

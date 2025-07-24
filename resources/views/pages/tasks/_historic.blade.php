@@ -105,7 +105,7 @@
                                 <b>Alterou de :</b>
                                 <i class="fa-solid fa-font-awesome p-2
                                 @if ($historic->previous_key == 0)
-                                text-gray-300
+                                text-gray-700
                                 @elseif($historic->previous_key == 1)
                                 text-warning
                                 @elseif($historic->previous_key == 2)
@@ -116,7 +116,7 @@
                                 Para
                                 <i class="fa-solid fa-font-awesome p-2
                                 @if ($historic->key == 0)
-                                text-gray-300
+                                text-gray-700
                                 @elseif($historic->key == 1)
                                 text-warning
                                 @elseif($historic->key == 2)

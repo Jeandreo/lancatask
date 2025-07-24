@@ -57,19 +57,19 @@ Route::middleware(['auth'])->group(function () {
 
 
     // PROFILE USER
-    Route::prefix('agendas')->group(function () {
+    Route::prefix('calendario')->group(function () {
 
         // PROJECTS
         Route::name('agenda.')->group(function () {
-            Route::get('/',                     [AgendaController::class, 'index'])->name('index');
-            Route::get('/gerenciar',            [AgendaController::class, 'list'])->name('list');
-            Route::get('/adicionar',            [AgendaController::class, 'create'])->name('create');
-            Route::post('/adicionar',           [AgendaController::class, 'store'])->name('store');
-            Route::get('/visualizando/{id?}',   [AgendaController::class, 'show'])->name('show');
-            Route::get('/desabilitar/{id}',     [AgendaController::class, 'destroy'])->name('destroy');
-            Route::get('/editar/{id}',          [AgendaController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id?}',         [AgendaController::class, 'update'])->name('update');
-            Route::put('/calendario/{id?}',     [AgendaController::class, 'changeCalendar'])->name('calendar.update');
+            Route::get('/',                        [AgendaController::class, 'index'])->name('index');
+            Route::get('/gerenciar',               [AgendaController::class, 'list'])->name('list');
+            Route::get('/adicionar',               [AgendaController::class, 'create'])->name('create');
+            Route::post('/adicionar',              [AgendaController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}',      [AgendaController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}',        [AgendaController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}',             [AgendaController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id?}',            [AgendaController::class, 'update'])->name('update');
+            Route::put('/calendario/{id?}',        [AgendaController::class, 'changeCalendar'])->name('calendar.update');
             Route::get('/adicionar-evento-google', [AgendaController::class, 'googleCalendar'])->name('google.event');
         });
 

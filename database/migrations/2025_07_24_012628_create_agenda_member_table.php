@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('type', ['user', 'client']);
             $table->foreignId('member_id');
-            $table->foreignId('agenda_id')->constrained('agenda');
+            $table->foreignId('agenda_id')->constrained('agendas');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

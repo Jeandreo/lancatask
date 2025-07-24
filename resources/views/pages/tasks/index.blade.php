@@ -170,8 +170,8 @@
             "paginate": {
                 "previous": "Anterior",
                 "next": "Próximo",
-                "first": '<i class="fa-solid fa-angles-left text-gray-300 text-hover-primary cursor-pointer"></i>',
-                "last": '<i class="fa-solid fa-angles-right text-gray-300 text-hover-primary cursor-pointer"></i>',
+                "first": '<i class="fa-solid fa-angles-left text-gray-700 text-hover-primary cursor-pointer"></i>',
+                "last": '<i class="fa-solid fa-angles-right text-gray-700 text-hover-primary cursor-pointer"></i>',
             }
         },
         "dom": "<'row'" +

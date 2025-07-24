@@ -343,13 +343,13 @@
 
                 // ALTERA PRIORIDADE
                 if (data == 1){
-                    flagHtml.removeClass('text-gray-300').addClass('text-warning');
+                    flagHtml.removeClass('text-gray-700').addClass('text-warning');
                 } else if (data == 2){
                     flagHtml.removeClass('text-warning ').addClass('text-info');
                 } else if (data == 3){
                     flagHtml.removeClass('text-info').addClass('text-danger');
                 } else {
-                    flagHtml.removeClass('text-danger').addClass('text-gray-300');
+                    flagHtml.removeClass('text-danger').addClass('text-gray-700');
                 }
 
             }
