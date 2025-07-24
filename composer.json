@@ -7,8 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "google/apiclient": "^2.15",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "spatie/laravel-google-calendar": "^3.8",
         "yajra/laravel-datatables-oracle": "^11.1"
     },
     "require-dev": {

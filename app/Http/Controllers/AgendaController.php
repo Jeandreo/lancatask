@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Agenda;
+use App\Services\CalendarService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -195,6 +196,31 @@ class AgendaController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function googleCalendar(Request $request)
+    {
+
+        // Inicia serviço google
+        $calendar = new CalendarService();
+
+        $payload = [
+            'summary'     => 'Reunião',
+            'start'       => ['dateTime' => '2025-07-26T10:00:00-03:00', 'timeZone' => 'America/Sao_Paulo'],
+            'end'         => ['dateTime' => '2025-07-26T11:00:00-03:00', 'timeZone' => 'America/Sao_Paulo'],
+            'attendees'   => [['email' => 'jeandreofur@gmail.com']],
+        ];
+    
+        $event = $calendar->insertEvent($payload);
+        return response()->json(['id' => $event->id]);
+
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -211,7 +237,7 @@ class AgendaController extends Controller
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
         // REDIRECT AND MESSAGES
-        return redirect()->back()->with('message', 'Evento ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+        return redirect()->back()->with('message', 'Evento ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 

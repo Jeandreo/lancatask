@@ -141,7 +141,7 @@ class UserPositionController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('positions.index')
-            ->with('message', 'Cargo ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Cargo ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }

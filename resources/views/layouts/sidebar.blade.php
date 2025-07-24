@@ -32,6 +32,24 @@
                             </span>
                         </a>
                     </div>
+                    <div class="menu-item">
+                        <a class="menu-link" href="{{ route('clients.index') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-user-group fs-4"></i>
+                            </span>
+                            <span class="menu-title">Clientes
+                            </span>
+                        </a>
+                    </div>
+                    <div class="menu-item">
+                        <a class="menu-link" href="{{ route('google.auth') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-user-group fs-4"></i>
+                            </span>
+                            <span class="menu-title">Autenticação Google
+                            </span>
+                        </a>
+                    </div>
                     <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                         <span class="menu-link"  >
                             <span  class="menu-icon" >

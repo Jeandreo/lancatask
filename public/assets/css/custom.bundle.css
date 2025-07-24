@@ -513,3 +513,7 @@ input[type=text]:disabled {
     overflow-wrap: break-word; /* Quebra em navegadores modernos */
     white-space: normal; /* Garante que o texto ocupe várias linhas */
 }
+
+.flatpickr-date {
+    cursor: pointer;
+}

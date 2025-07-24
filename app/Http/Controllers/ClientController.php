@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\UserPosition;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class ClientController extends Controller
 {
     protected $request;
     private $repository;
 
-    public function __construct(Request $request, User $content)
+    public function __construct(Request $request, Client $content)
     {
 
         $this->request = $request;
@@ -33,12 +31,11 @@ class UserController extends Controller
         $contents = $this->repository->orderBy('id', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
-        return view('pages.users.index')->with([
+        return view('pages.clients.index')->with([
             'contents' => $contents,
         ]);
 
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -46,14 +43,8 @@ class UserController extends Controller
      */
     public function create()
     {
-
-        // Obtém dados
-        $positions = UserPosition::where('status', true)->get();
-
         // RENDER VIEW
-        return view('pages.users.create')->with([
-            'positions' => $positions,
-        ]);
+        return view('pages.clients.create');
     }
 
     /**
@@ -68,25 +59,16 @@ class UserController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
-        // CREATED BY
+        // Obtém projeto
         $data['created_by'] = Auth::id();
-        $data['password'] = Hash::make($data['password']);
-
-        // Email
-        if($this->repository->where('email', $data['email'])->exists()) return redirect()->back()->with('message', 'Email já cadastrado.') ;
 
         // SEND DATA
-        $created = $this->repository->create($data);
-
-        // Salva foto
-        if (isset($data['photo']) && $data['photo']->isValid()) {
-            $data['photo']->storeAs('users/photos', $created->id . '.jpg', 'public');
-        }
+        $this->repository->create($data);
 
         // REDIRECT AND MESSAGES
         return redirect()
-                ->route('users.index')
-                ->with('message', 'Usuário adicionado com sucesso.');
+                ->route('clients.index')
+                ->with('message', 'Cliente adicionado com sucesso.');
 
     }
 
@@ -104,13 +86,9 @@ class UserController extends Controller
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
 
-        // Obtém dados
-        $positions = UserPosition::where('status', true)->get();
-
         // GENERATES DISPLAY WITH DATA
-        return view('pages.users.edit')->with([
+        return view('pages.clients.edit')->with([
             'content' => $content,
-            'positions' => $positions,
         ]);
     }
 
@@ -134,27 +112,13 @@ class UserController extends Controller
         // UPDATE BY
         $data['updated_by'] = Auth::id();
 
-        if($this->repository->where('email', $data['email'])->where('id', '!=', $id)->exists()) return redirect()->back()->with('message', 'Email já cadastrado.') ;
-
-        // Remove senha caso venha vazia
-        if(!$data['password']){
-            unset($data['password']);
-        } else {
-            $data['password'] = Hash::make($data['password']);
-        }
-
         // STORING NEW DATA
         $content->update($data);
 
-        // Salva foto
-        if (isset($data['photo']) && $data['photo']->isValid()) {
-            $data['photo']->storeAs('users/photos', $id . '.jpg', 'public');
-        }
-
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('users.index')
-            ->with('message', 'Usuário editado com sucesso.');
+            ->route('clients.edit', $content->id)
+            ->with('message', 'Cliente atualizado com sucesso.');
 
     }
 
@@ -176,8 +140,8 @@ class UserController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('users.index')
-            ->with('message', 'Usuário ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+            ->route('clients.index')
+            ->with('message', 'Cliente ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }

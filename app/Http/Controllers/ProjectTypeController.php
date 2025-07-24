@@ -141,7 +141,7 @@ class ProjectTypeController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('projects.types.index')
-            ->with('message', 'Tipo de projeto ' . ($status == false ? 'desativado' : 'habiliitado') . ' com sucesso.');
+            ->with('message', 'Tipo de projeto ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
     }
 }

@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeveloperController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTypeController;
@@ -29,15 +32,26 @@ Route::middleware(['auth'])->group(function () {
     // Projetos
     Route::prefix('projetos')->group(function () {
         Route::name('projects.')->group(function () {
-            Route::get('/', [ProjectController::class, 'index'])->name('index');
-            Route::get('/adicionar', [ProjectController::class, 'create'])->name('create');
-            Route::post('/adicionar', [ProjectController::class, 'store'])->name('store');
-            Route::get('/visualizar/{id}', [ProjectController::class, 'show'])->name('show');
-            Route::get('/editar/{id}', [ProjectController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id}', [ProjectController::class, 'update'])->name('update');
-            Route::get('/desabilitar/{id}', [ProjectController::class, 'destroy'])->name('destroy');
-            Route::get('/duplicar/{id}', [ProjectController::class, 'duplicate'])->name('duplicate');
-            Route::get('/excluir/{id}', [ProjectController::class, 'delete'])->name('delete');
+            Route::get('/',                     [ProjectController::class, 'index'])->name('index');
+            Route::get('/adicionar',            [ProjectController::class, 'create'])->name('create');
+            Route::post('/adicionar',           [ProjectController::class, 'store'])->name('store');
+            Route::get('/visualizar/{id}',      [ProjectController::class, 'show'])->name('show');
+            Route::get('/editar/{id}',          [ProjectController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}',          [ProjectController::class, 'update'])->name('update');
+            Route::get('/desabilitar/{id}',     [ProjectController::class, 'destroy'])->name('destroy');
+            Route::get('/duplicar/{id}',        [ProjectController::class, 'duplicate'])->name('duplicate');
+            Route::get('/excluir/{id}',         [ProjectController::class, 'delete'])->name('delete');
+        });
+    });
+    // Projetos
+    Route::prefix('clientes')->group(function () {
+        Route::name('clients.')->group(function () {
+            Route::get('/',                     [ClientController::class, 'index'])->name('index');
+            Route::get('/adicionar',            [ClientController::class, 'create'])->name('create');
+            Route::post('/adicionar',           [ClientController::class, 'store'])->name('store');
+            Route::get('/editar/{id}',          [ClientController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}',          [ClientController::class, 'update'])->name('update');
+            Route::get('/desabilitar/{id}',     [ClientController::class, 'destroy'])->name('destroy');
         });
     });
 
@@ -47,15 +61,16 @@ Route::middleware(['auth'])->group(function () {
 
         // PROJECTS
         Route::name('agenda.')->group(function () {
-            Route::get('/', [AgendaController::class, 'index'])->name('index');
-            Route::get('/gerenciar', [AgendaController::class, 'list'])->name('list');
-            Route::get('/adicionar', [AgendaController::class, 'create'])->name('create');
-            Route::post('/adicionar', [AgendaController::class, 'store'])->name('store');
-            Route::get('/visualizando/{id?}', [AgendaController::class, 'show'])->name('show');
-            Route::get('/desabilitar/{id}', [AgendaController::class, 'destroy'])->name('destroy');
-            Route::get('/editar/{id}', [AgendaController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id?}', [AgendaController::class, 'update'])->name('update');
-            Route::put('/calendario/{id?}', [AgendaController::class, 'changeCalendar'])->name('calendar.update');
+            Route::get('/',                     [AgendaController::class, 'index'])->name('index');
+            Route::get('/gerenciar',            [AgendaController::class, 'list'])->name('list');
+            Route::get('/adicionar',            [AgendaController::class, 'create'])->name('create');
+            Route::post('/adicionar',           [AgendaController::class, 'store'])->name('store');
+            Route::get('/visualizando/{id?}',   [AgendaController::class, 'show'])->name('show');
+            Route::get('/desabilitar/{id}',     [AgendaController::class, 'destroy'])->name('destroy');
+            Route::get('/editar/{id}',          [AgendaController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id?}',         [AgendaController::class, 'update'])->name('update');
+            Route::put('/calendario/{id?}',     [AgendaController::class, 'changeCalendar'])->name('calendar.update');
+            Route::get('/google',               [AgendaController::class, 'googleCalendar'])->name('google.event');
         });
 
     });
@@ -179,7 +194,14 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    // Testar
+    Route::get('/testar', [DeveloperController::class, 'test']);
+
 });
+
+// Autenticação com o Google
+Route::get('/google/auth', [GoogleController::class, 'redirect'])->name('google.auth');
+Route::get('/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
 
 
 
