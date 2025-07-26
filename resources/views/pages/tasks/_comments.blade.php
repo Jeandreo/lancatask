@@ -7,7 +7,7 @@
                   <img alt="Pic" src="{{ findImage('users/photos/' . $content->created_by . '.jpg') }}" class="object-fit-cover">
                </div>
                <div class="ms-3">
-                  <p class="fs-6 fw-bold text-gray-700 me-1 mb-0">{{ $content->author->name }}</p>
+                  <p class="fs-6 fw-bold text-gray-900 me-1 mb-0">{{ $content->author->name }}</p>
                   <p class="text-muted fs-7 mb-0">{{ $content->created_at->format('d/m/Y') }} ás {{ $content->created_at->format('H:i') }}</p>
                </div>
          </div>
@@ -15,7 +15,7 @@
       @endif
       <div class="d-flex justify-content-start mb-3" title="{{ $content->created_at->format('d/m/Y') }} ás {{ $content->created_at->format('H:i') }}">
          <div class="d-flex flex-column align-items-start opacity-1">
-            <div class="p-5 rounded bg-light-primary text-gray-700 fw-semibold mw-lg-400px text-start comment-ajax position-relative" data-kt-element="message-text">
+            <div class="p-5 rounded bg-light-primary text-gray-900 fw-semibold mw-lg-400px text-start comment-ajax position-relative" data-kt-element="message-text">
                <a href="{{ route('comments.destroy', $content->id) }}" class="destroy-comment position-absolute btn btn-sm btn-danger btn-active-primary rounded-circle btn-icon opacity-0 h-20px w-20px" data-task="{{ $content->task_id }}" style="right: -10px; top: -10px;">
                   <i class="fa-solid fa-trash-can text-white fs-9"></i>
                </a>

@@ -225,7 +225,7 @@ class TaskController extends Controller
                 return $html;
             })
             ->addColumn('project', function ($row) {
-                return '<span class="fw-bold text-gray-700">'.$row->project_name.'</span>';
+                return '<span class="fw-bold text-gray-900">'.$row->project_name.'</span>';
             })
             ->addColumn('module', function ($row) {
                 return '<span class="badge" style="background: '.hex2rgb($row->module_color, 5).'; color: '.$row->module_color.'">'.$row->module_name.'</span>';

@@ -18,7 +18,7 @@
 </div>
 <div class="card">
     <div class="card-header min-h-50px">
-        <p class="card-title text-gray-700 fs-5 fw-bold p-0">Status do projeto</p>
+        <p class="card-title text-gray-900 fs-5 fw-bold p-0">Status do projeto</p>
         <div class="card-toolbar">
             <a href="{{ route('statuses.create') }}">
                 <label class="btn btn-info btn-active-success btn-sm fw-bold">Adicionar Novo Status</label>

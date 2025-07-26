@@ -106,7 +106,7 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                         <div>
-                            <h2 class="fw-bold text-gray-700 mb-0">Carregando...</h2>
+                            <h2 class="fw-bold text-gray-900 mb-0">Carregando...</h2>
                             <p class="m-0 text-gray-600">Aguarde enquanto nosso sistema busca o histórico dessa tarefa.</p>
                         </div>
                     </div>

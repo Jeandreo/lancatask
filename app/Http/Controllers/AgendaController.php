@@ -256,10 +256,32 @@ class AgendaController extends Controller
         // Adiciona a reunião ao banco de dados
         $content->update($data);
 
+        // Se foi criado com sucesso e quero enviar para o google calendar
+        if($content->id_google){
+
+            $googleCalendarService = new GoogleCalendarService();
+
+            $data = [
+                'summary'   => $data['name'],
+                'start'     => convertDateToISO($data['date_start']),
+                'end'       => convertDateToISO($data['date_end']),
+            ];
+
+            $payload = [
+                'summary'     => $data['summary'],
+                'start'       => ['dateTime' => $data['start'], 'timeZone' => 'America/Sao_Paulo'],
+                'end'         => ['dateTime' => $data['end'],   'timeZone' => 'America/Sao_Paulo'],
+            ];
+
+            // Insere o evento no Google Calendar principal e dispara para todos
+            $googleCalendarService->updateEvent($content->id_google, $payload);
+
+        }
+
         // REDIRECT AND MESSAGES
         return redirect()
                 ->back()
-                ->with('message', 'Reunião <b>'. $data['name'] . '</b> foi atualizada com sucesso.');
+                ->with('message', 'Reunião <b>'. $request->name . '</b> foi atualizada com sucesso.');
 
     }
 

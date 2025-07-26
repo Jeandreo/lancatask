@@ -1,6 +1,6 @@
 <div class="row py-2">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Título/Cor:</label>
+        <label class="form-label fs-6 fw-bold text-gray-900 mb-3 required">Título/Cor:</label>
     </div>
     <div class="col-10">
         <div class="row">
@@ -15,7 +15,7 @@
 </div>
 <div class="row py-2">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-700 mb-3">Descrição:</label>
+        <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Descrição:</label>
     </div>
     <div class="col-10">
         <textarea class="form-control form-control-solid" name="description" cols="30" rows="3" placeholder="Sobre oque será o evento?">@if(isset($content)){{ $content->description }}@endif</textarea>
@@ -23,7 +23,7 @@
 </div>
 <div class="row py-2 div-pontual">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-700">Início/Fim: </label>
+        <label class="form-label fs-6 fw-bold text-gray-900">Início/Fim: </label>
     </div>
     <div class="col-5">
         <input class="form-control form-control-solid flatpickr-with-time cursor-pointer text-center" placeholder="00/00/0000 00:00" type="text" name="date_start" value="@if(isset($content)){{ "$content->date_start $content->hour_start" }}@endif" required>
@@ -36,7 +36,7 @@
 @if (!isset($content))
 <div class="row py-2">
     <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
-        <label class="form-check-label form-label fs-6 fw-bold text-gray-700 mb-0 me-6" for="googleCalendar">
+        <label class="form-check-label form-label fs-6 fw-bold text-gray-900 mb-0 me-6" for="googleCalendar">
             Incluir no Google Calendar
         </label>
         <input class="form-check-input cursor-pointer" type="checkbox" value="1" checked id="googleCalendar" name="send_google" @if(isset($content) && $content->id_google) checked @endif/>
@@ -44,7 +44,7 @@
 </div>
 <div class="row py-2 select-members">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Membros do time:</label>
+        <label class="form-label fs-6 fw-bold text-gray-900 mb-3 required">Membros do time:</label>
     </div>
     <div class="col-10">
         <select class="form-select form-select-solid" name="users[]" multiple data-control="select2" data-placeholder="Selecione" required>
@@ -56,7 +56,7 @@
 </div>
 <div class="row py-2 select-clients">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Clientes:</label>
+        <label class="form-label fs-6 fw-bold text-gray-900 mb-3 required">Clientes:</label>
     </div>
     <div class="col-10">
         <select class="form-select form-select-solid" name="clients[]" multiple data-control="select2" data-placeholder="Selecione" required>

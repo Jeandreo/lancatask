@@ -17,7 +17,7 @@
                     <div class="d-block w-100 px-3 px-md-0 ms-5">
                         <p class="text-gray-600 text-hover-primary fs-5 lh-1 fw-normal p-0 m-0 border-0 w-100 cursor-pointer show-task py-3" data-task="{{ $task->id }}" id="rename-task-{{ $task->id }}">
                             @if (isset($showProject))
-                            <span class="fw-bold text-gray-600 fs-6">{{ $task->module->project->name }} - </span> @if($task->module->name) <span class="fw-bold text-gray-600 fs-6">{{ $task->module->name }} - </span> @endif
+                            <span class="fw-bold text-gray-700 fs-6">{{ $task->module->project->name }} - </span> @if($task->module->name) <span class="fw-bold text-gray-700 fs-6">{{ $task->module->name }} - </span> @endif
                             @endif
                             {{ $task->name }}
                         </p>
@@ -26,19 +26,19 @@
             </div>
             @if ($task->comments->count())
             <span>
-                <i class="fa-regular fa-comments text-gray-700 p-2 ms-5"></i>
+                <i class="fa-regular fa-comments text-gray-900 p-2 ms-5"></i>
             </span>
             @endif
             @if ($task->subtasks->where('status', true)->count())
-            <i class="fa-solid fa-angle-right p-2 cursor-pointer text-gray-700 show-subtasks rotate @if($task->open_subtasks) rotate-90 @endif" data-task="{{ $task->id }}"></i>
+            <i class="fa-solid fa-angle-right p-2 cursor-pointer text-gray-900 show-subtasks rotate @if($task->open_subtasks) rotate-90 @endif" data-task="{{ $task->id }}"></i>
             @endif
             @if ($task->task_id)
-            <i class="fa-solid fa-diagram-predecessor pe-2 text-gray-700" data-bs-toggle="tooltip" title="{{ $task->father->name }}"></i>
+            <i class="fa-solid fa-diagram-predecessor pe-2 text-gray-900" data-bs-toggle="tooltip" title="{{ $task->father->name }}"></i>
             @endif
             <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
             <i class="fa-solid fa-font-awesome p-2
                 @if ($task->priority == 0)
-                text-gray-700
+                text-gray-900
                 @elseif($task->priority == 1)
                 text-warning
                 @elseif($task->priority == 2)
@@ -90,12 +90,12 @@
                     @elseif(-(\Carbon\Carbon::parse($task->date_end)->diffInDays()) <= 2)
                         text-primary
                     @else
-                        text-gray-700
+                        text-gray-900
                     @endif"
                     data-task="{{ $task->id }}"
                     placeholder="Prazo da tarefa"
                     value="@if(isset($task->date_start) && $task->date_start == $task->date_end){{ date('d/m/Y', strtotime($task->date_start)) }}@elseif(isset($task->date_start)){{ date('d/m', strtotime($task->date_start)) }} até {{ date('d/m', strtotime($task->date_end)) }}@endif"/>
-                {{-- <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-700 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task="{{ $task->id }}" style="top: 15%; right: 0"></i> --}}
+                {{-- <i class="fa-solid fa-calendar-xmark text-hover-primary text-gray-900 py-2 px-3 fs-7 position-absolute opacity-0 cursor-pointer remove-date" data-task="{{ $task->id }}" style="top: 15%; right: 0"></i> --}}
             </div>
             @if (!isset($hideMove))
             <div class="separator-vertical h-100"></div>

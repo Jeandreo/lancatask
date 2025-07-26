@@ -17,7 +17,7 @@
             <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="{default: 'append', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
                 <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0" id="kt_app_header_menu" data-kt-menu="true">
                     <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
-                        <h1 class="page-heading d-flex text-gray-700 fw-bold fs-3 flex-column justify-content-center my-0">@yield('Page Title')</h1>
+                        <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">@yield('Page Title')</h1>
                         <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                             <li class="breadcrumb-item text-muted">
                                 <a href="{{ route('dashboard.index') }}" class="text-muted text-hover-primary">Home</a>
@@ -40,7 +40,7 @@
                                     <img alt="Logo" src="{{ findImage('users/photos/' . Auth::id() . '.jpg') }}" class="object-fit-cover" />
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5 text-gray-700">{{ Auth::user()->name }}</div>
+                                    <div class="fw-bold d-flex align-items-center fs-5 text-gray-900">{{ Auth::user()->name }}</div>
                                     <span class="fw-semibold text-muted fs-7">{{ Str::limit(Auth::user()->email, 12) }}</span>
                                 </div>
                             </div>

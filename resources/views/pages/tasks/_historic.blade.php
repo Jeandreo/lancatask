@@ -1,10 +1,10 @@
 @if ($contents->historic->count())
     @foreach ($contents->historic()->orderBy('id', 'DESC')->get() as $historic)
-       <div class="mb-3 text-gray-700">
+       <div class="mb-3 text-gray-900">
             @switch($historic->action)
                 @case('nome')
                     <div class="bg-light rounded p-2">
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <b>Nome alterado:</b>
                             <span class="fs-8 text-gray-600">
                                 {{ $historic->created_at->format('d/m/Y') }} às {{ $historic->created_at->format('H:i') }}
@@ -17,7 +17,7 @@
                     @break
                 @case('descrição')
                     <div class="bg-light rounded p-2">
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <b>Descrição alterada:</b>
                             <span class="fs-8 text-gray-600">
                                 {{ $historic->created_at->format('d/m/Y') }} às {{ $historic->created_at->format('H:i') }}
@@ -27,7 +27,7 @@
                             {{ $historic->previous_key }}
                         </p>
                         <p class="text-gray-600 mb-0">
-                            <span class="mb-0 fw-bold text-gray-700">
+                            <span class="mb-0 fw-bold text-gray-900">
                                 Para:
                             </span> {{ $historic->key }}
                         </p>
@@ -36,7 +36,7 @@
                 @case('data')
                     <div class="bg-light rounded p-2">
                         @if ($historic->previous_key)
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <b>Data alterada:</b>
                             <span class="fs-8 text-gray-600">
                                 {{ $historic->created_at->format('d/m/Y') }} às {{ $historic->created_at->format('H:i') }}
@@ -46,7 +46,7 @@
                             <span class="badge badge-light-danger">{{ date('d/m/Y', strtotime($historic->previous_key))  }}</span> para <span class="badge badge-light-primary">{{ date('d/m/Y', strtotime($historic->key)) }}</span>.
                         </p>
                         @else
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <b>Data inserida: <span class="badge badge-light-primary">{{ date('d/m/Y', strtotime($historic->key)) }}</span></b>
                             <span class="fs-8 text-gray-600">
                                 {{ $historic->created_at->format('d/m/Y') }} às {{ $historic->created_at->format('H:i') }}
@@ -57,7 +57,7 @@
                     @break
                 @case('status')
                     <div class="bg-light rounded p-2">
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <b>Status alterado:</b>
                             <span class="fs-8 text-gray-600">
                                 {{ $historic->created_at->format('d/m/Y') }} às {{ $historic->created_at->format('H:i') }}
@@ -70,7 +70,7 @@
                     @break
                 @case('designado')
                     <div class="bg-light rounded p-2">
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <b>Designou um novo responsável:</b>
                             <span class="fs-8 text-gray-600">
                                 {{ $historic->created_at->format('d/m/Y') }} às {{ $historic->created_at->format('H:i') }}
@@ -83,7 +83,7 @@
                     @break
                 @case('estado')
                     <div class="bg-light rounded p-2">
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <span>
                                 <b>Mudou o estado dessa tarefa para:</b>
                                 @if ($historic->key == true)
@@ -100,12 +100,12 @@
                     @break
                 @case('prioridade')
                     <div class="bg-light rounded p-2">
-                        <p class="text-gray-700 mb-0 d-flex justify-content-between align-items-center mb-0">
+                        <p class="text-gray-900 mb-0 d-flex justify-content-between align-items-center mb-0">
                             <span>
                                 <b>Alterou de :</b>
                                 <i class="fa-solid fa-font-awesome p-2
                                 @if ($historic->previous_key == 0)
-                                text-gray-700
+                                text-gray-900
                                 @elseif($historic->previous_key == 1)
                                 text-warning
                                 @elseif($historic->previous_key == 2)
@@ -116,7 +116,7 @@
                                 Para
                                 <i class="fa-solid fa-font-awesome p-2
                                 @if ($historic->key == 0)
-                                text-gray-700
+                                text-gray-900
                                 @elseif($historic->key == 1)
                                 text-warning
                                 @elseif($historic->key == 2)
@@ -135,7 +135,7 @@
             @endswitch
        </div>
     @endforeach
-    <p class="text-center m-0 text-gray-700 fw-bolder text-uppercase fs-8">
+    <p class="text-center m-0 text-gray-900 fw-bolder text-uppercase fs-8">
         Tarefa Criada
         {{ $historic->task->created_at->format('d/m/Y') }} às {{ $historic->task->created_at->format('H:i') }}
     </p>
@@ -144,7 +144,7 @@
     <div class="d-flex">
         <i class="fa-solid fa-clock-rotate-left text-success fs-3x me-4"></i>
         <div>
-            <h2 class="fw-bold text-gray-700 mb-0">Tarefa sem histórico</h2>
+            <h2 class="fw-bold text-gray-900 mb-0">Tarefa sem histórico</h2>
             <p class="m-0 text-gray-600">Não existe registro de atividades no momento para essa tarefa.</p>
         </div>
     </div>

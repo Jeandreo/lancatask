@@ -18,19 +18,19 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <span class="text-gray-700 fw-bold fs-6">
+                                <span class="text-gray-900 fw-bold fs-6">
                                     {{ $content->name }}
                                 </span>
                             </td>
                             <td>
                                 @if ($content->date_start != $content->date_end)
-                                <span class="fw-bold text-gray-700">
+                                <span class="fw-bold text-gray-900">
                                  {{ date('d/m/Y H:i', strtotime($content->date_start . ' ' . $content->hour_start)) }}
                                  até
                                  {{ date('d/m/Y H:i', strtotime($content->date_end . ' ' . $content->hour_end)) }}
                                 </span>
                                 @else
-                                <span class="fw-bold text-gray-700">
+                                <span class="fw-bold text-gray-900">
                                  {{ date('d/m/Y', strtotime($content->date_start)) }} das {{ date('H:i', strtotime($content->hour_start)) }}
                                  até
                                  {{ date('H:i', strtotime($content->date_end . ' ' . $content->hour_end)) }}

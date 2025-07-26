@@ -343,13 +343,13 @@
 
                 // ALTERA PRIORIDADE
                 if (data == 1){
-                    flagHtml.removeClass('text-gray-700').addClass('text-warning');
+                    flagHtml.removeClass('text-gray-900').addClass('text-warning');
                 } else if (data == 2){
                     flagHtml.removeClass('text-warning ').addClass('text-info');
                 } else if (data == 3){
                     flagHtml.removeClass('text-info').addClass('text-danger');
                 } else {
-                    flagHtml.removeClass('text-danger').addClass('text-gray-700');
+                    flagHtml.removeClass('text-danger').addClass('text-gray-900');
                 }
 
             }
@@ -441,7 +441,7 @@
 
 
         // REMOVE PREVIOUS CLASS
-        $('.task-date-' + taskId).removeClass('text-danger text-primary text-success text-info text-gray-700');
+        $('.task-date-' + taskId).removeClass('text-danger text-primary text-success text-info text-gray-900');
 
         console.log(taskId, difference);
 
@@ -453,7 +453,7 @@
         } else if (difference <= 2) {
             $('.task-date-' + taskId).addClass('text-primary');
         } else {
-            $('.task-date-' + taskId).addClass('text-gray-700');
+            $('.task-date-' + taskId).addClass('text-gray-900');
         }
 
         // AJAX

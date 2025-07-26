@@ -44,7 +44,7 @@
     @endif
 </div>
 <div class="d-flex">
-    <div class="card mb-6 text-hover-primary text-gray-700 cursor-pointer" id="add-module" data-project="{{ $project->id }}">
+    <div class="card mb-6 text-hover-primary text-gray-900 cursor-pointer" id="add-module" data-project="{{ $project->id }}">
         <div class="card-body p-5 d-flex align-items-center justify-content-center">
             <div class="d-flex align-items-center justify-content-center">
                 <i class="fa-solid fa-circle-plus fs-2x me-4 text-gray-600"></i>

@@ -1,5 +1,5 @@
 <div class="page-title d-flex flex-column justify-content-center flex-wrap mb-5">
-	<h1 class="page-heading text-gray-700 fw-bold fs-3 flex-column justify-content-center my-0 text-center">
+	<h1 class="page-heading text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0 text-center">
 	   @yield('Page Title', '#######')
 	</h1>
 	<ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1 justify-content-center">

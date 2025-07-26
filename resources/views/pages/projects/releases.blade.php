@@ -21,7 +21,7 @@
                         <tr>
                             <td>
                                 <a href="{{ route('projects.show', $content->id) }}"
-                                   class="text-gray-700 fw-bold text-hover-primary fs-6">
+                                   class="text-gray-900 fw-bold text-hover-primary fs-6">
                                     {{ $content->name }}
                                 </a>
                             </td>

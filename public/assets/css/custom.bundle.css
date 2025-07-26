@@ -98,7 +98,7 @@ border: none;
 
 .form-control.form-control-solid, .form-select.form-select-solid {
     background-color: #07070730;
-    border-color: #ffffff03;
+    border-color: #ffffff12;
 }
 
 input:-internal-autofill-selected {
@@ -578,4 +578,48 @@ input[type=text]:disabled {
 
 .bg-dark {
     background-color: #262222 !important;
+}
+
+.text-hover-primary:hover {
+    color: #fe8e0e !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #222329 inset !important;
+}
+
+.bg-gray-200 {
+    --bs-bg-rgb-color: var(--bs-gray-200-rgb);
+    background-color: #332c2c;
+}
+
+.text-muted {
+    color: #898989 !important;
+}
+
+.fc .fc-daygrid-dot-event {
+    background-color: #404040;
+    box-shadow: 0px 0px 20px #00000020 !important;
+}
+
+.fc-event span {
+    font-weight: 500;
+    color: white;
+}
+
+@media (min-width: 992px) {
+    .app-sidebar-toggle {
+        background-color: #393a3e !important;
+    }
+}
+
+.btn-check:active+.btn.btn-active-color-primary .svg-icon, .btn-check:active+.btn.btn-active-color-primary i, .btn-check:checked+.btn.btn-active-color-primary .svg-icon, .btn-check:checked+.btn.btn-active-color-primary i, .btn.btn-active-color-primary.active .svg-icon, .btn.btn-active-color-primary.active i, .btn.btn-active-color-primary.show .svg-icon, .btn.btn-active-color-primary.show i, .btn.btn-active-color-primary:active:not(.btn-active) .svg-icon, .btn.btn-active-color-primary:active:not(.btn-active) i, .btn.btn-active-color-primary:focus:not(.btn-active) .svg-icon, .btn.btn-active-color-primary:focus:not(.btn-active) i, .btn.btn-active-color-primary:hover:not(.btn-active) .svg-icon, .btn.btn-active-color-primary:hover:not(.btn-active) i, .show>.btn.btn-active-color-primary .svg-icon, .show>.btn.btn-active-color-primary i {
+    color: #ff980e;
+}
+
+.active>.page-link, .page-link.active {
+    background-color: #ff7e0e;
 }
