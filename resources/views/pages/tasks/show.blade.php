@@ -65,7 +65,7 @@
 				{{-- ALINHAR EM BAIXO  --}}
 			</div>
 		</div>
-		<div class="col-12 col-md-8 h-md-600px bg-white rounded-task-right p-0">
+		<div class="col-12 col-md-8 h-md-600px bg-gray-200 rounded-task-right p-0">
 			<div id="task-details">
                 <div class="h-75px p-3 d-flex align-items-center justify-content-center position-relative opacity-1" style="border-bottom: solid 1px rgba(0, 0, 0, 0.05);">
                     <p class="text-gray-600 text-uppercase m-0 text-center"><i>Tudo começa com uma ideia.</i></p>
@@ -82,7 +82,7 @@
                     @if ($task->status != 0)
                     <form action="" method="POST" class="position-relative ck-tiny">
                         @csrf
-                        <div class="pt-0" data-bs-theme="light">
+                        <div class="pt-0" data-bs-theme="dark">
                             <textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>
                         </div>
                         <div class="text-end position-absolute z-index-3" style="bottom: 5px; right: 5px;">

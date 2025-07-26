@@ -21,13 +21,12 @@ class AgendaMember extends Model
         'status',
     ];
 
-    function user()
+    function information()
     {
-        return $this->belongsTo(User::class, 'member_id');
-    }
-
-    function client()
-    {
-        return $this->belongsTo(Client::class, 'member_id');
+        if($this->type == 'user'){
+            return $this->belongsTo(User::class, 'member_id');
+        } else {
+            return $this->belongsTo(Client::class, 'member_id');
+        }
     }
 }

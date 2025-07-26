@@ -66,6 +66,29 @@ class GoogleCalendarService
 
     }
 
+    public function updateEvent(string $eventId, array $payload, string $calendarId = 'primary', string $sendUpdates = 'all')
+    {
+        $event = $this->service->events->get($calendarId, $eventId);
+        
+        foreach ($payload as $key => $value) {
+            $event->$key = $value;
+        }
+
+        return $this->service->events->update($calendarId, $eventId, $event, ['sendUpdates' => $sendUpdates]);
+    }
+
+    public function deleteEvent(string $eventId, string $calendarId = 'primary')
+    {
+        return $this->service->events->delete($calendarId, $eventId);
+    }
+
+    public function attendees(string $eventId, string $calendarId = 'primary')
+    {
+        $event = $this->service->events->get($calendarId, $eventId);
+        return $event->getAttendees();
+    }
+    
+    
     /**
      * Lista os próximos eventos a partir de agora.
      *

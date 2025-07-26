@@ -17,20 +17,21 @@
     <p class="text-gray-700 fw-bolder mb-0">Descrição do compromisso:</p>
     <p class="text-gray-600">{{ $content->description ?? 'Sem descrição' }}</p>
     <div>
-        @if ($content->membersUsers->count() > 0)
+        @if ($content->members->count() > 0)
             <p class="text-gray-700 fw-bolder mb-0">Usuários:</p>
-            @foreach ($content->membersUsers as $member)
-                <span class="text-gray-600">{{ $member->user->name }}</span>
-                @if($loop->last)
-                    @break
+            @foreach ($content->members as $member)
+                <span class="text-gray-600">{{ $member->information->name }}</span>
+                @if (isset($googleAttendees[$member->information->email]))
+                    @if($googleAttendees[$member->information->email] == 'needsAction')
+                        <span class="text-warning">(Pendente)</span>
+                    @elseif ($googleAttendees[$member->information->email] == 'accepted')
+                        <span class="text-success">(Confirmado)</span>
+                    @elseif ($googleAttendees[$member->information->email] == 'tentative')
+                        <span class="text-warning">(Talvez)</span>
+                    @elseif ($googleAttendees[$member->information->email] == 'declined')
+                        <span class="text-danger">(Recusado)</span>
+                    @endif
                 @endif
-                <span class="text-gray-600">,</span>
-            @endforeach
-        @endif
-        @if ($content->membersClients->count() > 0)
-            <p class="text-gray-700 fw-bolder mb-0">Clientes:</p>
-            @foreach ($content->membersClients as $member)
-                <span class="text-gray-600">{{ $member->client->name }}</span>
                 @if($loop->last)
                     @break
                 @endif

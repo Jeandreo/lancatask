@@ -24,7 +24,8 @@
 			data-kt-app-toolbar-enabled="true"
 			class="app-default"
 			data-kt-app-sidebar-minimize="@if(Auth::user()->sidebar){{ 'off' }}@else{{ 'on' }}@endif"
-			style="background: url('{{ asset('assets/media/images/background-grow.png') }}');background-position: center center;background-size: 101%;">
+			{{-- style="background: url('{{ asset('assets/media/images/background-grow.png') }}');background-position: center center;background-size: 101%;" --}}
+			>
         @include('layouts.config')
 		<div class="d-flex flex-column flex-root app-root" id="kt_app_root">
 			<div class="app-page flex-column flex-column-fluid" id="kt_app_page">

@@ -135,10 +135,26 @@ class AgendaController extends Controller
 
         }
 
-        // Se foi criado com sucesso e quero enviar para o google calendar
-      /*   if($created && $data['send_google']){
+        // Obtém membros
+        $members = AgendaMember::where('agenda_id', 3)->get();
 
-            $googleCalendarService = GoogleCalendarService::class;
+        // Gera lista de emails
+        $emails = [];
+        foreach($members as $member){
+
+            // Obtém email do usuário ou do cliente
+            if($member->type == 'user'){
+                $emails[] = User::find($member->member_id)->email;
+            }else{
+                $emails[] = Client::find($member->member_id)->email;
+            }
+
+        }
+
+        // Se foi criado com sucesso e quero enviar para o google calendar
+        if($created && $data['send_google']){
+
+            $googleCalendarService = new GoogleCalendarService();
 
             $data = [
                 'summary'   => $data['name'],
@@ -151,7 +167,7 @@ class AgendaController extends Controller
                 'summary'     => $data['summary'],
                 'start'       => ['dateTime' => $data['start'], 'timeZone' => 'America/Sao_Paulo'],
                 'end'         => ['dateTime' => $data['end'],   'timeZone' => 'America/Sao_Paulo'],
-                'attendees'   => [['email' => $data['email']]],
+                'attendees' => array_map(fn($email) => ['email' => $email], $emails),
                 'reminders'   => [
                     'useDefault' => false,
                     'overrides'  => [
@@ -161,12 +177,14 @@ class AgendaController extends Controller
                 ],
             ];
 
+            // Insere o evento no Google Calendar principal e dispara para todos
             $event = $googleCalendarService->insertEvent($payload, 'primary', 'all');
 
             // Salva o id do google calendar
-            $created->google_id = $event->id;
+            $created->id_google = $event->id;
             $created->save();
-        } */
+
+        }
 
         // REDIRECT AND MESSAGES
         return redirect()
@@ -188,9 +206,25 @@ class AgendaController extends Controller
             return response()->json(['Evento não '], 200);
         };
 
+        // Inicializa array de respostas
+        $googleAttendees = [];
+
+        // Se for um evento que esta no Google
+        if($content->id_google){
+
+            $googleCalendarService = new GoogleCalendarService();
+            $attendees = $googleCalendarService->attendees($content->id_google);
+
+            foreach($attendees as $attendee){
+                $googleAttendees[$attendee->email] = $attendee->responseStatus;
+            }
+
+        }
+
         // GENERATES DISPLAY WITH DATA
         return view('pages.agenda.show')->with([
             'content' => $content,
+            'googleAttendees' => $googleAttendees,
         ]);
     }
 

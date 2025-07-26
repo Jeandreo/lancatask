@@ -3,7 +3,7 @@ body {
 }
 
 .app-default, body {
-    background: linear-gradient(45deg, #6f1800, #201414);
+    background: #0D0D0D;
 }
 
 .card {
@@ -15,6 +15,25 @@ body {
     --bs-info: #8e0dc0;
     --bs-text-primary: #1e9cf0;
     --bs-success-active: #1f9e00
+}
+
+.btn.btn-info {
+    border-color: #ff410e;
+    background-color: #ff410e;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: #383838;
+}
+
+.fc .fc-button-primary, .fc .fc-button-primary:disabled {
+    background-color: #282828;
+    border-color: #282828;
+}
+
+.btn-check:active+.btn.btn-info, .btn-check:checked+.btn.btn-info, .btn.btn-info.active, .btn.btn-info.show, .btn.btn-info:active:not(.btn-active), .btn.btn-info:focus:not(.btn-active), .btn.btn-info:hover:not(.btn-active), .show>.btn.btn-info {
+    border-color: #e5630c;
+    background-color: #e5630c !important;
 }
 
 .tasks-zones .div-task:first-child .border-top-tasks:first-child {
@@ -57,7 +76,7 @@ border: none;
 }
 
 .app-header {
-    background: transparent !important;
+    background: #1e1e1e !important;
 }
 
 .bg-light {
@@ -67,7 +86,7 @@ border: none;
 }
 
 .card {
-    background-color: rgb(27 27 27 / 63%);
+    background-color: rgb(32 32 32);
     mix-blend-mode: normal;
     -webkit-backdrop-filter: blur(8px);
     border-right: 0;
@@ -79,7 +98,7 @@ border: none;
 
 .form-control.form-control-solid, .form-select.form-select-solid {
     background-color: #07070730;
-    border-color: #060606;
+    border-color: #ffffff03;
 }
 
 input:-internal-autofill-selected {
@@ -87,13 +106,11 @@ input:-internal-autofill-selected {
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-    background-color: rgb(27 27 27 / 63%);
+    background-color: #272727;
     mix-blend-mode: normal;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: none !important;
-    margin: 10px;
-    border-radius: 40px;
     box-shadow: 0px 0px 50px #00000010;
 }
 
@@ -235,7 +252,7 @@ button:focus {
 }
 
 .task-icons:hover {
-    width: 120px;
+    width: 130px;
     border-radius: 15px !important;
 }
 
@@ -299,9 +316,14 @@ p:last-child {
     z-index: 99999 !important;
 }
 
+.bg-light-primary {
+    background-color: #262222 !important;
+}
+
 .ck-editor__editable.ck-rounded-corners {
-    background: whitesmoke !important;
+    background: #262222 !important;
     border: none !important;
+    color: white;
 }
 
 .ck-tiny .ck-editor__editable.ck-rounded-corners {
@@ -309,7 +331,7 @@ p:last-child {
 }
 
 .ck-tiny .ck .ck-placeholder:before, .ck.ck-placeholder:before {
-    color: #00000040 !important;
+    color: #ffffff40 !important;
 }
 
 .task-description::placeholder {
@@ -550,6 +572,7 @@ input[type=text]:disabled {
 }
 
 .flatpickr-date {
+    font-weight: 600;
     cursor: pointer;
 }
 
