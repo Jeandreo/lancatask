@@ -42,8 +42,11 @@
 </div>
 <div class="modal-footer py-3 bg-light d-flex justify-content-between">
     <div>
-        @if ($content->created_by == Auth::id())
+        @if ($content->created_by == Auth::id() && $content->status == true)
             <a href="{{ route('agenda.destroy', $content->id) }}" class="btn btn-sm btn-light-danger me-2 fw-bold">Cancelar evento</a>
+        @endif
+        @if ($content->status == false)
+            <span class="btn btn-sm btn-light-danger me-2 fw-bold">Evento cancelado</span>
         @endif
     </div>
     <div class="d-flex">

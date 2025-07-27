@@ -285,40 +285,6 @@ class AgendaController extends Controller
 
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function changeCalendar(Request $request, $id)
-    {
-
-        // VERIFY IF EXISTS
-        if(!$content = $this->repository->find($id))
-        return redirect()->back();
-
-        // GET ALL DATA
-        $data = $request->all();
-
-        // UPDATE BY
-        $data['updated_by'] = Auth::id();
-
-        $data['start']  = formateDate($data['date_start']) . ' ' . $data['hour_start'] . ' ';
-        $data['end'] = formateDate($data['date_end']) . ' ' . $data['hour_end'] . ' ';
-
-        // STORING NEW DATA
-        $content->update($data);
-
-        // REDIRECT AND MESSAGES
-        return response('Changed With Success');
-
-    }
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -330,13 +296,21 @@ class AgendaController extends Controller
 
         // GET DATA
         $content = $this->repository->find($id);
-        $status = $content->status == true ? false : true;
+        $content->status = false;
+        $content->save();
 
-        // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
+         // Se foi criado com sucesso e quero enviar para o google calendar
+         if($content->id_google){
+
+            $googleCalendarService = new GoogleCalendarService();
+
+            // Insere o evento no Google Calendar principal e dispara para todos
+            $googleCalendarService->deleteEvent($content->id_google);
+
+        }
 
         // REDIRECT AND MESSAGES
-        return redirect()->back()->with('message', 'Evento ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+        return redirect()->back()->with('message', 'Evento cancelado com sucesso.');
 
     }
 

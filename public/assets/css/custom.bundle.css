@@ -267,8 +267,12 @@ button:focus {
 }
 
 .modal-backdrop.show, .bg-blur {
-    background-color: rgb(16 17 38 / 60%);
+    background-color: rgb(18 17 17 / 60%);
     opacity: 1;
+}
+
+.btn-check:active+.btn.btn-active-light-primary, .btn-check:checked+.btn.btn-active-light-primary, .btn.btn-active-light-primary.active, .btn.btn-active-light-primary.show, .btn.btn-active-light-primary:active:not(.btn-active), .btn.btn-active-light-primary:focus:not(.btn-active), .btn.btn-active-light-primary:hover:not(.btn-active), .show>.btn.btn-active-light-primary {
+    background-color: #181818 !important;
 }
 
 .image-limited {
