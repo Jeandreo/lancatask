@@ -5,7 +5,7 @@
     </head>
     <body id="kt_body" class="app-blank" cz-shortcut-listen="true">
         <div class="d-flex flex-column flex-root" id="kt_app_root">
-            <div class="d-flex flex-column flex-lg-row flex-column-fluid bgi-size-cover bgi-position-center" style="background: linear-gradient(360deg, #000000, #333333);">
+            <div class="d-flex flex-column flex-lg-row flex-column-fluid bgi-size-cover bgi-position-center" style="background: #1c1c1c;">
                 <div class="d-flex flex-column flex-lg-row-fluid">
                     <div class="d-flex flex-center flex-column flex-lg-row-fluid">
                         <div class="w-lg-500px p-10">

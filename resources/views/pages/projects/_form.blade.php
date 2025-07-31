@@ -16,7 +16,7 @@
         <select class="form-select form-select-solid" name="type_id" data-control="select2" data-placeholder="Selecione" required>
             <option value=""></option>
             @foreach ($types as $type)
-            <option value="{{ $type->id }}" @if(!isset($content) && $type->id == 1 || isset($content) && $content->type_id == $type->id) selected @endif>{{  $type->name }}</option>
+            <option value="{{ $type->id }}" @if(isset($content) && $type->id == $content->type_id) selected @endif>{{  $type->name }}</option>
             @endforeach
         </select>
     </div>

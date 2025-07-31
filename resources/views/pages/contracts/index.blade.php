@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('Page Title', 'Clientes')
+@section('Page Title', 'Contratos')
 
 @section('content')
     <div class="card">
@@ -9,11 +9,7 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
-                        <th>Entrada</th>
                         <th>Status</th>
-                        <th>CPF/CNPJ</th>
-                        <th>Telefone</th>
-                        <th>Saída</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -21,16 +17,9 @@
                     @foreach ($contents as $content)
                         <tr>
                             <td>
-                                <a href="{{ route('clients.edit', $content->id) }}" class="text-gray-700 text-hover-primary fw-bold fs-6">
+                                <a href="{{ route('contracts.edit', $content->id) }}" class="text-gray-700 text-hover-primary fw-bold fs-6">
                                     {{ $content->name }}
                                 </a>
-                            </td>
-                            <td>
-                                @if ($content->start_date)
-                                    <span class="badge badge-light">{{ $content->start_date->format('d/m/Y') }}</span>
-                                @else
-                                    <span class="badge badge-light">-</span>
-                                @endif
                             </td>
                             <td>
                                 @if ($content->status == 1)
@@ -40,24 +29,11 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="text-gray-700 fw-bold">{{ $content->document }}</span>
-                            </td>
-                            <td>
-                                <span class="text-gray-700">{{ $content->phone }}</span>
-                            </td>
-                            <td>
-                                @if ($content->end_date)
-                                    <span class="badge badge-light">{{ $content->end_date->format('d/m/Y') }}</span>
-                                @else
-                                    <span class="badge badge-light">-</span>
-                                @endif
-                            </td>
-                            <td>
                                 <div class="d-flex align-items-center icons-table">
-                                    <a href="{{ route('clients.edit', $content->id) }}">
+                                    <a href="{{ route('contracts.edit', $content->id) }}">
                                         <i class="fas fa-edit" title="Editar"></i>
                                     </a>
-                                    <a href="{{ route('clients.destroy', $content->id) }}">
+                                    <a href="{{ route('contracts.destroy', $content->id) }}">
                                         @if ($content->status == 1)
                                         <i class="fas fa-times-circle" title="Desativar"></i>
                                         @else
@@ -73,7 +49,7 @@
         </div>
     </div>
     <div class="mt-5">
-        <a href="{{ route('clients.create') }}">
+        <a href="{{ route('contracts.create') }}">
             <label class="btn btn-info btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>

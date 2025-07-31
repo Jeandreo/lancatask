@@ -41,15 +41,6 @@
                             </span>
                         </a>
                     </div>
-                    <div class="menu-item">
-                        <a class="menu-link" href="{{ route('configs.google.auth') }}">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-user-group fs-4"></i>
-                            </span>
-                            <span class="menu-title">Autenticação Google
-                            </span>
-                        </a>
-                    </div>
                     <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                         <span class="menu-link"  >
                             <span  class="menu-icon" >
@@ -81,6 +72,12 @@
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('projects.types.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tipos de projetos</span></a>
                            </div>
+                           <div  class="menu-item" >
+                              <a class="menu-link" href="{{ route('contracts.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Contratos</span></a>
+                           </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{ route('configs.google.auth') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Autenticação Google</span></a>
+                            </div>
                         </div>
                      </div>
                     <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >

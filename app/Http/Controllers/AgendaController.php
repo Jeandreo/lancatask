@@ -110,7 +110,7 @@ class AgendaController extends Controller
         $created = $this->repository->create($data);
 
         // Adiciona usuários
-        if(count($data['users'])){
+        if(isset($data['users']) && count($data['users'])){
 
             foreach($data['users'] as $user){
                 AgendaMember::create([
@@ -123,7 +123,7 @@ class AgendaController extends Controller
         }
 
         // Adiciona clientes
-        if(count($data['clients'])){
+        if(isset($data['clients']) && count($data['clients'])){
 
             foreach($data['clients'] as $client){
                 AgendaMember::create([
@@ -136,7 +136,7 @@ class AgendaController extends Controller
         }
 
         // Obtém membros
-        $members = AgendaMember::where('agenda_id', 3)->get();
+        $members = AgendaMember::where('agenda_id', $created->id)->get();
 
         // Gera lista de emails
         $emails = [];
@@ -152,7 +152,7 @@ class AgendaController extends Controller
         }
 
         // Se foi criado com sucesso e quero enviar para o google calendar
-        if($created && $data['send_google']){
+        if($created && isset($data['send_google']) && $data['send_google']){
 
             $googleCalendarService = new GoogleCalendarService();
 

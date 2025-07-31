@@ -5,7 +5,7 @@
     </div>
     <div class="col-4 mb-5">
         <label class="required form-label fw-bold">Email:</label>
-        <input type="email" class="form-control form-control-solid" placeholder="nome@gmail.com" name="email" value="{{ $content->email ?? old('email') }}" required/>
+        <input type="email" class="form-control form-control-solid" placeholder="nome@gmail.com" autocomplete="off" name="email" value="{{ $content->email ?? old('email') }}" required/>
     </div>
     <div class="col-4 mb-5">
         <label class="form-label fw-bold required">É administrador:</label>
@@ -17,7 +17,7 @@
     </div>
     <div class="col-4 mb-5">
         <label class="@if(!isset($content)) required @endif form-label fw-bold">Senha:</label>
-        <input type="password" class="form-control form-control-solid" placeholder="****" name="password" value="" @if(!isset($content)) required @endif/>
+        <input type="password" class="form-control form-control-solid" placeholder="****" name="password" autocomplete="new-password" autocorrect="off" value="" @if(!isset($content)) required @endif/>
     </div>
     <div class="col-4 mb-5">
         <label class="form-label fw-bold required">Cargo:</label>

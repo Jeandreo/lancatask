@@ -6,16 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Client extends Model
+class Contract extends Model
 {
     use HasFactory;
-    protected $table = 'clients';
-
-    protected $casts = [
-        'start_date' => 'date',
-        'end_date'   => 'date',
-    ];
-
+    protected $table = 'contracts';
     /**
      * The attributes that are mass assignable.
      *
@@ -23,27 +17,10 @@ class Client extends Model
      */
     protected $fillable = [
         'name',
-        'person_type',
-        'document',
-        'email',
-        'contract_id',
-        'contract_value',
-        'phone',
-        'start_date',
-        'end_date',
-        'zip',
-        'street',
-        'number',
-        'complement',
-        'neighborhood',
-        'city',
-        'state',
         'status',
         'filed_by',
         'created_by',
         'updated_by',
-        'observations',
-        'extra',
     ];
 
     /**

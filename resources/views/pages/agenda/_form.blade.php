@@ -49,7 +49,7 @@
     <div class="col-10">
         <select class="form-select form-select-solid" name="users[]" multiple data-control="select2" data-placeholder="Selecione" required>
             @foreach($users as $user)
-                <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
             @endforeach
         </select>
     </div>
@@ -73,6 +73,14 @@
 @section('custom-footer')
 @parent
 <script>
+
+function toggleParticipantsRequirement(checked) {
+    // mostra / esconde
+    $('.select-members, .select-clients')[ checked ? 'show' : 'hide' ]();
+    // adiciona ou remove o required nos <select>
+    $('.select-members select, .select-clients select')
+      .prop('required', checked);
+  }
 
     $(document).on('change', '[name="send_google"]', function(){
         if($(this).is(':checked')){
@@ -102,7 +110,12 @@
         return $(span);
     }
 
+    $(document).on('change', '#googleCalendar', function() {
+        toggleParticipantsRequirement( $(this).is(':checked') );
+    });
+
     $(document).ready(function(){
+        toggleParticipantsRequirement( $('#googleCalendar').is(':checked') );
         // SELECT 2
         $('.select-paticipants').select2({
             templateSelection: optionFormat,

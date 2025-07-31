@@ -146,8 +146,8 @@
 
                         if (eventEnd < now) {
                             // Evento já passou, altera a cor
-                            info.el.style.backgroundColor = '#d7d7d7';
-                            info.el.style.borderColor = '#d7d7d7';
+                            info.el.style.backgroundColor = '#aa2a08';
+                            info.el.style.borderColor = '#aa2a08';
                         }
                     }
 

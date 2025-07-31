@@ -5,6 +5,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\GoogleController;
@@ -52,6 +53,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}',          [ClientController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}',          [ClientController::class, 'update'])->name('update');
             Route::get('/desabilitar/{id}',     [ClientController::class, 'destroy'])->name('destroy');
+        });
+    });
+    // Projetos
+    Route::prefix('contratos')->group(function () {
+        Route::name('contracts.')->group(function () {
+            Route::get('/',                     [ContractController::class, 'index'])->name('index');
+            Route::get('/adicionar',            [ContractController::class, 'create'])->name('create');
+            Route::post('/adicionar',           [ContractController::class, 'store'])->name('store');
+            Route::get('/editar/{id}',          [ContractController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}',          [ContractController::class, 'update'])->name('update');
+            Route::get('/desabilitar/{id}',     [ContractController::class, 'destroy'])->name('destroy');
         });
     });
 

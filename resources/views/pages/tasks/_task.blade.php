@@ -19,7 +19,7 @@
                             @if (isset($showProject))
                             <span class="fw-bold text-gray-700 fs-6">{{ $task->module->project->name }} - </span> @if($task->module->name) <span class="fw-bold text-gray-700 fs-6">{{ $task->module->name }} - </span> @endif
                             @endif
-                            {{ $task->name }}
+                            {{ Str::limit($task->name, 57) }}
                         </p>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
             @if ($task->task_id)
             <i class="fa-solid fa-diagram-predecessor pe-2 text-gray-900" data-bs-toggle="tooltip" title="{{ $task->father->name }}"></i>
             @endif
-            <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
+           {{--  <span class="task-priority d-none d-md-flex" data-task="{{ $task->id }}">
             <i class="fa-solid fa-font-awesome p-2
                 @if ($task->priority == 0)
                 text-gray-900
@@ -47,7 +47,7 @@
                 text-danger
                 @endif
                 cursor-pointer me-5"></i>
-            </span>
+            </span> --}}
         </div>
         <div class="d-flex align-items-center h-100 d-none d-md-flex">
             <div class="separator-vertical h-100"></div>

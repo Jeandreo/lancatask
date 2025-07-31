@@ -1,9 +1,22 @@
 <div class="row">
-    <div class="col-md-6 mb-4">
+    <div class="col-md-4 mb-4">
         <label class="required form-label fw-bold">Nome:</label>
         <input type="text" class="form-control form-control-solid" name="name" placeholder="Nome completo / Fantasia" value="{{ $content->name ?? old('name') }}" required>
     </div>
-    <div class="col-md-3 mb-4">
+    <div class="col-md-2 mb-4">
+        <label class="form-label fw-bold">Contrato:</label>
+        <select class="form-select form-select-solid" name="contract_id" data-control="select2" data-hide-search="true" data-placeholder="Selecione">
+            <option value=""></option>
+            @foreach($contracts as $contract)
+                <option value="{{ $contract->id }}" @if(isset($content) && $content->contract_id == $contract->id) selected @endif>{{ $contract->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-md-2 mb-4">
+        <label class="form-label fw-bold">Valor do contrato:</label>
+        <input type="text" class="form-control form-control-solid input-money" name="contract_value" placeholder="Valor do contrato" value="{{ $content->contract_value ?? old('contract_value') }}">
+    </div>
+    <div class="col-md-2 mb-4">
         <label class="form-label fw-bold required">Tipo:</label>
         <select class="form-select form-select-solid"
                 name="person_type" data-control="select2" data-hide-search="true"
@@ -13,7 +26,7 @@
             <option value="PJ" {{ old('person_type', $content->person_type ?? '') === 'PJ' ? 'selected' : '' }}>Pessoa Jurídica</option>
         </select>
     </div>
-    <div class="col-md-3 mb-4">
+    <div class="col-md-2 mb-4">
         <label class="form-label fw-bold">Documento:</label>
         <input type="text" class="form-control form-control-solid input-document" name="document" placeholder="CPF/CNPJ" value="{{ $content->document ?? old('document') }}">
     </div>
@@ -131,6 +144,10 @@
         }
         
     }
+
+    $(document).on('change', '[name="person_type"]', function() {
+        maskDocument();
+    });
 
     $(document).ready(function() {
         maskDocument();

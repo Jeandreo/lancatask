@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
 use App\Models\Contract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ClientController extends Controller
+class ContractController extends Controller
 {
     protected $request;
     private $repository;
 
-    public function __construct(Request $request, Client $content)
+    public function __construct(Request $request, Contract $content)
     {
 
         $this->request = $request;
@@ -29,14 +28,14 @@ class ClientController extends Controller
     {
 
         // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
+        $contents = $this->repository->all();
 
-        // RETURN VIEW WITH DATA
-        return view('pages.clients.index')->with([
+        // GENERATES DISPLAY WITH DATA
+        return view('pages.contracts.index')->with([
             'contents' => $contents,
         ]);
-
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -45,13 +44,8 @@ class ClientController extends Controller
     public function create()
     {
 
-        // GET ALL DATA
-        $contracts = Contract::where('status', true)->orderBy('id', 'ASC')->get();
-
         // RENDER VIEW
-        return view('pages.clients.create')->with([
-            'contracts' => $contracts,
-        ]);
+        return view('pages.contracts.create');
     }
 
     /**
@@ -66,16 +60,15 @@ class ClientController extends Controller
         // GET FORM DATA
         $data = $request->all();
 
-        // Obtém projeto
+        // CREATED BY
         $data['created_by'] = Auth::id();
 
         // SEND DATA
-        $this->repository->create($data);
+        $status = $this->repository->create($data);
 
-        // REDIRECT AND MESSAGES
         return redirect()
-                ->route('clients.index')
-                ->with('message', 'Cliente adicionado com sucesso.');
+            ->route('contracts.index')
+            ->with('message', 'Contrato criado com sucesso.');
 
     }
 
@@ -89,15 +82,13 @@ class ClientController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
-        $contracts = Contract::where('status', true)->orderBy('id', 'ASC')->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
 
         // GENERATES DISPLAY WITH DATA
-        return view('pages.clients.edit')->with([
+        return view('pages.contracts.edit')->with([
             'content' => $content,
-            'contracts' => $contracts,
         ]);
     }
 
@@ -126,8 +117,8 @@ class ClientController extends Controller
 
         // REDIRECT AND MESSAGES
         return redirect()
-            ->route('clients.edit', $content->id)
-            ->with('message', 'Cliente atualizado com sucesso.');
+            ->route('contracts.index')
+            ->with('message', 'Contrato alterado com sucesso.');
 
     }
 
@@ -147,10 +138,9 @@ class ClientController extends Controller
         // STORING NEW DATA
         $this->repository->where('id', $id)->update(['status' => $status, 'updated_by' => Auth::id()]);
 
-        // REDIRECT AND MESSAGES
         return redirect()
-            ->route('clients.index')
-            ->with('message', 'Cliente ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+            ->route('contracts.index')
+            ->with('message', 'Contrato alterado com sucesso.');
 
     }
 }
