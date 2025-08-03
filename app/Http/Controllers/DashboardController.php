@@ -27,7 +27,7 @@ class DashboardController extends Controller
             ->get();
 
 
-        $users = User::where('status', true)->get();
+        $users = User::where('status', 1)->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.dashboard')->with([

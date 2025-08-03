@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,10 +26,23 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
 
+        // GET USER
+        $user = User::where('email', $request->email)->first();
+
+        // CHECK IF USER IS ACTIVE
+        if ($user && $user->status != 1) {
+            return back()->withErrors([
+                'email' => 'Sua conta está desativada.',
+            ]);
+        }
+
+        // AUTHENTICATE
         $request->authenticate();
 
+        // REGENERATE SESSION
         $request->session()->regenerate();
 
+        // REDIRECT
         return redirect()->intended(route('dashboard.index', absolute: false));
     }
 

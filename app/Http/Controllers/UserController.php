@@ -29,8 +29,11 @@ class UserController extends Controller
     public function index()
     {
 
+        // Verifica se o usuário é administrador
+        if(Auth::user()->role != 'Administrador') return redirect()->back();
+
         // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
+        $contents = $this->repository->whereIn('status', [0,1])->orderBy('id', 'ASC')->get();
 
         // RETURN VIEW WITH DATA
         return view('pages.users.index')->with([
@@ -46,6 +49,9 @@ class UserController extends Controller
      */
     public function create()
     {
+
+        // Verifica se o usuário é administrador
+        if(Auth::user()->role != 'Administrador') return redirect()->back();
 
         // Obtém dados
         $positions = UserPosition::where('status', true)->get();
@@ -98,6 +104,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+
+        // Verifica se o usuário é administrador
+        if(Auth::user()->role != 'Administrador') return redirect()->back();
+
         // GET ALL DATA
         $content = $this->repository->find($id);
 
@@ -123,6 +133,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        // Verifica se o usuário é administrador
+        if(Auth::user()->role != 'Administrador') return redirect()->back();
 
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id))
@@ -167,6 +180,9 @@ class UserController extends Controller
     public function destroy($id)
     {
 
+        // Verifica se o usuário é administrador
+        if(Auth::user()->role != 'Administrador') return redirect()->back();
+
         // GET DATA
         $content = $this->repository->find($id);
         $status = $content->status == true ? false : true;
@@ -178,6 +194,31 @@ class UserController extends Controller
         return redirect()
             ->route('users.index')
             ->with('message', 'Usuário ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function delete($id)
+    {
+
+        // Verifica se o usuário é administrador
+        if(Auth::user()->role != 'Administrador') return redirect()->back();
+
+        // GET DATA
+        $this->repository->find($id);
+
+        // STORING NEW DATA
+        $this->repository->where('id', $id)->update(['status' => 2, 'updated_by' => Auth::id()]);
+
+        // REDIRECT AND MESSAGES
+        return redirect()
+            ->route('users.index')
+            ->with('message', 'Usuário apagado com sucesso.');
 
     }
 }

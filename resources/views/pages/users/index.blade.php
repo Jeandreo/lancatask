@@ -37,8 +37,10 @@
                             <td>
                                 @if ($content->status == 1)
                                     <span class="badge badge-light-success">Ativo</span>
+                                @elseif ($content->status == 0)
+                                    <span class="badge badge-light-warning">Inativo</span>
                                 @else
-                                    <span class="badge badge-light-danger">Inativo</span>
+                                    <span class="badge badge-light-danger">Excluído</span>
                                 @endif
                             </td>
                             <td>
@@ -55,6 +57,9 @@
                                             <i class="fas fa-redo" title="Reativar"></i>
                                         </a>
                                     @endif
+                                    <a href="{{ route('users.delete', $content->id) }}">
+                                        <i class="fas fa-trash-alt" title="Apagar permanentemente"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

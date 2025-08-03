@@ -80,6 +80,7 @@
                             </div>
                         </div>
                      </div>
+                     @if (Auth::user()->role == 'Administrador')
                     <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                         <span class="menu-link"  >
                             <span  class="menu-icon" >
@@ -104,6 +105,7 @@
                            </div>
                         </div>
                      </div>
+                     @endif
                      @if (Auth::user()->groupProjects()->count())
                      <div class="p-2 rounded draggable-sidebar-zone" style="background: rgba(0, 0, 0, 0.2)">
                         @foreach (Auth::user()->groupProjects() as $key => $group)
@@ -111,7 +113,9 @@
                             <div class="menu-content pb-2 pt-2 pe-0 d-flex justify-content-between align-items-center position-relative">
                                 <span class="menu-section text-muted text-uppercase fw-bold fs-8 ls-1">
                                     {{ $group['name'] }}
-                                    <i class="fa-solid fa-arrows-to-dot text-white opacity-0 fs-9 draggable-sidebar-handle"></i>
+                                    @if (Auth::user()->role == 'Administrador')
+                                        <i class="fa-solid fa-arrows-to-dot text-white opacity-0 fs-9 draggable-sidebar-handle"></i>
+                                    @endif
                                 </span>
                                 <div class="d-flex align-items-center justify-content-end me-2">
                                     <a href="{{ route('projects.create') }}" class="w-20px h-20px text-white cursor-pointer rounded-circle bg-success fw-bolder d-flex align-items-center justify-content-center opacity-0">
@@ -123,7 +127,7 @@
                                 @foreach ($group['items'] as $project)
                                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion draggable-project group-project position-relative opacity-sub-1" data-project="{{ $project->id }}">
                                     <a class="menu-link position-relative" href="{{ route('projects.show', $project->id) }}">
-                                        @if (count($group['items']) > 1)
+                                        @if (Auth::user()->role == 'Administrador' && count($group['items']) > 1)
                                         <span class="w-20px h-20px cursor-move fw-bolder d-flex align-items-center justify-content-center opacity-0 draggable-project-handle position-absolute" style="left: -3px;">
                                             <i class="fa-solid fa-arrows-to-dot text-white opacity-25 fs-8"></i>
                                         </span>

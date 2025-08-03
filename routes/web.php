@@ -166,12 +166,13 @@ Route::middleware(['auth'])->group(function () {
     // Usuários
     Route::prefix('usuarios')->group(function () {
         Route::name('users.')->group(function () {
-            Route::get('/', [UserController::class, 'index'])->name('index');
-            Route::get('/adicionar', [UserController::class, 'create'])->name('create');
-            Route::post('/adicionar', [UserController::class, 'store'])->name('store');
+            Route::get('/',                 [UserController::class, 'index'])->name('index');
+            Route::get('/adicionar',        [UserController::class, 'create'])->name('create');
+            Route::post('/adicionar',       [UserController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [UserController::class, 'destroy'])->name('destroy');
-            Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id}', [UserController::class, 'update'])->name('update');
+            Route::get('/editar/{id}',      [UserController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}',      [UserController::class, 'update'])->name('update');
+            Route::get('/apagar/{id}',      [UserController::class, 'delete'])->name('delete');
         });
     });
 
@@ -190,12 +191,12 @@ Route::middleware(['auth'])->group(function () {
     // COMMENTS
     Route::prefix('cargos')->group(function () {
         Route::name('positions.')->group(function () {
-            Route::get('/', [UserPositionController::class, 'index'])->name('index');
-            Route::get('/adicionar', [UserPositionController::class, 'create'])->name('create');
-            Route::post('/adicionar', [UserPositionController::class, 'store'])->name('store');
+            Route::get('/',                 [UserPositionController::class, 'index'])->name('index');
+            Route::get('/adicionar',        [UserPositionController::class, 'create'])->name('create');
+            Route::post('/adicionar',       [UserPositionController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [UserPositionController::class, 'destroy'])->name('destroy');
-            Route::get('/editar/{id}', [UserPositionController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id}', [UserPositionController::class, 'update'])->name('update');
+            Route::get('/editar/{id}',      [UserPositionController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}',      [UserPositionController::class, 'update'])->name('update');
         });
     });
 

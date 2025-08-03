@@ -33,3 +33,13 @@
         <input type="file" class="form-control form-control-solid" name="photo" value="{{ $content->photo ?? old('photo') }}" accept="image/*"/>
     </div>
 </div>
+
+<div class="rounded bg-gray-200 p-4">
+    <h3 class="fw-bolder">Funções de administrador</h3>
+    <ul class="mb-0">
+        <li>Pode gerenciar todos os projetos</li>
+        <li>Pode ordenar projetos</li>
+        <li>Pode gerenciar usuários</li>
+        <li>Pode gerenciar cargos</li>
+    </ul>
+</div>
