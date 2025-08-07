@@ -34,9 +34,13 @@
                                 @endif
                             </td>
                             <td>
-                                <span class="text-gray-700 fw-bold fs-6">
-                                    R$ {{ number_format($content->contract_value, 2, ',', '.') }}
-                                </span>
+                                @if ($content->contract_value)
+                                    <span class="text-gray-700 fw-bold fs-6">
+                                        R$ {{ number_format($content->contract_value, 2, ',', '.') }}
+                                    </span>
+                                @else
+                                    <span class="badge badge-light">-</span>
+                                @endif
                             </td>
                             <td>
                                 @if ($content->start_date)
