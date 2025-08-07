@@ -9,11 +9,10 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
+                        <th>Tipo de Contrato</th>
+                        <th>Valor</th>
                         <th>Entrada</th>
                         <th>Status</th>
-                        <th>CPF/CNPJ</th>
-                        <th>Telefone</th>
-                        <th>Saída</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -24,6 +23,20 @@
                                 <a href="{{ route('clients.edit', $content->id) }}" class="text-gray-700 text-hover-primary fw-bold fs-6">
                                     {{ $content->name }}
                                 </a>
+                            </td>
+                            <td>
+                                @if ($content->contract)
+                                    <span class="text-gray-700 fw-bold fs-6">
+                                        {{ $content->contract->name }}
+                                    </span>
+                                @else
+                                    <span class="badge badge-light">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                <span class="text-gray-700 fw-bold fs-6">
+                                    R$ {{ number_format($content->contract_value, 2, ',', '.') }}
+                                </span>
                             </td>
                             <td>
                                 @if ($content->start_date)
@@ -37,19 +50,6 @@
                                     <span class="badge badge-light-success">Ativo</span>
                                 @else
                                     <span class="badge badge-light-danger">Inativo</span>
-                                @endif
-                            </td>
-                            <td>
-                                <span class="text-gray-700 fw-bold">{{ $content->document }}</span>
-                            </td>
-                            <td>
-                                <span class="text-gray-700">{{ $content->phone }}</span>
-                            </td>
-                            <td>
-                                @if ($content->end_date)
-                                    <span class="badge badge-light">{{ $content->end_date->format('d/m/Y') }}</span>
-                                @else
-                                    <span class="badge badge-light">-</span>
                                 @endif
                             </td>
                             <td>

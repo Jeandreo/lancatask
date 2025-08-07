@@ -53,4 +53,11 @@ class Client extends Model
     {
         return $this->hasOne(User::class, 'id', 'created_by');
     }
+    /**
+     * Get the creator associated with the tasks.
+     */
+    public function contract(): HasOne
+    {
+        return $this->hasOne(Contract::class, 'id', 'contract_id');
+    }
 }
