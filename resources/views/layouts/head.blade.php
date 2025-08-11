@@ -11,7 +11,7 @@
 <meta property="og:site_name" content="TakGrow" />
 <meta property="og:description" content="Simplifique o gerenciamento de tarefas para lançamentos com o TakGrow. Acompanhe o progresso do seu time e garanta sucesso nos seus projetos." />
 <link rel="canonical" href="https://takgrow.com/" />
-<link rel="shortcut icon" href="{{ asset('assets/media/images/icon-takgrow.png') }}" />
+<link rel="shortcut icon" href="{{ asset('assets/media/images/favicon-takgrow.png') }}" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
 <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />

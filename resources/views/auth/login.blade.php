@@ -14,7 +14,7 @@
                                     <form action="{{ route('login') }}" class="form" method="POST">
                                         @csrf
                                         <div class="text-center mb-11">
-                                            <img src="{{ asset('assets/media/images/logo-grow.png') }}" class="w-75 mb-4">
+                                            <img src="{{ asset('assets/media/images/logo-takgrow-v3.png') }}" class="w-75 mb-4">
                                             <h1 class="text-gray-900 fw-bolder mb-3 fs-2x text-uppercase">
                                                 ACESSAR FERRAMENTA
                                             </h1>
