@@ -56,12 +56,12 @@
             <div class="card-body p-5 tasks-zones">
                 @if ($tasks->where('date_end', '>=', date('Y-m-d'))->count() || $tasks->where('date_end', null)->count())
                     @foreach ($tasks->where('date_end', null) as $task)
-                    <div class="div-task div-task-remove">
+                    <div class="div-task div-task-remove mb-2">
                         @include('pages.tasks._task', ['hideMove' => true, 'showProject' => true])
                     </div>
                     @endforeach
                     @foreach ($tasks->where('date_end', '>=', date('Y-m-d')) as $task)
-                    <div class="div-task div-task-remove">
+                    <div class="div-task div-task-remove mb-2">
                         @include('pages.tasks._task', ['hideMove' => true, 'showProject' => true])
                     </div>
                     @endforeach

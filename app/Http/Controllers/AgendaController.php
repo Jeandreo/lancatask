@@ -151,6 +151,24 @@ class AgendaController extends Controller
 
         }
 
+        // Se tiver emails adicionais   
+        if(isset($data['emails_additional'])){
+
+            // Decodifica os emails
+            $data['emails_additional'] = json_decode($data['emails_additional'], true);
+
+            // Extrai os valores
+            $addicionalEmails = [];
+
+            foreach($data['emails_additional'] as $email){
+                $addicionalEmails[] = $email['value'];
+            }
+
+            // Adiciona os emails
+            $emails = array_merge($emails, $addicionalEmails);
+
+        }
+
         // Se foi criado com sucesso e quero enviar para o google calendar
         if($created && isset($data['send_google']) && $data['send_google']){
 
@@ -160,7 +178,7 @@ class AgendaController extends Controller
                 'summary'   => $data['name'],
                 'start'     => convertDateToISO($data['date_start']),
                 'end'       => convertDateToISO($data['date_end']),
-                'email'     => 'jeandreofur@gmail.com',
+                'email'     => 'contato.growity@gmail.com',
             ];
 
             $payload = [

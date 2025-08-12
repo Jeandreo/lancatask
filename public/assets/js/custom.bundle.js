@@ -439,7 +439,7 @@ function generateFlatpickrBase(options = null, calendarSelector = '.flatpickr') 
      * Define opções padrões para o calendário.
      */
     var defaultOptions = {
-        allowInput: false,
+        allowInput: true,
         altInput: true,
         altFormat: "d/m/Y H:i",
         dateFormat: "Y-m-d H:i:s",

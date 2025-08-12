@@ -8,7 +8,21 @@
                 <input type="text" class="form-control form-control-solid" placeholder="Nome do evento" name="name" value="{{ $content->name ?? old('name') }}" maxlength="255" required>
             </div>
             <div class="col-3">
-                <input type="color" class="form-control form-control-solid form-control-color" style="width: 100%" name="color" @if(isset($content)) value="{{ $content->color ?? old('color') }}" @else value="{{ randomColor() }}" @endif title="Escolha sua cor" required>
+                <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 rounded actual-color" style="background: {{ $content->color ?? '#007BFF' }};">
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
+                        <p class="text-white fw-bold m-0 text-center">{{ $content->color ?? old('color') }}</p>
+                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true">
+                            @foreach (["#28A745", "#007BFF", "#FFC107", "#FD7E14", "#DC3545"] as $color)
+                                <div class="menu-item px-3 mb-2">
+                                    <span data-color="{{ $color }}" class="menu-link px-3 d-block text-center agenda-color" style="background: {{ $color }}; color: white">
+                                        {{ $color }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="color" value="{{ $content->color ?? '#007BFF' }}" required>
             </div>
         </div>
     </div>
@@ -23,7 +37,7 @@
 </div>
 <div class="row py-2 div-pontual">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-900">Início/Fim: </label>
+        <label class="form-label fs-6 fw-bold text-gray-900 required">Início/Fim: </label>
     </div>
     <div class="col-5">
         <input class="form-control form-control-solid flatpickr-with-time cursor-pointer text-center" placeholder="00/00/0000 00:00" type="text" name="date_start" value="@if(isset($content)){{ "$content->date_start $content->hour_start" }}@endif" required>
@@ -56,14 +70,22 @@
 </div>
 <div class="row py-2 select-clients">
     <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-900 mb-3 required">Clientes:</label>
+        <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Clientes:</label>
     </div>
     <div class="col-10">
-        <select class="form-select form-select-solid" name="clients[]" multiple data-control="select2" data-placeholder="Selecione" required>
+        <select class="form-select form-select-solid" name="clients[]" multiple data-control="select2" data-placeholder="Selecione">
             @foreach($clients as $client)
                 <option value="{{ $client->id }}">{{ $client->name }}</option>
             @endforeach
         </select>
+    </div>
+</div>
+<div class="row py-2 select-clients">
+    <div class="col-2">
+        <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Emails:</label>
+    </div>
+    <div class="col-10">
+        <input class="form-control form-control-solid" name="emails_additional" value="" id="tagfy_emails"/>
     </div>
 </div>
 
@@ -74,12 +96,20 @@
 @parent
 <script>
 
+var emailsTag = document.querySelector("#tagfy_emails");
+new Tagify(emailsTag);
+
+$(document).on('click', '.agenda-color', function(){
+    var color = $(this).data('color');
+    $('.actual-color').css('background', color);
+    $('[name="color"]').val(color);
+});
+
 function toggleParticipantsRequirement(checked) {
     // mostra / esconde
     $('.select-members, .select-clients')[ checked ? 'show' : 'hide' ]();
     // adiciona ou remove o required nos <select>
-    $('.select-members select, .select-clients select')
-      .prop('required', checked);
+    $('.select-members select').prop('required', checked);
   }
 
     $(document).on('change', '[name="send_google"]', function(){
