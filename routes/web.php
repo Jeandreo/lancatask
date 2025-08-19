@@ -33,17 +33,32 @@ Route::middleware(['auth'])->group(function () {
     // Projetos
     Route::prefix('projetos')->group(function () {
         Route::name('projects.')->group(function () {
-            Route::get('/',                     [ProjectController::class, 'index'])->name('index');
-            Route::get('/adicionar',            [ProjectController::class, 'create'])->name('create');
-            Route::post('/adicionar',           [ProjectController::class, 'store'])->name('store');
             Route::get('/visualizar/{id}',      [ProjectController::class, 'show'])->name('show');
-            Route::get('/editar/{id}',          [ProjectController::class, 'edit'])->name('edit');
-            Route::put('/editar/{id}',          [ProjectController::class, 'update'])->name('update');
-            Route::get('/desabilitar/{id}',     [ProjectController::class, 'destroy'])->name('destroy');
-            Route::get('/duplicar/{id}',        [ProjectController::class, 'duplicate'])->name('duplicate');
-            Route::get('/excluir/{id}',         [ProjectController::class, 'delete'])->name('delete');
+            Route::middleware('admin')->group(function () {
+                Route::get('/',                     [ProjectController::class, 'index'])->name('index');
+                Route::get('/adicionar',            [ProjectController::class, 'create'])->name('create');
+                Route::post('/adicionar',           [ProjectController::class, 'store'])->name('store');
+                Route::get('/editar/{id}',          [ProjectController::class, 'edit'])->name('edit');
+                Route::put('/editar/{id}',          [ProjectController::class, 'update'])->name('update');
+                Route::get('/desabilitar/{id}',     [ProjectController::class, 'destroy'])->name('destroy');
+                Route::get('/duplicar/{id}',        [ProjectController::class, 'duplicate'])->name('duplicate');
+                Route::get('/excluir/{id}',         [ProjectController::class, 'delete'])->name('delete');
+            });
         });
     });
+
+    // COMMENTS
+    Route::prefix('modulos')->group(function () {
+        Route::middleware('admin')->name('modules.')->group(function () {
+            Route::get('/', [ModuleController::class, 'index'])->name('index');
+            Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
+            Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
+            Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
+            Route::get('/carregar/{id}', [ModuleController::class, 'filter'])->name('filter');
+            Route::put('/ordem/{id}', [ModuleController::class, 'order'])->name('order');
+        });
+    });
+
     // Projetos
     Route::prefix('clientes')->group(function () {
         Route::name('clients.')->group(function () {
@@ -56,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
         });
     });
     // Projetos
-    Route::prefix('contratos')->group(function () {
+    Route::middleware('admin')->prefix('contratos')->group(function () {
         Route::name('contracts.')->group(function () {
             Route::get('/',                     [ContractController::class, 'index'])->name('index');
             Route::get('/adicionar',            [ContractController::class, 'create'])->name('create');
@@ -74,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
         // PROJECTS
         Route::name('agenda.')->group(function () {
             Route::get('/',                        [AgendaController::class, 'index'])->name('index');
-            Route::get('/gerenciar',               [AgendaController::class, 'list'])->name('list');
+            Route::get('/gerenciar',               [AgendaController::class, 'list'])->name('list')->middleware('admin');
             Route::post('/adicionar',              [AgendaController::class, 'store'])->name('store');
             Route::get('/visualizando/{id?}',      [AgendaController::class, 'show'])->name('show');
             Route::get('/desabilitar/{id}',        [AgendaController::class, 'destroy'])->name('destroy');
@@ -87,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // COMMENTS
-    Route::prefix('tipos-de-projetos')->group(function () {
+    Route::middleware('admin')->prefix('tipos-de-projetos')->group(function () {
         Route::name('projects.types.')->group(function () {
             Route::get('/', [ProjectTypeController::class, 'index'])->name('index');
             Route::get('/adicionar', [ProjectTypeController::class, 'create'])->name('create');
@@ -101,7 +116,7 @@ Route::middleware(['auth'])->group(function () {
     // TASKS
     Route::prefix('tarefas')->group(function () {
         Route::name('tasks.')->group(function () {
-            Route::get('/', [TaskController::class, 'index'])->name('index');
+            Route::get('/', [TaskController::class, 'index'])->name('index')->middleware('admin');
             Route::get('/processar', [TaskController::class, 'processing'])->name('processing');
             Route::post('/adicionar', [TaskController::class, 'store'])->name('store');
             Route::get('/visualizando/{id}', [TaskController::class, 'show'])->name('show');
@@ -130,18 +145,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // COMMENTS
-    Route::prefix('modulos')->group(function () {
-        Route::name('modules.')->group(function () {
-            Route::get('/', [ModuleController::class, 'index'])->name('index');
-            Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
-            Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
-            Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
-            Route::get('/carregar/{id}', [ModuleController::class, 'filter'])->name('filter');
-            Route::put('/ordem/{id}', [ModuleController::class, 'order'])->name('order');
-        });
-    });
-
-    // COMMENTS
     Route::prefix('status')->group(function () {
         Route::name('statuses.')->group(function () {
             Route::get('/adicionar', [StatusController::class, 'create'])->name('create');
@@ -163,7 +166,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Usuários
-    Route::prefix('usuarios')->group(function () {
+    Route::middleware('admin')->prefix('usuarios')->group(function () {
         Route::name('users.')->group(function () {
             Route::get('/',                 [UserController::class, 'index'])->name('index');
             Route::get('/adicionar',        [UserController::class, 'create'])->name('create');
@@ -188,7 +191,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // COMMENTS
-    Route::prefix('cargos')->group(function () {
+    Route::middleware('admin')->prefix('cargos')->group(function () {
         Route::name('positions.')->group(function () {
             Route::get('/',                 [UserPositionController::class, 'index'])->name('index');
             Route::get('/adicionar',        [UserPositionController::class, 'create'])->name('create');
