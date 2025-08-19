@@ -75,7 +75,6 @@ Route::middleware(['auth'])->group(function () {
         Route::name('agenda.')->group(function () {
             Route::get('/',                        [AgendaController::class, 'index'])->name('index');
             Route::get('/gerenciar',               [AgendaController::class, 'list'])->name('list');
-            Route::get('/adicionar',               [AgendaController::class, 'create'])->name('create');
             Route::post('/adicionar',              [AgendaController::class, 'store'])->name('store');
             Route::get('/visualizando/{id?}',      [AgendaController::class, 'show'])->name('show');
             Route::get('/desabilitar/{id}',        [AgendaController::class, 'destroy'])->name('destroy');

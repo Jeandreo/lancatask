@@ -446,7 +446,6 @@ function generateFlatpickrBase(options = null, calendarSelector = '.flatpickr') 
         locale: "pt",
         enableTime: false,
         dateFormat: "Y-m-d H:i",
-        // minDate: "today",
     };
 
     // Sobrescreve as opções personalizadas nas padrões
@@ -476,7 +475,7 @@ function generateFlatpickrDate(options = null, calendarSelector = '.flatpickr-da
         locale: "pt",
         enableTime: false,
         dateFormat: "Y-m-d",
-        // minDate: "today",
+        minDate: "today",
     };
 
     // Sobrescreve as opções personalizadas nas padrões
@@ -489,6 +488,12 @@ function generateFlatpickrDate(options = null, calendarSelector = '.flatpickr-da
 
 loadFlatpickrRange();
 generateFlatpickrBase({enableTime: true}, '.flatpickr-with-time');
+generateFlatpickrBase({
+    altFormat: 'H:i',
+    dateFormat: 'H:i',
+    enableTime: true,
+    noCalendar: true,
+}, '.flatpickr-time-custom');
 
 /**
  * Função responsável por configurar as mascaras dentro dos inputs

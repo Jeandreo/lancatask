@@ -76,8 +76,21 @@
                 $('#edit_metting select').select2({
                     dropdownParent: $('#edit_metting')
                 });
+                generateFlatpickrDate({
+                    dropdownParent: $('#edit_metting'),
+                }, '.flatpickr-date');
+                generateFlatpickrBase(
+                    {
+                        altFormat: 'H:i',
+                        dateFormat: 'H:i',
+                        enableTime: true,
+                        noCalendar: true,
+                        dropdownParent: $('#edit_metting'),
+                    },
+                    '.flatpickr-time-custom'
+                );
+                KTMenu.createInstances();
                 $('#edit_metting').modal('show');
-                generateFlatpickrBase({enableTime: true}, '.flatpickr-with-time');
             }
         });
     }

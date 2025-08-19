@@ -10,12 +10,48 @@
             <div class="col-3">
                 <div class="d-flex p-0 align-items-center justify-content-center cursor-pointer h-100 rounded actual-color" style="background: {{ $content->color ?? '#007BFF' }};">
                     <div class="w-100 h-100 d-flex align-items-center justify-content-center" data-kt-menu-trigger="click" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-start">
-                        <p class="text-white fw-bold m-0 text-center">{{ $content->color ?? old('color') }}</p>
+                        <p class="text-white fw-bold m-0 text-center name-color">
+                            @if (isset($content->color))
+                                @switch($content->color)
+                                    @case('#007BFF')
+                                        SDR
+                                    @break
+                                    @case('#28A745')
+                                        Closer
+                                    @break
+                                    @case('#FFC107')
+                                        Assessoria
+                                    @break
+                                    @case('#DC3545')
+                                        Briefing
+                                    @break
+                                    @case('#6F42C1')
+                                        Planejamento
+                                    @break
+                                    @case('#FD7E14')
+                                        Weekly
+                                    @break
+                                    @case('#E83E8C')
+                                        All Hands
+                                    @break
+                                @endswitch
+                            @else
+                                SDR
+                            @endif
+                        </p>
                         <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-250px py-4" data-kt-menu="true">
-                            @foreach (["#28A745", "#007BFF", "#FFC107", "#FD7E14", "#DC3545"] as $color)
+                            @foreach ([
+                                'SDR'          => "#007BFF", // Azul
+                                'Closer'       => "#28A745", // Verde
+                                'Assessoria'   => "#FFC107", // Amarelo
+                                'Briefing'     => "#DC3545", // Vermelho
+                                'Planejamento' => "#6F42C1", // Roxo
+                                'Weekly'       => "#FD7E14", // Laranja
+                                'All Hands'    => "#E83E8C", // Rosa
+                            ] as $name => $color)
                                 <div class="menu-item px-3 mb-2">
                                     <span data-color="{{ $color }}" class="menu-link px-3 d-block text-center agenda-color" style="background: {{ $color }}; color: white">
-                                        {{ $color }}
+                                        {{ $name }}
                                     </span>
                                 </div>
                             @endforeach
@@ -39,11 +75,14 @@
     <div class="col-2">
         <label class="form-label fs-6 fw-bold text-gray-900 required">Início/Fim: </label>
     </div>
-    <div class="col-5">
-        <input class="form-control form-control-solid flatpickr-with-time cursor-pointer text-center" placeholder="00/00/0000 00:00" type="text" name="date_start" value="@if(isset($content)){{ "$content->date_start $content->hour_start" }}@endif" required>
+    <div class="col-6">
+        <input class="form-control form-control-solid flatpickr-date cursor-pointer text-center" placeholder="00/00/0000" type="text" name="date" value="@if(isset($content)){{ date('d/m/Y', strtotime($content->date_start)) }}@endif" required>
     </div>
-    <div class="col-5">
-        <input class="form-control form-control-solid flatpickr-with-time cursor-pointer text-center" placeholder="00/00/0000 00:00" type="text" name="date_end" value="@if(isset($content)){{ "$content->date_end $content->hour_end" }}@endif" required>
+    <div class="col-2">
+        <input class="form-control form-control-solid flatpickr-time-custom cursor-pointer text-center" placeholder="00:00" type="text" name="hour_start" value="@if(isset($content)){{ "$content->hour_start" }}@endif" required>
+    </div>
+    <div class="col-2">
+        <input class="form-control form-control-solid flatpickr-time-custom cursor-pointer text-center" placeholder="00:00" type="text" name="hour_end" value="@if(isset($content)){{ "$content->hour_end" }}@endif" required>
     </div>
 </div>
 
@@ -101,8 +140,10 @@ new Tagify(emailsTag);
 
 $(document).on('click', '.agenda-color', function(){
     var color = $(this).data('color');
+    var name = $(this).text();
     $('.actual-color').css('background', color);
     $('[name="color"]').val(color);
+    $('.name-color').text(name);
 });
 
 function toggleParticipantsRequirement(checked) {

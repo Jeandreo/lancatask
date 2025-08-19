@@ -75,9 +75,9 @@
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('contracts.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tipos de contrato</span></a>
                            </div>
-                            <div class="menu-item">
+                            {{-- <div class="menu-item">
                                 <a class="menu-link" href="{{ route('configs.google.auth') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Autenticação Google</span></a>
-                            </div>
+                            </div> --}}
                         </div>
                      </div>
                      @if (Auth::user()->role == 'Administrador')

@@ -101,10 +101,12 @@ class AgendaController extends Controller
 
         // CREATED BY
         $data['created_by'] = Auth::id();
-        $data['date_start'] = $data['date_start'];
-        $data['date_end'] = $data['date_end'];
-        $data['hour_start'] = $data['date_start'];
-        $data['hour_end'] = $data['date_end'];
+        $data['date_start'] = $data['date_end'] = $data['date'];
+
+        // Verifica se a hora de encerramento é maior que a hora de inicio
+        if($data['hour_end'] < $data['hour_start']){
+            return redirect()->back()->with('message', 'A hora de encerramento deve ser maior que a hora de inicio.');
+        }
 
         // SEND DATA
         $created = $this->repository->create($data);
@@ -176,8 +178,8 @@ class AgendaController extends Controller
 
             $data = [
                 'summary'   => $data['name'],
-                'start'     => convertDateToISO($data['date_start']),
-                'end'       => convertDateToISO($data['date_end']),
+                'start'     => convertDateToISO($data['date_start'] . ' ' . $data['hour_start']),
+                'end'       => convertDateToISO($data['date_end'] . ' ' . $data['hour_end']),
                 'email'     => 'contato.growity@gmail.com',
             ];
 
