@@ -32,6 +32,7 @@
                             </span>
                         </a>
                     </div>
+                    @if (Auth::user()->role == 'Administrador')
                     <div class="menu-item">
                         <a class="menu-link" href="{{ route('clients.index') }}">
                             <span class="menu-icon">
@@ -80,7 +81,6 @@
                             </div> --}}
                         </div>
                      </div>
-                     @if (Auth::user()->role == 'Administrador')
                     <div  data-kt-menu-trigger="click"  class="menu-item menu-accordion" >
                         <span class="menu-link"  >
                             <span  class="menu-icon" >

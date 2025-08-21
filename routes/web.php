@@ -49,18 +49,20 @@ Route::middleware(['auth'])->group(function () {
 
     // COMMENTS
     Route::prefix('modulos')->group(function () {
-        Route::middleware('admin')->name('modules.')->group(function () {
-            Route::get('/', [ModuleController::class, 'index'])->name('index');
-            Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
-            Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
-            Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
+        Route::name('modules.')->group(function () {
+            Route::middleware('admin')->group(function () {
+                Route::get('/', [ModuleController::class, 'index'])->name('index');
+                Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
+                Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
+                Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
+            });
             Route::get('/carregar/{id}', [ModuleController::class, 'filter'])->name('filter');
             Route::put('/ordem/{id}', [ModuleController::class, 'order'])->name('order');
         });
     });
 
     // Projetos
-    Route::prefix('clientes')->group(function () {
+    Route::middleware('admin')->prefix('clientes')->group(function () {
         Route::name('clients.')->group(function () {
             Route::get('/',                     [ClientController::class, 'index'])->name('index');
             Route::get('/adicionar',            [ClientController::class, 'create'])->name('create');
