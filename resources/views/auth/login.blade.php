@@ -19,7 +19,7 @@
                                                 ACESSAR FERRAMENTA
                                             </h1>
                                             <div class="text-gray-500 fw-semibold fs-6">
-                                                A ferramenta ideal para escalar a performance dos seus lançamentos!
+                                                A ferramenta perfeita para levar o seu projeto ao próximo nível.
                                             </div>
                                         </div>
                                         <div class="fv-row mb-3 fv-plugins-icon-container">
