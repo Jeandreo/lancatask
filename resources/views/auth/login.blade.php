@@ -8,7 +8,7 @@
             <div class="d-flex flex-column flex-lg-row flex-column-fluid bgi-size-cover bgi-position-center" style="background: #1c1c1c;">
                 <div class="d-flex flex-column flex-lg-row-fluid">
                     <div class="d-flex flex-center flex-column flex-lg-row-fluid">
-                        <div class="w-lg-500px p-10">
+                        <div class="w-lg-550px p-10">
                             <div class="car2d">
                                 <div class="card-body">
                                     <form action="{{ route('login') }}" class="form" method="POST">
