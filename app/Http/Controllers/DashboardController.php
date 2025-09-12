@@ -18,13 +18,16 @@ class DashboardController extends Controller
 
         // Obtém minhas tarefas
         $tasks = Auth::user()->tasks()
-            ->where('checked', false)
-            ->where('status', true)
-            ->whereHas('module.project', function ($query) {
-                $query->where('status', true);
-            })
-            ->orderBy('date', 'ASC')
-            ->get();
+                        ->where('checked', false)
+                        ->where('status', true)
+                        ->whereHas('module', function ($query) {
+                            $query->where('status', true);
+                        })
+                        ->whereHas('module.project', function ($query) {
+                            $query->where('status', true);
+                        })
+                        ->orderBy('date', 'ASC')
+                        ->get();
 
 
         $users = User::where('status', 1)->get();
