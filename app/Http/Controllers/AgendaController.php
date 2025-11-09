@@ -200,6 +200,11 @@ class AgendaController extends Controller
             // Insere o evento no Google Calendar principal e dispara para todos
             $event = $googleCalendarService->insertEvent($payload, 'primary', 'all');
 
+            // Se houve erro
+            if($event['error']){
+                return redirect()->back()->with('message', 'Não foi possível inserir o evento no Google Calendar por conta do Token expirado.');
+            }
+
             // Salva o id do google calendar
             $created->id_google = $event->id;
             $created->save();

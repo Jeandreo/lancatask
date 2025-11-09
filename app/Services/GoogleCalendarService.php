@@ -60,7 +60,12 @@ class GoogleCalendarService
 
         // Converte o payload em um objeto de evento do Google
         $event = new \Google_Service_Calendar_Event($payload);
-        
+
+        // Verifica se o token ainda é válido
+        if ($this->service->getClient()->isAccessTokenExpired()) {
+            return ['error' => 'Token expirado'];
+        }
+
         // Insere o evento e, se definido, envia convites/atualizações por e-mail
         return $this->service->events->insert($calendarId, $event, ['sendUpdates' => $sendUpdates]);
 
