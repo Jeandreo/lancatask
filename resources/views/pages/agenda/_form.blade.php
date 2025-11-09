@@ -86,56 +86,60 @@
     </div>
 </div>
 
-@if (!isset($content))
-<div class="row py-2">
-    <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
-        <label class="form-check-label form-label fs-6 fw-bold text-gray-900 mb-0 me-6" for="googleCalendar">
-            Incluir no Google Calendar
-        </label>
-        <input class="form-check-input cursor-pointer" type="checkbox" value="1" checked id="googleCalendar" name="send_google" @if(isset($content) && $content->id_google) checked @endif/>
+@if (!isset($content) || $content->id_google)
+    <div class="row py-2">
+        <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+            <label class="form-check-label form-label fs-6 fw-bold text-gray-900 mb-0 me-6" for="googleCalendar">
+                @if (!isset($content))
+                Incluir no Google Calendar
+                @else
+                Editar no Google Calendar
+                @endif
+            </label>
+            @if (!isset($content))
+            <input class="form-check-input cursor-pointer" type="checkbox" value="1" checked id="googleCalendar" name="send_google" @if(isset($content) && $content->id_google) checked @endif/>
+            @endif
+        </div>
     </div>
-</div>
-<div class="row py-2 select-members">
-    <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-900 mb-3 required">Membros do time:</label>
+    <div class="row py-2 select-members">
+        <div class="col-2">
+            <label class="form-label fs-6 fw-bold text-gray-900 mb-3 required">Membros do time:</label>
+        </div>
+        <div class="col-10">
+            <select class="form-select form-select-solid" name="users[]" multiple data-control="select2" data-placeholder="Selecione" required>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}" @if(isset($content) && $content->members()->where('type', 'user')->get()->contains('member_id', $user->id)) selected @endif>{{ $user->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
-    <div class="col-10">
-        <select class="form-select form-select-solid" name="users[]" multiple data-control="select2" data-placeholder="Selecione" required>
-            @foreach($users as $user)
-                <option value="{{ $user->id }}">{{ $user->name }}</option>
-            @endforeach
-        </select>
+    <div class="row py-2 select-clients">
+        <div class="col-2">
+            <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Clientes:</label>
+        </div>
+        <div class="col-10">
+            <select class="form-select form-select-solid" name="clients[]" multiple data-control="select2" data-placeholder="Selecione">
+                @foreach($clients as $client)
+                    <option value="{{ $client->id }}" @if(isset($content) && $content->members()->where('type', 'client')->get()->contains('member_id', $client->id)) selected @endif>{{ $client->name }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
-</div>
-<div class="row py-2 select-clients">
-    <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Clientes:</label>
+    <div class="row py-2 select-clients">
+        <div class="col-2">
+            <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Emails:</label>
+        </div>
+        <div class="col-10">
+            <input class="form-control form-control-solid tagify" name="emails_additional" value="{{ isset($content) ? $content->extra_emails : '' }}"/>
+        </div>
     </div>
-    <div class="col-10">
-        <select class="form-select form-select-solid" name="clients[]" multiple data-control="select2" data-placeholder="Selecione">
-            @foreach($clients as $client)
-                <option value="{{ $client->id }}">{{ $client->name }}</option>
-            @endforeach
-        </select>
-    </div>
-</div>
-<div class="row py-2 select-clients">
-    <div class="col-2">
-        <label class="form-label fs-6 fw-bold text-gray-900 mb-3">Emails:</label>
-    </div>
-    <div class="col-10">
-        <input class="form-control form-control-solid" name="emails_additional" value="" id="tagfy_emails"/>
-    </div>
-</div>
-
 @endif
-
 
 @section('custom-footer')
 @parent
 <script>
 
-var emailsTag = document.querySelector("#tagfy_emails");
+var emailsTag = document.querySelector(".tagify");
 new Tagify(emailsTag);
 
 $(document).on('click', '.agenda-color', function(){

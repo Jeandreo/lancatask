@@ -13,7 +13,7 @@ class GoogleController extends Controller
     {
         // dd(route('google.callback'));
         $client = new Google_Client();
-        $client->setAuthConfig(storage_path('app/google/credentials.json'));
+        $client->setAuthConfig(storage_path(env('GOOGLE_CREDENTIAL_APP')));
         $client->setAccessType('offline');
         $client->setPrompt('consent');
         $client->setScopes([
@@ -41,7 +41,10 @@ class GoogleController extends Controller
             // Salva o token
             Storage::disk('local')->put('google/calendar_token.json', json_encode($token));
 
-            return 'Token salvo com sucesso!';
+            return redirect()->route('dashboard.index')->with([
+                'message' => 'Calendário conectado com sucesso!',
+                'type' => 'success'
+            ]);
         }
 
         return 'Nenhum code recebido.';

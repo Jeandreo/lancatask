@@ -89,6 +89,29 @@
                     },
                     '.flatpickr-time-custom'
                 );
+
+  
+            // Configuração do Tagify com verificação de instância existente
+            const tagInput = document.querySelector("#edit-agenda .tagify");
+            
+            // Destruir instância existente se houver
+            if (tagInput && tagInput.tagify) {
+                tagInput.tagify.destroy();
+            }
+            
+            // Criar nova instância apenas se o elemento existir
+            if (tagInput) {
+                const tagify = new Tagify(tagInput, {
+                    // Suas configurações personalizadas aqui, se necessário
+                    duplicates: false,
+                    placeholder: "Digite e-mails...",
+                    pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+                });
+                
+                tagInput.tagify = tagify;
+            }
+            
+
                 KTMenu.createInstances();
                 $('#edit_metting').modal('show');
             }

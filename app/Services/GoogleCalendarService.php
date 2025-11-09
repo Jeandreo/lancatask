@@ -16,7 +16,7 @@ class GoogleCalendarService
     public function __construct()
     {
         // Define onde está o JSON de credenciais baixado do Google Cloud
-        $this->credentialsPath = storage_path('app/google/credentials.json');
+        $this->credentialsPath = storage_path(env('GOOGLE_CREDENTIAL_APP'));
 
         // Define o caminho real do arquivo de token dentro do disco "local" do Laravel
         $this->tokenPath = Storage::disk('local')->path('google/calendar_token.json');

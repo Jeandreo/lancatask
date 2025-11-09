@@ -17,6 +17,7 @@ class Agenda extends Model
         'name',
         'category_id',
         'description',
+        'extra_emails',
         'general',
         'date_start',
         'hour_start',

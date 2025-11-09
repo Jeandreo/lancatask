@@ -81,9 +81,14 @@ class AgendaController extends Controller
             return response()->json(['Meeting not found'], 200);
         };
 
+        $users      = User::where('status', true)->orderBy('name', 'ASC')->get();
+        $clients    = Client::where('status', true)->orderBy('name', 'ASC')->get();
+
         // GENERATES DISPLAY WITH DATA
         return view('pages.agenda.edit')->with([
             'content' => $content,
+            'users'   => $users,
+            'clients' => $clients,
         ]);
     }
 
@@ -107,6 +112,9 @@ class AgendaController extends Controller
         if($data['hour_end'] < $data['hour_start']){
             return redirect()->back()->with('message', 'A hora de encerramento deve ser maior que a hora de inicio.');
         }
+
+        // Extrai os emails extra
+        $data['extra_emails'] = $data['emails_additional'];
 
         // SEND DATA
         $created = $this->repository->create($data);
@@ -253,62 +261,101 @@ class AgendaController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id)){
             return response()->json(['Meeting not found'], 200);
-        };
+        }
 
         // GET FORM DATA
         $data = $request->all();
 
-        // STORING AND FORMATING NEW DATA
-        $data['created_by'] = Auth::id();
-        $data['date_start'] = $data['date_start'];
-        $data['date_end']   = $data['date_end'];
-        $data['hour_start'] = $data['date_start'];
-        $data['hour_end']   = $data['date_end'];
+        // FORMATAÇÃO
+        $data['created_by']    = Auth::id();
+        $data['date_start'] = $data['date_end'] = $data['date'];
+        $data['extra_emails']  = $data['emails_additional'] ?? null;
 
-        // Adiciona a reunião ao banco de dados
+        // Atualiza informações no banco
         $content->update($data);
 
-        // Se foi criado com sucesso e quero enviar para o google calendar
-        if($content->id_google){
+        // --- GOOGLE CALENDAR ---
+        if ($content->id_google) {
 
             $googleCalendarService = new GoogleCalendarService();
 
-            $data = [
+            // 1️⃣ Exclui o evento antigo
+            try {
+                $googleCalendarService->deleteEvent($content->id_google);
+            } catch (\Exception $e) {
+                \Log::error("Erro ao excluir evento antigo do Google Calendar: " . $e->getMessage());
+            }
+
+            // 2️⃣ Recria o evento atualizado
+
+            // 🔹 Coleta todos os membros
+            $members = AgendaMember::where('agenda_id', $content->id)->get();
+
+            $emails = [];
+            foreach ($members as $member) {
+                if ($member->type == 'user') {
+                    $user = User::find($member->member_id);
+                    if ($user && $user->email) $emails[] = $user->email;
+                } else {
+                    $client = Client::find($member->member_id);
+                    if ($client && $client->email) $emails[] = $client->email;
+                }
+            }
+
+            // 🔹 Emails adicionais
+            if (!empty($data['emails_additional'])) {
+                $decoded = json_decode($data['emails_additional'], true);
+                foreach ($decoded as $item) {
+                    $emails[] = $item['value'] ?? $item;
+                }
+            }
+
+            // 🔹 Remove duplicados
+            $emails = array_unique($emails);
+
+            // 🔹 Monta o payload para o novo evento
+            $eventData = [
                 'summary'   => $data['name'],
-                'start'     => convertDateToISO($data['date_start']),
-                'end'       => convertDateToISO($data['date_end']),
+                'start'     => convertDateToISO($data['date_start'] . ' ' . $data['hour_start']),
+                'end'       => convertDateToISO($data['date_end']   . ' ' . $data['hour_end']),
             ];
 
             $payload = [
-                'summary'     => $data['summary'],
-                'start'       => ['dateTime' => $data['start'], 'timeZone' => 'America/Sao_Paulo'],
-                'end'         => ['dateTime' => $data['end'],   'timeZone' => 'America/Sao_Paulo'],
+                'summary'   => $eventData['summary'],
+                'start'     => ['dateTime' => $eventData['start'], 'timeZone' => 'America/Sao_Paulo'],
+                'end'       => ['dateTime' => $eventData['end'],   'timeZone' => 'America/Sao_Paulo'],
+                'attendees' => array_map(fn($email) => ['email' => $email], $emails),
+                'reminders' => [
+                    'useDefault' => false,
+                    'overrides'  => [
+                        ['method' => 'email', 'minutes' => 60 * 24],
+                        ['method' => 'email', 'minutes' => 30],
+                    ],
+                ],
             ];
 
-            // Insere o evento no Google Calendar principal e dispara para todos
-            $googleCalendarService->updateEvent($content->id_google, $payload);
+            // 3️⃣ Insere o novo evento
+            $event = $googleCalendarService->insertEvent($payload, 'primary', 'all');
 
+            if (isset($event['error'])) {
+                return redirect()->back()->with('message', 'Erro ao atualizar evento no Google Calendar (token expirado).');
+            }
+
+            // 4️⃣ Atualiza o ID do novo evento
+            $content->id_google = $event->id;
+            $content->save();
         }
 
-        // REDIRECT AND MESSAGES
         return redirect()
-                ->back()
-                ->with('message', 'Reunião <b>'. $request->name . '</b> foi atualizada com sucesso.');
-
+            ->back()
+            ->with('message', 'Reunião <b>' . $request->name . '</b> foi atualizada com sucesso.');
     }
+
 
     /**
      * Remove the specified resource from storage.
