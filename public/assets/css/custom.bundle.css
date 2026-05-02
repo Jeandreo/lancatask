@@ -560,7 +560,6 @@ input:-webkit-autofill:active{
     background: #2c123b !important;
 }
 
-
-.bg-dark {
+[data-bs-theme="dark"] .bg-dark {
     background-color: #230e2f !important;
 }
