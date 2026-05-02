@@ -563,3 +563,19 @@ input:-webkit-autofill:active{
 [data-bs-theme="dark"] .bg-dark {
     background-color: #230e2f !important;
 }
+
+.card {
+    box-shadow: 3px 3px 20px #00000010;
+}
+
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #230e2f inset !important;
+}
+
+[data-bs-theme=dark] .btn.btn-secondary {
+    background-color: #1e092d;
+}
+
+[data-bs-theme=dark] .fc .fc-daygrid-day.fc-day-today {
+    background-color: #230a32;
+}

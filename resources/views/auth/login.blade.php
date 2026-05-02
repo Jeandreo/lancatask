@@ -7,14 +7,14 @@
         <div class="d-flex flex-column flex-root" id="kt_app_root">
             <div class="d-flex flex-column flex-lg-row flex-column-fluid bgi-size-cover bgi-position-center" style="background: #1c1c1c;">
                 <div class="d-flex flex-column flex-lg-row-fluid">
-                    <div class="d-flex flex-center flex-column flex-lg-row-fluid">
-                        <div class="w-lg-550px p-10">
-                            <div class="car2d">
-                                <div class="card-body">
+                    <div class="d-flex flex-center flex-column flex-lg-row-fluid bg-dark">
+                        <div class="w-lg-550px">
+                            <div class="card">
+                                <div class="card-body p-14">
                                     <form action="{{ route('login') }}" class="form" method="POST">
                                         @csrf
                                         <div class="text-center mb-11">
-                                            <img src="{{ asset('assets/media/images/logo-lanca-task-roxa.png') }}" class="w-75 mb-4">
+                                            <img src="{{ asset('assets/media/images/logo-lanca-task-branca.png') }}" class="w-75 mb-4">
                                             <h1 class="text-gray-900 fw-bolder mb-3 fs-2x text-uppercase">
                                                 ACESSAR FERRAMENTA
                                             </h1>
