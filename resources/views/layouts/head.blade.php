@@ -24,7 +24,7 @@
 <style>
 
 
-:root {
+[data-bs-theme="dark"]:root {
     --bs-menu-link-bg-color-active: #1c0428 !important;
     --bs-menu-link-bg-color-hover: #1c0428 !important;
 }

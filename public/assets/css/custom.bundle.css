@@ -477,7 +477,7 @@ input:-webkit-autofill:active{
     background: #1c0428;
 }
 
-[data-bs-theme="dark"] .form-select.form-select-solid, .form-control.form-control-solid {
+[data-bs-theme="dark"] .form-select.form-select-solid, [data-bs-theme="dark"] .form-control.form-control-solid {
     background-color: #230e2f;
     border-color: #230e2f;
 }
