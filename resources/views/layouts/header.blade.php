@@ -50,6 +50,23 @@
                         <div class="menu-item px-5">
                             <a href="{{ route('account.index') }}" class="menu-link px-5">Minha Conta</a>
                         </div>
+                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" class="menu-item px-5">
+                            <a href="#" class="menu-link px-5">
+                                <span class="menu-title">Alterar modo</span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <div class="menu-sub menu-sub-dropdown w-175px py-4">
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3 theme-mode-option" data-theme-mode="system">Sistema</a>
+                                </div>
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3 theme-mode-option" data-theme-mode="light">Claro</a>
+                                </div>
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3 theme-mode-option" data-theme-mode="dark">Escuro</a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="separator my-2"></div>
                         <div class="menu-item px-5">
                             <a href="{{ route('logout') }}" class="menu-link px-5">Sair</a>

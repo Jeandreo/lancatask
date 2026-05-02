@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-bs-theme-mode="dark">
+<html data-bs-theme-mode="system">
 	<head>
 		@include('layouts.head')
         @if (isset($pageClean))
@@ -128,6 +128,37 @@
                     url: "{{ route('account.sounds') }}",
                     data: {_token: @json(csrf_token())},
                 });
+            });
+
+            // THEME MODE (system | light | dark)
+            function resolveThemeMode(mode) {
+                if (mode === 'system') {
+                    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                return mode;
+            }
+
+            function applyThemeMode(mode) {
+                var finalMode = resolveThemeMode(mode);
+                document.documentElement.setAttribute('data-bs-theme-mode', mode);
+                document.documentElement.setAttribute('data-bs-theme', finalMode);
+                localStorage.setItem('data-bs-theme', mode);
+                $('.theme-mode-option').removeClass('active');
+                $('.theme-mode-option[data-theme-mode="' + mode + '"]').addClass('active');
+            }
+
+            $(document).on('click', '.theme-mode-option', function(e){
+                e.preventDefault();
+                applyThemeMode($(this).data('theme-mode'));
+            });
+
+            var savedThemeMode = localStorage.getItem('data-bs-theme') || 'system';
+            applyThemeMode(savedThemeMode);
+
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+                if ((localStorage.getItem('data-bs-theme') || 'system') === 'system') {
+                    applyThemeMode('system');
+                }
             });
         </script>
         @yield('custom-footer')

@@ -65,7 +65,7 @@
 				{{-- ALINHAR EM BAIXO  --}}
 			</div>
 		</div>
-		<div class="col-12 col-md-8 h-md-600px bg-gray-200 rounded-task-right p-0">
+		<div class="col-12 col-md-8 h-md-600px bg-gray-200 rounded-task-right p-0 bg-light">
 			<div id="task-details">
                 <div class="h-75px p-3 d-flex align-items-center justify-content-center position-relative opacity-1" style="border-bottom: solid 1px rgba(0, 0, 0, 0.05);">
                     <p class="text-gray-600 text-uppercase m-0 text-center"><i>Tudo começa com uma ideia.</i></p>
