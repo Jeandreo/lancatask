@@ -36,6 +36,26 @@
         </div>
     </div>
 </div>
+
+@if($project->client)
+<div class="card mb-4">
+    <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-4">
+        <div>
+            <p class="mb-1 text-gray-600 fs-7 fw-bold text-uppercase">Cliente Vinculado</p>
+            <p class="mb-1 text-gray-900 fs-4 fw-bolder">{{ $project->client->name }}</p>
+            <div class="d-flex gap-4 flex-wrap">
+                <span class="text-gray-600 fs-7">E-mail: {{ $project->client->email ?: '-' }}</span>
+                <span class="text-gray-600 fs-7">Telefone: {{ $project->client->phone ?: '-' }}</span>
+                <span class="text-gray-600 fs-7">Contrato: {{ $project->client->contract?->name ?: '-' }}</span>
+            </div>
+        </div>
+        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#modal-client-project">
+            Ver detalhes do cliente
+        </button>
+    </div>
+</div>
+@endif
+
 <div class="modules draggable-zone-module">
     @if ($project->modules()->where('status', true)->count())
         @foreach ($project->modules()->where('status', true)->orderByRaw('FIELD(id, ' . implode(',', $project->orderModules()) . ')')->get() as $module)
@@ -57,6 +77,103 @@
     </div>
 </div>
 @include('pages.tasks._modals')
+
+@if($project->client)
+<div class="modal fade" tabindex="-1" id="modal-client-project" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalhes do Cliente</h3>
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <p class="text-gray-500 mb-1 fs-7">Nome</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->name }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="text-gray-500 mb-1 fs-7">Tipo</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->person_type ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="text-gray-500 mb-1 fs-7">Documento</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->document ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-gray-500 mb-1 fs-7">E-mail</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->email ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-gray-500 mb-1 fs-7">Telefone</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->phone ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-gray-500 mb-1 fs-7">Site</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->website ?: '-' }}</p>
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="my-0">
+                    </div>
+
+                    <div class="col-md-4">
+                        <p class="text-gray-500 mb-1 fs-7">Instagram</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->instagram ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-gray-500 mb-1 fs-7">Facebook</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->facebook ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p class="text-gray-500 mb-1 fs-7">LinkedIn</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->linkedin ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-gray-500 mb-1 fs-7">YouTube</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->youtube ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-gray-500 mb-1 fs-7">TikTok</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->tiktok ?: '-' }}</p>
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="my-0">
+                    </div>
+
+                    <div class="col-md-3">
+                        <p class="text-gray-500 mb-1 fs-7">CEP</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->zip ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-5">
+                        <p class="text-gray-500 mb-1 fs-7">Rua</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->street ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="text-gray-500 mb-1 fs-7">Número</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->number ?: '-' }}</p>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="text-gray-500 mb-1 fs-7">Estado</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->state ?: '-' }}</p>
+                    </div>
+                    <div class="col-12">
+                        <p class="text-gray-500 mb-1 fs-7">Observações</p>
+                        <p class="fw-bold text-gray-900 mb-0">{{ $project->client->observations ?: '-' }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ route('clients.edit', $project->client->id) }}" class="btn btn-primary">Editar cliente</a>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @endsection
 
 @section('custom-footer')

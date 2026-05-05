@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Contract;
 use App\Models\AgendaMember;
+use App\Models\Module;
+use App\Models\Project;
+use App\Models\ProjectType;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -150,10 +154,12 @@ class ClientController extends Controller
 
         // GET ALL DATA
         $contracts = Contract::where('status', true)->orderBy('id', 'ASC')->get();
+        $projectTypes = ProjectType::where('status', true)->orderBy('name', 'ASC')->get();
 
         // RENDER VIEW
         return view('pages.clients.create')->with([
             'contracts' => $contracts,
+            'projectTypes' => $projectTypes,
         ]);
     }
 
@@ -165,15 +171,71 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-
-        // GET FORM DATA
         $data = $request->all();
-
-        // Obtém projeto
         $data['created_by'] = Auth::id();
 
-        // SEND DATA
-        $this->repository->create($data);
+        if ($request->boolean('create_project')) {
+            $request->validate([
+                'project_name' => 'required|string|max:255',
+                'project_type_id' => 'required|exists:projects_types,id',
+            ]);
+        }
+
+        DB::transaction(function () use ($data, $request) {
+            $this->repository->create($data);
+
+            if (!$request->boolean('create_project')) {
+                return;
+            }
+
+            $project = Project::create([
+                'name' => $request->project_name,
+                'type_is' => 'time',
+                'type_id' => $request->project_type_id,
+                'created_by' => Auth::id(),
+            ]);
+
+            $project->users()->sync([Auth::id()]);
+
+            Module::create([
+                'name' => 'Módulo Inicial',
+                'project_id' => $project->id,
+                'color' => '#348feb',
+                'created_by' => Auth::id(),
+            ]);
+
+            Status::create([
+                'name' => 'Não Iniciado',
+                'color' => '#365e92',
+                'project_id' => $project->id,
+                'order' => 1,
+                'created_by' => Auth::id(),
+            ]);
+
+            Status::create([
+                'name' => 'Parado',
+                'color' => '#D83F58',
+                'project_id' => $project->id,
+                'order' => 2,
+                'created_by' => Auth::id(),
+            ]);
+
+            Status::create([
+                'name' => 'Em andamento',
+                'color' => '#F4A541',
+                'project_id' => $project->id,
+                'order' => 3,
+                'created_by' => Auth::id(),
+            ]);
+
+            Status::create([
+                'name' => 'Feito',
+                'color' => '#63BC07',
+                'project_id' => $project->id,
+                'order' => 4,
+                'created_by' => Auth::id(),
+            ]);
+        });
 
         // REDIRECT AND MESSAGES
         return redirect()

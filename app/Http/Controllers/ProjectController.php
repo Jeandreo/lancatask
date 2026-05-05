@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use App\Models\Client;
 use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\Status;
@@ -70,9 +71,11 @@ class ProjectController extends Controller
         // RENDER VIEW
         $users = User::where('status', 1)->get();
         $types = ProjectType::where('status', 1)->get();
+        $clients = Client::where('status', true)->orderBy('name', 'ASC')->get();
         return view('pages.projects.create')->with([
             'users' => $users,
             'types' => $types,
+            'clients' => $clients,
         ]);
     }
 
@@ -190,6 +193,7 @@ class ProjectController extends Controller
         $content = $this->repository->find($id);
         $users = User::where('status', 1)->get();
         $types = ProjectType::where('status', 1)->get();
+        $clients = Client::where('status', true)->orderBy('name', 'ASC')->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -199,6 +203,7 @@ class ProjectController extends Controller
             'content' => $content,
             'users' => $users,
             'types' => $types,
+            'clients' => $clients,
         ]);
     }
 

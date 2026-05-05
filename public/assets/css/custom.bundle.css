@@ -438,7 +438,7 @@ input:-webkit-autofill:active{
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar {
-    background: linear-gradient(45deg, #080316, #4c1760);
+    background: linear-gradient(45deg, #160721, #4c1760)
 }
 
 [data-kt-app-layout=dark-sidebar] .app-sidebar .menu .menu-item .menu-link.active {
@@ -587,4 +587,17 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 [data-bs-theme=dark] .badge-light {
     color: #7c5f8b;
+}
+
+[data-bs-theme=dark] .form-check.form-check-solid .form-check-input:not(:checked) {
+    background-color: #230a32;
+}
+
+.modal-backdrop {
+    --bs-backdrop-bg: #0000009c;
+    backdrop-filter: blur(5px);
+}
+
+[data-bs-theme=dark] .modal-content {
+    background-color: #1c0d26;
 }

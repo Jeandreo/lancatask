@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Client;
 
 class Project extends Model
 {
@@ -27,6 +28,7 @@ class Project extends Model
         'name',
         'type_is',
         'type_id',
+        'client_id',
         'description',
         'status',
         'filed_by',
@@ -87,6 +89,11 @@ class Project extends Model
      public function type(): HasOne
     {
         return $this->HasOne(ProjectType::class, 'id', 'type_id');
+    }
+
+    public function client(): HasOne
+    {
+        return $this->hasOne(Client::class, 'id', 'client_id');
     }
 
     /**

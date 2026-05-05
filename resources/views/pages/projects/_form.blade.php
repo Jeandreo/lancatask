@@ -20,7 +20,16 @@
             @endforeach
         </select>
     </div>
-    <div class="col mb-4 div-team" @if(isset($content) && $content->type_is == 'pessoal') style="display: none;" @endif>
+    <div class="col mb-4">
+        <label class="form-label fw-bold">Projeto vinculado a cliente?</label>
+        <select class="form-select form-select-solid" name="client_id" data-control="select2" data-placeholder="Selecione um cliente" data-allow-clear="true">
+            <option value=""></option>
+            @foreach ($clients as $client)
+            <option value="{{ $client->id }}" @if((isset($content) && $client->id == $content->client_id) || old('client_id') == $client->id) selected @endif>{{ $client->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="col-12 mb-4 div-team" @if(isset($content) && $content->type_is == 'pessoal') style="display: none;" @endif>
         <label class="required form-label fw-bold">Time:</label>
         <select class="form-select form-select-solid select-with-images" name="team[]" data-control="select2" data-hide-search="true" data-placeholder="Selecione" multiple required>
             <option value=""></option>
@@ -56,4 +65,3 @@
     });
 </script>
 @endsection
-

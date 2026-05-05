@@ -59,7 +59,41 @@
         <input type="text" class="form-control form-control-solid flatpickr-date-retro" name="end_date" placeholder="dd/mm/yyyy" value="{{ $content->end_date ?? old('end_date') }}">
     </div>
 
-    <div class="col-12"><h6 class="fw-bold mb-3">Endereço</h6></div>
+    <div class="col-12">
+        <div class="separator separator-dashed separator-content my-8">
+            <span class="px-3 text-gray-600 fw-bold w-200px">Links Sociais</span>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <label class="form-label fw-bold">Site:</label>
+        <input type="text" class="form-control form-control-solid" name="website" placeholder="https://site.com" value="{{ $content->website ?? old('website') }}">
+    </div>
+    <div class="col-md-4 mb-4">
+        <label class="form-label fw-bold">Instagram:</label>
+        <input type="text" class="form-control form-control-solid" name="instagram" placeholder="https://instagram.com/usuario" value="{{ $content->instagram ?? old('instagram') }}">
+    </div>
+    <div class="col-md-4 mb-4">
+        <label class="form-label fw-bold">Facebook:</label>
+        <input type="text" class="form-control form-control-solid" name="facebook" placeholder="https://facebook.com/pagina" value="{{ $content->facebook ?? old('facebook') }}">
+    </div>
+    <div class="col-md-4 mb-4">
+        <label class="form-label fw-bold">LinkedIn:</label>
+        <input type="text" class="form-control form-control-solid" name="linkedin" placeholder="https://linkedin.com/company/empresa" value="{{ $content->linkedin ?? old('linkedin') }}">
+    </div>
+    <div class="col-md-4 mb-4">
+        <label class="form-label fw-bold">YouTube:</label>
+        <input type="text" class="form-control form-control-solid" name="youtube" placeholder="https://youtube.com/@canal" value="{{ $content->youtube ?? old('youtube') }}">
+    </div>
+    <div class="col-md-4 mb-4">
+        <label class="form-label fw-bold">TikTok:</label>
+        <input type="text" class="form-control form-control-solid" name="tiktok" placeholder="https://tiktok.com/@usuario" value="{{ $content->tiktok ?? old('tiktok') }}">
+    </div>
+
+    <div class="col-12">
+        <div class="separator separator-dashed separator-content my-8">
+            <span class="px-3 text-gray-600 fw-bold w-200px">Endereço</span>
+        </div>
+    </div>
 
     <div class="col-md-3 mb-4">
         <label class="form-label fw-bold">CEP:</label>
@@ -123,6 +157,31 @@
         <label class="form-label fw-bold">Observações:</label>
         <textarea name="observations" class="form-control form-control-solid" rows="3" placeholder="Alguma observação?">{{ $content->observations ?? old('observations') }}</textarea>
     </div>
+
+    @if(!isset($content))
+    <div class="col-12 mt-2 mb-2">
+        <div class="form-check form-check-custom form-check-solid">
+            <input class="form-check-input" type="checkbox" value="1" id="create_project" name="create_project" @checked(old('create_project'))>
+            <label class="form-check-label fw-bold" for="create_project">
+                Criar projeto para este cliente
+            </label>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4 div-create-project" style="display: none;">
+        <label class="form-label fw-bold required">Nome do projeto:</label>
+        <input type="text" class="form-control form-control-solid" name="project_name" id="project_name" placeholder="Nome do projeto" value="{{ old('project_name') }}">
+    </div>
+    <div class="col-md-6 mb-4 div-create-project" style="display: none;">
+        <label class="form-label fw-bold required">Grupo do projeto:</label>
+        <select class="form-select form-select-solid" name="project_type_id" id="project_type_id" data-control="select2" data-placeholder="Selecione">
+            <option value=""></option>
+            @foreach($projectTypes ?? [] as $type)
+                <option value="{{ $type->id }}" @selected(old('project_type_id') == $type->id)>{{ $type->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    @endif
 </div>
 
 @section('custom-footer')
@@ -153,6 +212,16 @@
         // Permite datas retroativas no cadastro de clientes.
         generateFlatpickrDate({ minDate: null }, '.flatpickr-date-retro');
         maskDocument();
+
+        function toggleCreateProject() {
+            var checked = $('#create_project').is(':checked');
+            $('.div-create-project')[checked ? 'show' : 'hide']();
+            $('#project_name').prop('required', checked);
+            $('#project_type_id').prop('required', checked);
+        }
+
+        $(document).on('change', '#create_project', toggleCreateProject);
+        toggleCreateProject();
     });
 </script>
 @endsection
