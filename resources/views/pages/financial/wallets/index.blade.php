@@ -5,7 +5,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <table class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle no-footer">
+        <table id="datatables-wallets" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle no-footer">
             <thead>
                 <tr class="fw-bold fs-6 text-gray-800 px-7">
                     <th>Nome</th>
@@ -35,4 +35,17 @@
     <a href="{{ route('financial.index') }}"><label class="btn btn-light btn-sm text-uppercase fw-bolder">Voltar</label></a>
     <a href="{{ route('financial.wallets.create') }}"><label class="btn btn-info btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label></a>
 </div>
+@endsection
+
+@section('custom-footer')
+@parent
+<script>
+    $('#datatables-wallets').DataTable({
+        order: [[1, 'desc'], [0, 'asc']],
+        pageLength: 25,
+        columnDefs: [
+            { targets: 2, orderable: false, searchable: false }
+        ]
+    });
+</script>
 @endsection
