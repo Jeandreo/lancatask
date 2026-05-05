@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use App\Models\ModuleOrder;
+use App\Models\Comment;
+use App\Models\Task;
+use App\Models\TaskHistoric;
+use App\Models\TaskParticipant;
 use App\Models\Client;
 use App\Models\Project;
 use App\Models\ProjectType;
@@ -32,15 +37,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-
-        // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.projects.index')->with([
-            'contents' => $contents,
-        ]);
-
+        return view('pages.projects.index');
     }
 
     /**
@@ -356,17 +353,21 @@ class ProjectController extends Controller
     {
         // GET DATA
         $project = $this->repository->find($id);
+        if (!$project) {
+            return redirect()->route('projects.index')->with('message', 'Projeto não encontrado.');
+        }
 
         // Apagar tarefas relacionadas aos módulos do projeto
         foreach ($project->modules as $module) {
-            // Excluir registros dependentes (tasks_participants) antes de excluir as tarefas
-            foreach ($module->tasks as $task) {
-                // Apagar participantes das tarefas
-                $task->participants()->detach();
-            }
+            $taskIds = Task::where('module_id', $module->id)->pluck('id');
+            Comment::whereIn('task_id', $taskIds)->delete();
+            TaskHistoric::whereIn('task_id', $taskIds)->delete();
+            TaskParticipant::whereIn('task_id', $taskIds)->delete();
 
             // Excluir tarefas do módulo
             $module->tasks()->delete();
+
+            ModuleOrder::where('module_id', $module->id)->delete();
 
             // Excluir o módulo
             $module->delete();
@@ -377,6 +378,7 @@ class ProjectController extends Controller
 
         // Desvincular usuários do projeto
         $project->users()->detach();
+        ModuleOrder::where('project_id', $project->id)->delete();
 
         // Apagar o próprio projeto
         $project->delete();

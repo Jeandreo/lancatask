@@ -5,7 +5,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <table id="datatables" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle datatables no-footer">
+            <table id="datatables" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle no-footer">
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
@@ -15,56 +15,7 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                <tbody class="table-pd">
-                    @foreach ($contents as $content)
-                        <tr>
-                            <td>
-                                <a href="{{ route('users.edit', $content->id) }}" class="text-gray-700 fw-bold text-hover-primary fs-6">
-                                    <img src="{{ findImage('users/photos/' . $content->id . '.jpg') }}" class="w-30px h-30px rounded me-2 object-fit-cover">
-                                    {{ $content->name }}
-                                </a>
-                            </td>
-                            <td>
-                                <span class="badge badge-light-primary">
-                                    {{ $content->role }}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="badge badge-light-info">
-                                    {{ $content->position->name }}
-                                </span>
-                            </td>
-                            <td>
-                                @if ($content->status == 1)
-                                    <span class="badge badge-light-success">Ativo</span>
-                                @elseif ($content->status == 0)
-                                    <span class="badge badge-light-warning">Inativo</span>
-                                @else
-                                    <span class="badge badge-light-danger">Excluído</span>
-                                @endif
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center icons-table">
-                                    <a href="{{ route('users.edit', $content->id) }}">
-                                        <i class="fas fa-edit" title="Editar"></i>
-                                    </a>
-                                    @if ($content->status == 1)
-                                        <a href="{{ route('users.destroy', $content->id) }}">
-                                            <i class="fas fa-times-circle" title="Desativar"></i>
-                                        </a>
-                                    @else
-                                        <a href="{{ route('users.destroy', $content->id) }}">
-                                            <i class="fas fa-redo" title="Reativar"></i>
-                                        </a>
-                                    @endif
-                                    <a href="{{ route('users.delete', $content->id) }}">
-                                        <i class="fas fa-trash-alt" title="Apagar permanentemente"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                <tbody class="table-pd"></tbody>
             </table>
         </div>
     </div>
@@ -73,4 +24,23 @@
             <label class="btn btn-info btn-active-success btn-sm text-uppercase fw-bolder">Adicionar</label>
         </a>
     </div>
+@endsection
+
+@section('custom-footer')
+@parent
+<script>
+    $('#datatables').DataTable({
+        serverSide: true,
+        processing: true,
+        ajax: "{{ route('users.processing') }}",
+        order: [[0, 'asc']],
+        columns: [
+            { data: 'name' },
+            { data: 'group' },
+            { data: 'position' },
+            { data: 'status' },
+            { data: 'actions', orderable: false, searchable: false }
+        ]
+    });
+</script>
 @endsection

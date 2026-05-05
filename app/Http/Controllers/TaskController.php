@@ -6,13 +6,13 @@ use App\Models\Module;
 use App\Models\Project;
 use App\Models\Status;
 use App\Models\Task;
+use App\Models\Comment;
 use App\Models\TaskHistoric;
 use App\Models\TaskParticipant;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\Facades\DataTables;
 
 class TaskController extends Controller
 {
@@ -63,193 +63,6 @@ class TaskController extends Controller
             'status' => $statusFormated,
         ]);
 
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function processing(Request $request)
-    {
-
-        // Obtém dados
-        $data = $request->all();
-
-        // Inicia consulta
-        $query = DB::table('tasks')
-        ->leftJoin('modules', 'tasks.module_id', '=', 'modules.id')
-        ->leftJoin('statuses', 'tasks.status_id', '=', 'statuses.id')
-        ->leftJoin('projects', 'modules.project_id', '=', 'projects.id');
-
-        // SEARCH BY
-        if ($data['searchBy'] != '') {
-                $query->where('tasks.name', 'like', "%{$data['searchBy']}%");
-        }
-
-        // Ordena
-        if ($data['order']) {
-
-            // ORDER & COLUMN
-            $direction = $request->order[0]['dir'];
-            $orderThis = $request->order_by;
-            $column = $orderThis;
-
-            // FORMATA COLUNAS
-            switch ($column) {
-                case 'id':
-                    $column = 'tasks.id';
-                    break;
-                case 'name':
-                    $column = 'tasks.name';
-                    break;
-                case 'when':
-                    $column = 'tasks.date_start';
-                    break;
-                case 'checked':
-                    $column = 'tasks.checked';
-                    break;
-                case 'project':
-                    $column = 'projects.name';
-                    break;
-                case 'module':
-                    $column = 'modules.name';
-                    break;
-                case 'status':
-                    $column = 'statuses.name';
-                    break;
-                default:
-                    $column = 'tasks.id';
-                    break;
-            }
-            $query->orderBy($column, $direction);
-
-        }
-
-        // Filtra Status
-        if (isset($data['projects'])) {
-            $query->whereIn('modules.project_id', $data['projects']);
-        }
-
-        // Filtra Status
-        if(isset($data['modules'])){
-            $query->whereIn('module_id', $data['modules']);
-        }
-        // Filtra Status
-        if(isset($data['status'])){
-            $query->whereIn('status_id', $data['status']);
-        }
-
-        // Se quiser filtrar por data de registro
-        if(isset($data['register'])){
-
-            // Extrai a data
-            $dates = explode(" - ", $data['register']);
-
-            // Formata
-            $dateFormated[0] = convertDateFormat($dates[0]);
-            $dateFormated[1] = convertDateFormat($dates[1]);
-
-            // Incluí na consulta
-            $query->whereBetween('tasks.date_start', $dateFormated);
-
-        }
-
-        // Add the necessary columns to the GROUP BY clause
-        $query->groupBy(
-            'tasks.id',
-            'tasks.name',
-            'tasks.date_start',
-            'tasks.date_end',
-            'tasks.checked',
-            'tasks.status',
-            'modules.name',
-            'modules.color',
-            'projects.name',
-            'statuses.name',
-            'statuses.color',
-        );
-
-        // COUNT TOTAL RECORDS
-        $totalRecords = $query->select('tasks.id')->count();
-
-        // ITENS PER PAGE AND PAGINATE
-        $pages = $query->paginate($request->per_page);
-
-        // Seleciona os dados
-        $query->select(
-            'tasks.id as id',
-            'tasks.name as name',
-            'tasks.date_start as date_start',
-            'tasks.date_end as date_end',
-            'tasks.checked as checked',
-            'tasks.status as status',
-            'modules.name as module_name',
-            'modules.color as module_color',
-            'projects.name as project_name',
-            'statuses.name as status_name',
-            'statuses.color as status_color',
-        );
-
-        return DataTables::of($query)
-            ->addColumn('id', function ($row) {
-                $html =
-                '<span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="' . $row->id .  '">
-                    ' . $row->id .  '
-                </span>';
-                return $html;
-            })
-            ->addColumn('name', function ($row) {
-                $html =
-                '<span class="text-gray-700 text-hover-primary fw-bold fs-6 show-task cursor-pointer" data-task="' . $row->id .  '">
-                    ' . $row->name .  '
-                </span>';
-                return $html;
-            })
-            ->addColumn('when', function ($row) {
-                if(!$row->date_start){
-                    $html = '<span class="text-gray-600">Sem data</span>';
-                }else if ($row->date_start == $row->date_end){
-                    $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) .  '</span>';
-                } else {
-                    $html = '<span class="text-gray-600">' . date('d/m/Y', strtotime($row->date_start)) . ' até ' . date('d/m/Y', strtotime($row->date_end)) .  '</span>';
-                }
-                return $html;
-            })
-            ->addColumn('checked', function ($row) {
-                if ($row->checked == true){
-                    $html = '<span class="badge badge-light-success">Concluída</span>';
-                } else {
-                    $html = '<span class="badge badge-light-danger">Não concluída</span>';
-                }
-                return $html;
-            })
-            ->addColumn('project', function ($row) {
-                return '<span class="fw-bold text-gray-900">'.$row->project_name.'</span>';
-            })
-            ->addColumn('module', function ($row) {
-                return '<span class="badge" style="background: '.hex2rgb($row->module_color, 5).'; color: '.$row->module_color.'">'.$row->module_name.'</span>';
-            })
-            ->addColumn('status', function ($row) {
-                return '<span class="badge" style="background: '.hex2rgb($row->status_color, 12).'; color: '.$row->status_color.'">'.$row->status_name.'</span>';
-            })
-            ->addColumn('actions', function ($row) {
-                if ($row->status == 1){
-                    $btnToogle = '<i class="fas fa-times-circle" title="Desativar"></i>';
-                } else {
-                    $btnToogle = '<i class="fas fa-redo" title="Reativar"></i>';
-                }
-                $html = '<div class="d-flex align-items-center icons-table">
-                            <a href="' . route('tasks.destroy', $row->id) . '">
-                                ' . $btnToogle . '
-                            </a>
-                        </div>';
-                return $html;
-            })
-            ->rawColumns(['id', 'name', 'when', 'checked', 'project', 'module', 'status', 'actions'])
-            ->setTotalRecords($totalRecords)
-            ->setFilteredRecords($pages->total())
-            ->toJson();
     }
 
     /**
@@ -443,6 +256,32 @@ class TaskController extends Controller
                 ->back()
                 ->with('message', 'Tarefas Arquivadas');
 
+    }
+
+    public function delete($id)
+    {
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('tasks.index')->with('message', 'Tarefa não encontrada.');
+        }
+
+        $ids = collect([$content->id]);
+        $pending = collect([$content->id]);
+
+        while ($pending->isNotEmpty()) {
+            $children = Task::whereIn('task_id', $pending->all())->pluck('id');
+            $children = $children->diff($ids);
+            $ids = $ids->merge($children)->unique()->values();
+            $pending = $children->values();
+        }
+
+        Comment::whereIn('task_id', $ids)->delete();
+        TaskHistoric::whereIn('task_id', $ids)->delete();
+        TaskParticipant::whereIn('task_id', $ids)->delete();
+        Task::whereIn('id', $ids)->delete();
+
+        return redirect()->route('tasks.index')->with('message', 'Tarefa excluída com sucesso.');
     }
 
     /**

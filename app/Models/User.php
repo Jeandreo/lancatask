@@ -94,19 +94,8 @@ class User extends Authenticatable
         // Obtém os IDs dos projetos que o usuário está associado
         $menuProjectsIds = ProjectUser::where('user_id', Auth::id())->pluck('project_id')->toArray();
 
-        // Busca ordem que o usuário deseja para os grupos
-        $orderGroupSidebar = $this->preferences()
-            ->where('type', 'sidebarGroupOrder')
-            ->get()
-            ->pluck('value')
-            ->toArray();
-
-        // Busca ordem que o usuário deseja para os projetos
-        $orderProjectSidebar = $this->preferences()
-            ->where('type', 'sidebarProjectsOrder')
-            ->get()
-            ->pluck('value')
-            ->toArray();
+        // Ordem global controlada por administrador
+        [$orderGroupSidebar, $orderProjectSidebar] = $this->globalSidebarOrders();
 
         // Obtém os projetos e ordena primeiro pelos grupos e depois pelos projetos
         $menuProjectsQuery = Project::query()
@@ -123,11 +112,15 @@ class User extends Authenticatable
         }
 
         $menuProjects = $menuProjectsQuery
+            ->orderBy('status', 'desc')
+            ->orderBy('id', 'desc')
             ->get()
             ->sortBy(function ($menuProject) use ($orderGroupSidebar, $orderProjectSidebar) {
                 // Ordena primeiro pelos grupos e depois pelos projetos
                 $groupOrder = array_search($menuProject->type_id, $orderGroupSidebar);
                 $menuProjectOrder = array_search($menuProject->id, $orderProjectSidebar);
+                $groupOrder = $groupOrder === false ? 999999 : $groupOrder;
+                $menuProjectOrder = $menuProjectOrder === false ? 999999 : $menuProjectOrder;
 
                 return [$groupOrder, $menuProjectOrder];
             });
@@ -143,6 +136,60 @@ class User extends Authenticatable
         });
 
         return $groupedProjects;
+    }
+
+    private function globalSidebarOrders(): array
+    {
+        $admin = self::where('role', 'Administrador')->orderBy('id')->first();
+
+        if (!$admin) {
+            return [[], []];
+        }
+
+        $groupType = 'sidebarGroupOrderGlobal';
+        $projectType = 'sidebarProjectsOrderGlobal';
+
+        $hasGlobalGroup = UserPreferrence::where('type', $groupType)->exists();
+        $hasGlobalProject = UserPreferrence::where('type', $projectType)->exists();
+
+        // Backfill único: se global ainda não existir, copia a ordem antiga do admin.
+        if (!$hasGlobalGroup) {
+            $legacyGroup = UserPreferrence::where('created_by', $admin->id)
+                ->where('type', 'sidebarGroupOrder')
+                ->pluck('value')
+                ->toArray();
+            foreach ($legacyGroup as $value) {
+                UserPreferrence::create([
+                    'type' => $groupType,
+                    'value' => $value,
+                    'created_by' => $admin->id,
+                ]);
+            }
+        }
+
+        if (!$hasGlobalProject) {
+            $legacyProject = UserPreferrence::where('created_by', $admin->id)
+                ->where('type', 'sidebarProjectsOrder')
+                ->pluck('value')
+                ->toArray();
+            foreach ($legacyProject as $value) {
+                UserPreferrence::create([
+                    'type' => $projectType,
+                    'value' => $value,
+                    'created_by' => $admin->id,
+                ]);
+            }
+        }
+
+        $orderGroupSidebar = UserPreferrence::where('type', $groupType)
+            ->pluck('value')
+            ->toArray();
+
+        $orderProjectSidebar = UserPreferrence::where('type', $projectType)
+            ->pluck('value')
+            ->toArray();
+
+        return [$orderGroupSidebar, $orderProjectSidebar];
     }
 
 

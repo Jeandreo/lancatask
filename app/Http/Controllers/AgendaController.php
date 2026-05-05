@@ -31,15 +31,7 @@ class AgendaController extends Controller
      */
     public function list()
     {
-
-        // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.agenda.list')->with([
-            'contents' => $contents,
-        ]);
-
+        return view('pages.agenda.list');
     }
 
     /**
@@ -384,6 +376,28 @@ class AgendaController extends Controller
         // REDIRECT AND MESSAGES
         return redirect()->back()->with('message', 'Evento cancelado com sucesso.');
 
+    }
+
+    public function delete($id)
+    {
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('agenda.list')->with('message', 'Evento não encontrado.');
+        }
+
+        if($content->id_google){
+            try {
+                $googleCalendarService = new GoogleCalendarService();
+                $googleCalendarService->deleteEvent($content->id_google);
+            } catch (\Throwable $e) {
+            }
+        }
+
+        AgendaMember::where('agenda_id', $content->id)->delete();
+        $content->delete();
+
+        return redirect()->route('agenda.list')->with('message', 'Evento excluído com sucesso.');
     }
 
         /**

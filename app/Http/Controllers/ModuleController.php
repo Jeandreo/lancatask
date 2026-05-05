@@ -7,6 +7,9 @@ use App\Models\ModuleOrder;
 use App\Models\Project;
 use App\Models\Status;
 use App\Models\Task;
+use App\Models\Comment;
+use App\Models\TaskHistoric;
+use App\Models\TaskParticipant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,15 +33,7 @@ class ModuleController extends Controller
      */
     public function index()
     {
-
-        // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.modules.index')->with([
-            'contents' => $contents,
-        ]);
-
+        return view('pages.modules.index');
     }
 
     /**
@@ -147,6 +142,29 @@ class ModuleController extends Controller
             return response()->json();
         }
 
+    }
+
+    public function delete($id)
+    {
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('modules.index')->with('message', 'Módulo não encontrado.');
+        }
+
+        $taskIds = Task::where('module_id', $content->id)->pluck('id');
+
+        if ($taskIds->count()) {
+            Comment::whereIn('task_id', $taskIds)->delete();
+            TaskHistoric::whereIn('task_id', $taskIds)->delete();
+            TaskParticipant::whereIn('task_id', $taskIds)->delete();
+            Task::whereIn('id', $taskIds)->delete();
+        }
+
+        ModuleOrder::where('module_id', $content->id)->delete();
+        $content->delete();
+
+        return redirect()->route('modules.index')->with('message', 'Módulo excluído com sucesso.');
     }
 
     /**

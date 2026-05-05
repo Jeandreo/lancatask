@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserPosition;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserPositionController extends Controller
 {
@@ -30,15 +32,9 @@ class UserPositionController extends Controller
         // Verify if user is admin
         if(!Auth::user()->canManage()) return redirect()->back();
 
-        // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.positions.index')->with([
-            'contents' => $contents,
-        ]);
-
+        return view('pages.positions.index');
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -161,5 +157,33 @@ class UserPositionController extends Controller
             ->route('positions.index')
             ->with('message', 'Cargo ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
+    }
+
+    public function delete($id)
+    {
+        if(!Auth::user()->canManage()) return redirect()->back();
+
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('positions.index')->with('message', 'Cargo não encontrado.');
+        }
+
+        $fallback = $this->repository->where('id', '!=', $id)->orderBy('id')->first();
+
+        if (!$fallback) {
+            return redirect()->route('positions.index')->with('message', 'Crie outro cargo antes de excluir este.');
+        }
+
+        DB::transaction(function () use ($content, $fallback) {
+            User::where('position_id', $content->id)->update([
+                'position_id' => $fallback->id,
+                'updated_by' => Auth::id(),
+            ]);
+
+            $content->delete();
+        });
+
+        return redirect()->route('positions.index')->with('message', 'Cargo excluído com sucesso.');
     }
 }

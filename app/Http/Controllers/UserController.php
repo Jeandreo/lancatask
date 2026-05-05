@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\UserPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -32,14 +33,7 @@ class UserController extends Controller
         // Verifica se o usuário é administrador
         if(!Auth::user()->canManage()) return redirect()->back();
 
-        // GET ALL DATA
-        $contents = $this->repository->whereIn('status', [0,1])->orderBy('id', 'ASC')->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.users.index')->with([
-            'contents' => $contents,
-        ]);
-
+        return view('pages.users.index');
     }
 
     /**
@@ -209,16 +203,54 @@ class UserController extends Controller
         // Verifica se o usuário é administrador
         if(!Auth::user()->canManage()) return redirect()->back();
 
-        // GET DATA
-        $this->repository->find($id);
+        if ((int) Auth::id() === (int) $id) {
+            return redirect()->route('users.index')->with('message', 'Você não pode excluir o próprio usuário.');
+        }
 
-        // STORING NEW DATA
-        $this->repository->where('id', $id)->update(['status' => 2, 'updated_by' => Auth::id()]);
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('users.index')->with('message', 'Usuário não encontrado.');
+        }
+
+        $fallbackUser = $this->repository->where('id', '!=', $id)->orderBy('id')->first();
+
+        if (!$fallbackUser) {
+            return redirect()->route('users.index')->with('message', 'Não foi possível excluir: precisa existir outro usuário no sistema.');
+        }
+
+        DB::transaction(function () use ($content, $fallbackUser) {
+            $userId = $content->id;
+            $replaceId = $fallbackUser->id;
+
+            DB::table('users')->where('created_by', $userId)->update(['created_by' => $replaceId]);
+            DB::table('users')->where('updated_by', $userId)->update(['updated_by' => $replaceId]);
+            DB::table('users')->where('filed_by', $userId)->update(['filed_by' => $replaceId]);
+
+            foreach (['projects', 'modules', 'statuses', 'tasks', 'comments', 'contracts', 'clients', 'users_positions', 'projects_types'] as $table) {
+                DB::table($table)->where('created_by', $userId)->update(['created_by' => $replaceId]);
+                DB::table($table)->where('updated_by', $userId)->update(['updated_by' => $replaceId]);
+                DB::table($table)->where('filed_by', $userId)->update(['filed_by' => $replaceId]);
+            }
+
+            DB::table('tasks_historics')->where('created_by', $userId)->update(['created_by' => $replaceId]);
+            DB::table('user_preferrences')->where('created_by', $userId)->update(['created_by' => $replaceId]);
+            DB::table('agendas')->where('created_by', $userId)->update(['created_by' => $replaceId]);
+            DB::table('agendas')->where('updated_by', $userId)->update(['updated_by' => $replaceId]);
+
+            DB::table('projects_users')->where('user_id', $userId)->delete();
+            DB::table('tasks_participants')->where('user_id', $userId)->delete();
+            DB::table('modules_order')->where('user_id', $userId)->delete();
+            DB::table('agendas_member')->where('type', 'user')->where('member_id', $userId)->delete();
+            DB::table('sessions')->where('user_id', $userId)->delete();
+
+            $content->delete();
+        });
 
         // REDIRECT AND MESSAGES
         return redirect()
             ->route('users.index')
-            ->with('message', 'Usuário apagado com sucesso.');
+            ->with('message', 'Usuário excluído com sucesso.');
 
     }
 }

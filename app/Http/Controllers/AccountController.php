@@ -109,17 +109,31 @@ class AccountController extends Controller
      */
     public function sidebarOrder(Request $request, $type)
     {
+        if (!Auth::user()->isAdmin()) {
+            return response()->json(['message' => 'Sem permissão para alterar a ordem global.'], 403);
+        }
 
         // Obtém dados
         $data = $request->all();
 
-        // Limpa as preferencias atuais
-        UserPreferrence::where('type', $type)->delete();
+        $typeMap = [
+            'sidebarProjectsOrder' => 'sidebarProjectsOrderGlobal',
+            'sidebarGroupOrder' => 'sidebarGroupOrderGlobal',
+        ];
 
-        // Cria as preferencias do usuário
-        foreach ($data['list'] as $value) {
+        $globalType = $typeMap[$type] ?? null;
+
+        if (!$globalType) {
+            return response()->json(['message' => 'Tipo de ordenação inválido.'], 422);
+        }
+
+        // Limpa as preferencias atuais globais
+        UserPreferrence::where('type', $globalType)->delete();
+
+        // Cria as preferencias globais (admin controla)
+        foreach (($data['list'] ?? []) as $value) {
             UserPreferrence::create([
-                'type' => $type,
+                'type' => $globalType,
                 'value' => $value,
                 'created_by' => Auth::id(),
             ]);

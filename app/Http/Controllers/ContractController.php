@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ContractController extends Controller
 {
@@ -26,14 +28,7 @@ class ContractController extends Controller
      */
     public function index()
     {
-
-        // GET ALL DATA
-        $contents = $this->repository->all();
-
-        // GENERATES DISPLAY WITH DATA
-        return view('pages.contracts.index')->with([
-            'contents' => $contents,
-        ]);
+        return view('pages.contracts.index');
     }
 
     /**
@@ -142,5 +137,25 @@ class ContractController extends Controller
             ->route('contracts.index')
             ->with('message', 'Contrato alterado com sucesso.');
 
+    }
+
+    public function delete($id)
+    {
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('contracts.index')->with('message', 'Contrato não encontrado.');
+        }
+
+        DB::transaction(function () use ($content) {
+            Client::where('contract_id', $content->id)->update([
+                'contract_id' => null,
+                'updated_by' => Auth::id(),
+            ]);
+
+            $content->delete();
+        });
+
+        return redirect()->route('contracts.index')->with('message', 'Contrato excluído com sucesso.');
     }
 }

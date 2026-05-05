@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProjectType;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProjectTypeController extends Controller
 {
@@ -26,16 +28,9 @@ class ProjectTypeController extends Controller
      */
     public function index()
     {
-
-        // GET ALL DATA
-        $contents = $this->repository->orderBy('id', 'ASC')->get();
-
-        // RETURN VIEW WITH DATA
-        return view('pages.types.index')->with([
-            'contents' => $contents,
-        ]);
-
+        return view('pages.types.index');
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -143,5 +138,31 @@ class ProjectTypeController extends Controller
             ->route('projects.types.index')
             ->with('message', 'Tipo de projeto ' . ($status == false ? 'desativado' : 'habilitado') . ' com sucesso.');
 
+    }
+
+    public function delete($id)
+    {
+        $content = $this->repository->find($id);
+
+        if (!$content) {
+            return redirect()->route('projects.types.index')->with('message', 'Tipo de projeto não encontrado.');
+        }
+
+        $fallbackType = $this->repository->where('id', '!=', $id)->orderBy('id')->first();
+
+        if (!$fallbackType) {
+            return redirect()->route('projects.types.index')->with('message', 'Crie outro tipo de projeto antes de excluir este.');
+        }
+
+        DB::transaction(function () use ($content, $fallbackType) {
+            Project::where('type_id', $content->id)->update([
+                'type_id' => $fallbackType->id,
+                'updated_by' => Auth::id(),
+            ]);
+
+            $content->delete();
+        });
+
+        return redirect()->route('projects.types.index')->with('message', 'Tipo de projeto excluído com sucesso.');
     }
 }

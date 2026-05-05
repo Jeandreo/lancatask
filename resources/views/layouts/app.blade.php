@@ -189,6 +189,39 @@
                 var googleModal = new bootstrap.Modal(document.getElementById('googleCredentialsMissingModal'));
                 googleModal.show();
             @endif
+
+            $(document).on('click', '.js-confirm-delete', function (e) {
+                e.preventDefault();
+
+                const url = $(this).data('url');
+                const label = $(this).data('label') || 'este item';
+                const entity = $(this).data('entity') || 'registro';
+                const message = `Tem certeza que deseja excluir ${entity} ${label}? Esta ação não pode ser desfeita.`;
+
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        text: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        buttonsStyling: false,
+                        confirmButtonText: 'Sim, excluir',
+                        cancelButtonText: 'Cancelar',
+                        customClass: {
+                            confirmButton: 'btn fw-bold btn-danger',
+                            cancelButton: 'btn fw-bold btn-active-light-primary',
+                        }
+                    }).then(function(result) {
+                        if (result.isConfirmed) {
+                            window.location.href = url;
+                        }
+                    });
+                    return;
+                }
+
+                if (confirm(message)) {
+                    window.location.href = url;
+                }
+            });
         </script>
         @yield('custom-footer')
 	</body>
