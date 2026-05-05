@@ -50,6 +50,11 @@
                         <div class="menu-item px-5">
                             <a href="{{ route('account.index') }}" class="menu-link px-5">Minha Conta</a>
                         </div>
+                        @if (Auth::user()->isAdmin())
+                        <div class="menu-item px-5">
+                            <a href="{{ route('configs.google.auth') }}" class="menu-link px-5">Google Agenda</a>
+                        </div>
+                        @endif
                         <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="left-start" class="menu-item px-5">
                             <a href="#" class="menu-link px-5">
                                 <span class="menu-title">Alterar modo</span>

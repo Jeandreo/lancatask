@@ -74,6 +74,21 @@ class User extends Authenticatable
         return $this->hasMany(UserPreferrence::class, 'created_by');
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'Administrador';
+    }
+
+    public function isManager(): bool
+    {
+        return $this->role === 'Gerente';
+    }
+
+    public function canManage(): bool
+    {
+        return $this->isAdmin() || $this->isManager();
+    }
+
     public function groupProjects()
     {
         // Obtém os IDs dos projetos que o usuário está associado
@@ -94,9 +109,20 @@ class User extends Authenticatable
             ->toArray();
 
         // Obtém os projetos e ordena primeiro pelos grupos e depois pelos projetos
-        $menuProjects = Project::whereIn('id', $menuProjectsIds)
+        $menuProjectsQuery = Project::query()
             ->where('status', true)
-            ->with('type')
+            ->with('type');
+
+        if (!$this->isAdmin() && $this->isManager()) {
+            // Gerente não enxerga quadros privados.
+            $menuProjectsQuery
+                ->whereIn('id', $menuProjectsIds)
+                ->where('type_is', '!=', 'pessoal');
+        } elseif (!$this->isAdmin()) {
+            $menuProjectsQuery->whereIn('id', $menuProjectsIds);
+        }
+
+        $menuProjects = $menuProjectsQuery
             ->get()
             ->sortBy(function ($menuProject) use ($orderGroupSidebar, $orderProjectSidebar) {
                 // Ordena primeiro pelos grupos e depois pelos projetos

@@ -17,7 +17,7 @@ class CheckAdmin
     {
         $user = auth()->user();
 
-        if (!$user || $user->role !== 'Administrador') {
+        if (!$user || !$user->canManage()) {
             // Se não for admin, redireciona (ou retorna 403 se preferir)
             abort(403, 'Acesso negado.');
         }

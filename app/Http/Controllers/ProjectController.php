@@ -164,8 +164,15 @@ class ProjectController extends Controller
             return redirect()->route('projects.index');
         }
 
-        // Verifica se o usuário autenticado está no projeto
-        if (!$project->users->contains(Auth::user()) && $project->created_by != Auth::id()) {
+        $user = Auth::user();
+
+        // Gerente não pode visualizar quadros privados.
+        if ($user->isManager() && $project->type_is === 'pessoal') {
+            return redirect()->route('projects.index')->with('message', 'Você não tem permissão para acessar quadros privados.');
+        }
+
+        // Administrador pode visualizar qualquer quadro.
+        if (!$user->isAdmin() && !$project->users->contains($user) && $project->created_by != Auth::id()) {
             // Redireciona para a página inicial ou exibe um erro
             return redirect()->route('projects.index')->with('message', 'Você não tem permissão para acessar este projeto.');
         }

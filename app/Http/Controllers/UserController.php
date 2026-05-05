@@ -30,7 +30,7 @@ class UserController extends Controller
     {
 
         // Verifica se o usuário é administrador
-        if(Auth::user()->role != 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET ALL DATA
         $contents = $this->repository->whereIn('status', [0,1])->orderBy('id', 'ASC')->get();
@@ -51,7 +51,7 @@ class UserController extends Controller
     {
 
         // Verifica se o usuário é administrador
-        if(Auth::user()->role != 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // Obtém dados
         $positions = UserPosition::where('status', true)->get();
@@ -106,7 +106,7 @@ class UserController extends Controller
     {
 
         // Verifica se o usuário é administrador
-        if(Auth::user()->role != 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET ALL DATA
         $content = $this->repository->find($id);
@@ -135,7 +135,7 @@ class UserController extends Controller
     {
 
         // Verifica se o usuário é administrador
-        if(Auth::user()->role != 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id))
@@ -181,7 +181,7 @@ class UserController extends Controller
     {
 
         // Verifica se o usuário é administrador
-        if(Auth::user()->role != 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET DATA
         $content = $this->repository->find($id);
@@ -207,7 +207,7 @@ class UserController extends Controller
     {
 
         // Verifica se o usuário é administrador
-        if(Auth::user()->role != 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET DATA
         $this->repository->find($id);

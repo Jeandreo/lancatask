@@ -28,7 +28,7 @@ class UserPositionController extends Controller
     {
 
         // Verify if user is admin
-        if(!Auth::user()->role == 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET ALL DATA
         $contents = $this->repository->orderBy('id', 'ASC')->get();
@@ -47,7 +47,7 @@ class UserPositionController extends Controller
     public function create()
     {
         // Verify if user is admin
-        if(!Auth::user()->role == 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // RENDER VIEW
         return view('pages.positions.create');
@@ -63,7 +63,7 @@ class UserPositionController extends Controller
     {
 
         // Verify if user is admin
-        if(!Auth::user()->role == 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET FORM DATA
         $data = $request->all();
@@ -90,7 +90,7 @@ class UserPositionController extends Controller
     public function edit($id)
     {
         // Verify if user is admin
-        if(!Auth::user()->role == 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET ALL DATA
         $content = $this->repository->find($id);
@@ -115,7 +115,7 @@ class UserPositionController extends Controller
     {
 
         // Verify if user is admin
-        if(!Auth::user()->role == 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id))
@@ -147,7 +147,7 @@ class UserPositionController extends Controller
     {
 
         // Verify if user is admin
-        if(!Auth::user()->role == 'Administrador') return redirect()->back();
+        if(!Auth::user()->canManage()) return redirect()->back();
 
         // GET DATA
         $content = $this->repository->find($id);
