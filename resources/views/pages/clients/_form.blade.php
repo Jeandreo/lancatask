@@ -52,11 +52,11 @@
     </div>
     <div class="col-md-3 mb-4">
         <label class="form-label fw-bold">Entrada:</label>
-        <input type="text" class="form-control form-control-solid flatpickr-date" name="start_date" placeholder="dd/mm/yyyy" value="{{ $content->start_date ?? old('start_date') }}">
+        <input type="text" class="form-control form-control-solid flatpickr-date-retro" name="start_date" placeholder="dd/mm/yyyy" value="{{ $content->start_date ?? old('start_date') }}">
     </div>
     <div class="col-md-3 mb-4">
         <label class="form-label fw-bold">Saída:</label>
-        <input type="text" class="form-control form-control-solid flatpickr-date" name="end_date" placeholder="dd/mm/yyyy" value="{{ $content->end_date ?? old('end_date') }}">
+        <input type="text" class="form-control form-control-solid flatpickr-date-retro" name="end_date" placeholder="dd/mm/yyyy" value="{{ $content->end_date ?? old('end_date') }}">
     </div>
 
     <div class="col-12"><h6 class="fw-bold mb-3">Endereço</h6></div>
@@ -150,6 +150,8 @@
     });
 
     $(document).ready(function() {
+        // Permite datas retroativas no cadastro de clientes.
+        generateFlatpickrDate({ minDate: null }, '.flatpickr-date-retro');
         maskDocument();
     });
 </script>

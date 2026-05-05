@@ -29,6 +29,7 @@
     --bs-menu-link-bg-color-hover: #1c0428 !important;
     --bs-primary-light: #15091c;
     --bs-light: #281036;
+    --bs-light-active: #281036;
 }
 
 </style>
