@@ -71,7 +71,9 @@ body {
     --bs-app-sidebar-width: 335px;
     --bs-app-sidebar-width-actual: 335px;
     --bs-border-radius: 15px;
+    --bs-dark: #230a2c !important
 }
+
 
 .modal {
     --bs-modal-width: 1250px;
@@ -563,10 +565,6 @@ input:-webkit-autofill:active{
 
 [data-bs-theme="dark"] .bg-light {
     background: #2c123b !important;
-}
-
-[data-bs-theme="dark"] .bg-dark {
-    background-color: #230e2f !important;
 }
 
 .card {
