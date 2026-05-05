@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/visualizar/{id}',      [ProjectController::class, 'show'])->name('show');
             Route::middleware('admin')->group(function () {
                 Route::get('/',                     [ProjectController::class, 'index'])->name('index');
+                Route::get('/processar',            [ProjectController::class, 'processing'])->name('processing');
                 Route::get('/adicionar',            [ProjectController::class, 'create'])->name('create');
                 Route::post('/adicionar',           [ProjectController::class, 'store'])->name('store');
                 Route::get('/editar/{id}',          [ProjectController::class, 'edit'])->name('edit');
@@ -52,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::name('modules.')->group(function () {
             Route::middleware('admin')->group(function () {
                 Route::get('/', [ModuleController::class, 'index'])->name('index');
+                Route::get('/processar', [ModuleController::class, 'processing'])->name('processing');
                 Route::post('/adicionar', [ModuleController::class, 'store'])->name('store');
                 Route::get('/desabilitar/{id}', [ModuleController::class, 'destroy'])->name('destroy');
                 Route::put('/editar/{id}', [ModuleController::class, 'update'])->name('update');
@@ -78,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('admin')->prefix('contratos')->group(function () {
         Route::name('contracts.')->group(function () {
             Route::get('/',                     [ContractController::class, 'index'])->name('index');
+            Route::get('/processar',            [ContractController::class, 'processing'])->name('processing');
             Route::get('/adicionar',            [ContractController::class, 'create'])->name('create');
             Route::post('/adicionar',           [ContractController::class, 'store'])->name('store');
             Route::get('/editar/{id}',          [ContractController::class, 'edit'])->name('edit');
@@ -94,6 +97,7 @@ Route::middleware(['auth'])->group(function () {
         Route::name('agenda.')->group(function () {
             Route::get('/',                        [AgendaController::class, 'index'])->name('index');
             Route::get('/gerenciar',               [AgendaController::class, 'list'])->name('list')->middleware('admin');
+            Route::get('/gerenciar/processar',      [AgendaController::class, 'processing'])->name('processing')->middleware('admin');
             Route::post('/adicionar',              [AgendaController::class, 'store'])->name('store');
             Route::get('/visualizando/{id?}',      [AgendaController::class, 'show'])->name('show');
             Route::get('/desabilitar/{id}',        [AgendaController::class, 'destroy'])->name('destroy');
@@ -109,6 +113,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('admin')->prefix('tipos-de-projetos')->group(function () {
         Route::name('projects.types.')->group(function () {
             Route::get('/', [ProjectTypeController::class, 'index'])->name('index');
+            Route::get('/processar', [ProjectTypeController::class, 'processing'])->name('processing');
             Route::get('/adicionar', [ProjectTypeController::class, 'create'])->name('create');
             Route::post('/adicionar', [ProjectTypeController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [ProjectTypeController::class, 'destroy'])->name('destroy');
@@ -173,6 +178,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('admin')->prefix('usuarios')->group(function () {
         Route::name('users.')->group(function () {
             Route::get('/',                 [UserController::class, 'index'])->name('index');
+            Route::get('/processar',        [UserController::class, 'processing'])->name('processing');
             Route::get('/adicionar',        [UserController::class, 'create'])->name('create');
             Route::post('/adicionar',       [UserController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [UserController::class, 'destroy'])->name('destroy');
@@ -198,6 +204,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware('admin')->prefix('cargos')->group(function () {
         Route::name('positions.')->group(function () {
             Route::get('/',                 [UserPositionController::class, 'index'])->name('index');
+            Route::get('/processar',        [UserPositionController::class, 'processing'])->name('processing');
             Route::get('/adicionar',        [UserPositionController::class, 'create'])->name('create');
             Route::post('/adicionar',       [UserPositionController::class, 'store'])->name('store');
             Route::get('/desabilitar/{id}', [UserPositionController::class, 'destroy'])->name('destroy');

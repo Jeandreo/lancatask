@@ -25,6 +25,18 @@ class GoogleController extends Controller
 
     public function redirect()
     {
+        $credentials = env('GOOGLE_CREDENTIAL_APP');
+        $credentialsPath = $credentials ? storage_path($credentials) : null;
+
+        if (!$credentialsPath || !file_exists($credentialsPath)) {
+            return redirect()->back()->with([
+                'google_credentials_missing' => true,
+                'type' => 'warning',
+                'title' => 'Google Agenda',
+                'message' => 'Arquivo de credenciais não encontrado. Configure o GOOGLE_CREDENTIAL_APP no .env e adicione o JSON em storage.',
+            ]);
+        }
+
         $client = $this->getClient();
         return redirect()->away($client->createAuthUrl());
     }

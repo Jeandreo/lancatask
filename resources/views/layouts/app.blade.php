@@ -48,6 +48,30 @@
 			</div>
 		</div>
         @include('includes.preview')
+        <div class="modal fade" id="googleCredentialsMissingModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Integração Google Agenda</h3>
+                        <button type="button" class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="ki-duotone ki-cross fs-1"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="text-gray-800 mb-2">
+                            Não foi possível conectar com o Google Agenda.
+                        </p>
+                        <p class="text-gray-700 mb-0">
+                            O sistema precisa do arquivo de credenciais do Google (<b>JSON</b>) para concluir a conexão.
+                            Peça para o responsável técnico adicionar esse arquivo e tente novamente.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 		<div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
 			<i class="ki-duotone ki-arrow-up">
 				<span class="path1"></span>
@@ -160,6 +184,11 @@
                     applyThemeMode('system');
                 }
             });
+
+            @if(session('google_credentials_missing'))
+                var googleModal = new bootstrap.Modal(document.getElementById('googleCredentialsMissingModal'));
+                googleModal.show();
+            @endif
         </script>
         @yield('custom-footer')
 	</body>
