@@ -7,6 +7,9 @@ use App\Models\AgendaMember;
 use App\Models\Client;
 use App\Models\Comment;
 use App\Models\Contract;
+use App\Models\FinancialCategory;
+use App\Models\FinancialTransaction;
+use App\Models\FinancialWallet;
 use App\Models\Module;
 use App\Models\ModuleOrder;
 use App\Models\Project;
@@ -231,6 +234,61 @@ class DatabaseSeeder extends Seeder
                 'created_by' => $admin->id,
             ]);
         });
+
+        $wallets = collect([
+            'Conta Corrente',
+            'Reserva',
+            'Cartão Corporativo',
+        ])->map(fn (string $name) => FinancialWallet::create([
+            'name' => $name,
+            'created_by' => $admin->id,
+        ]));
+
+        $categories = collect([
+            ['name' => 'Receita de Contrato', 'type' => 'entrada'],
+            ['name' => 'Receita Extra', 'type' => 'entrada'],
+            ['name' => 'Tráfego Pago', 'type' => 'debito'],
+            ['name' => 'Ferramentas', 'type' => 'debito'],
+            ['name' => 'Equipe/Freelancer', 'type' => 'debito'],
+        ])->map(fn (array $data) => FinancialCategory::create([
+            'name' => $data['name'],
+            'type' => $data['type'],
+            'created_by' => $admin->id,
+        ]));
+
+        foreach (range(1, 30) as $i) {
+            $type = $faker->randomElement(['entrada', 'debito']);
+            $category = $categories->where('type', $type)->random();
+
+            $counterpartyType = $faker->randomElement(['client', 'user', null]);
+            $counterpartyId = null;
+            $clientId = null;
+
+            if ($counterpartyType === 'client') {
+                $client = $clients->random();
+                $counterpartyId = $client->id;
+                $clientId = $client->id;
+            } elseif ($counterpartyType === 'user') {
+                $counterpartyId = $allUsers->random()->id;
+            }
+
+            FinancialTransaction::create([
+                'type' => $type,
+                'name' => $type === 'entrada'
+                    ? 'Recebimento ' . $faker->word()
+                    : 'Pagamento ' . $faker->word(),
+                'wallet_id' => $wallets->random()->id,
+                'category_id' => $category->id,
+                'client_id' => $clientId,
+                'counterparty_type' => $counterpartyType,
+                'counterparty_id' => $counterpartyId,
+                'date' => now()->subDays(rand(0, 120))->toDateString(),
+                'amount' => $faker->randomFloat(2, 90, 15000),
+                'description' => $faker->optional()->sentence(),
+                'status' => $faker->boolean(85),
+                'created_by' => $admin->id,
+            ]);
+        }
 
         $agendas = collect([
             ['name' => 'Reunião semanal de time', 'color' => '#0ea5e9', 'general' => true],

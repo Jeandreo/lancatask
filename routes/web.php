@@ -11,6 +11,8 @@ use App\Http\Controllers\ContractTableController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\FinancialController;
+use App\Http\Controllers\FinancialTableController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\ModuleTableController;
 use App\Http\Controllers\ProjectController;
@@ -97,6 +99,38 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/editar/{id}',          [ContractController::class, 'update'])->name('update');
             Route::get('/desabilitar/{id}',     [ContractController::class, 'destroy'])->name('destroy');
             Route::get('/apagar/{id}',          [ContractController::class, 'delete'])->name('delete');
+        });
+    });
+
+    // Financeiro
+    Route::middleware('admin')->prefix('financeiro')->group(function () {
+        Route::name('financial.')->group(function () {
+            Route::get('/', [FinancialController::class, 'index'])->name('index');
+            Route::get('/processar', [FinancialTableController::class, 'processing'])->name('processing');
+            Route::get('/adicionar', [FinancialController::class, 'create'])->name('create');
+            Route::post('/adicionar', [FinancialController::class, 'store'])->name('store');
+            Route::get('/editar/{id}', [FinancialController::class, 'edit'])->name('edit');
+            Route::put('/editar/{id}', [FinancialController::class, 'update'])->name('update');
+            Route::get('/desabilitar/{id}', [FinancialController::class, 'destroy'])->name('destroy');
+            Route::get('/apagar/{id}', [FinancialController::class, 'delete'])->name('delete');
+
+            Route::get('/carteiras', [FinancialController::class, 'wallets'])->name('wallets.index');
+            Route::get('/carteiras/adicionar', [FinancialController::class, 'walletsCreate'])->name('wallets.create');
+            Route::post('/carteiras/adicionar', [FinancialController::class, 'walletsStore'])->name('wallets.store');
+            Route::get('/carteiras/editar/{id}', [FinancialController::class, 'walletsEdit'])->name('wallets.edit');
+            Route::put('/carteiras/editar/{id}', [FinancialController::class, 'walletsUpdate'])->name('wallets.update');
+            Route::get('/carteiras/desabilitar/{id}', [FinancialController::class, 'walletsDestroy'])->name('wallets.destroy');
+            Route::get('/carteiras/apagar/{id}', [FinancialController::class, 'walletsDelete'])->name('wallets.delete');
+
+            Route::get('/categorias', [FinancialController::class, 'categories'])->name('categories.index');
+            Route::get('/categorias/adicionar', [FinancialController::class, 'categoriesCreate'])->name('categories.create');
+            Route::post('/categorias/adicionar', [FinancialController::class, 'categoriesStore'])->name('categories.store');
+            Route::get('/categorias/editar/{id}', [FinancialController::class, 'categoriesEdit'])->name('categories.edit');
+            Route::put('/categorias/editar/{id}', [FinancialController::class, 'categoriesUpdate'])->name('categories.update');
+            Route::get('/categorias/desabilitar/{id}', [FinancialController::class, 'categoriesDestroy'])->name('categories.destroy');
+            Route::get('/categorias/apagar/{id}', [FinancialController::class, 'categoriesDelete'])->name('categories.delete');
+
+            Route::get('/favorecidos/{type}', [FinancialController::class, 'counterparties'])->name('counterparties');
         });
     });
 
