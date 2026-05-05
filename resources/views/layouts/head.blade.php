@@ -27,6 +27,9 @@
 [data-bs-theme="dark"]:root {
     --bs-menu-link-bg-color-active: #1c0428 !important;
     --bs-menu-link-bg-color-hover: #1c0428 !important;
+    --bs-primary-light: #15091c;
+    --bs-light: #281036;
 }
+
 </style>
 @yield('custom-head')

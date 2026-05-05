@@ -72,6 +72,7 @@ body {
     --bs-app-sidebar-width-actual: 335px;
     --bs-border-radius: 15px;
 }
+
 .modal {
     --bs-modal-width: 1250px;
 }
@@ -466,10 +467,14 @@ input:-webkit-autofill:active{
 }
 
 [data-bs-theme="dark"] .app-header {
-    background: #1e062a;
+    background: #311240;
 }
 
-[data-bs-theme="dark"] .app-main {
+[data-bs-theme="dark"] .app-default, [data-bs-theme="dark"] body {
+    background: #230e2f;
+}
+
+[data-bs-theme="dark"] .swal2-popup {
     background: #230e2f;
 }
 
@@ -491,8 +496,8 @@ input:-webkit-autofill:active{
 }
 
 [data-bs-theme="dark"] .app-sidebar {
-    background: linear-gradient(45deg, #080316, #360f45);
-    box-shadow: 10px 10px 30px #9b24f10d;
+    background: linear-gradient(45deg, #270c34, #390f49);
+    box-shadow: 10px 10px 30px rgb(0 0 0 / 5%);
 }
 
 [data-bs-theme="dark"] .table:not(.table-bordered).table-row-bordered tr {
@@ -578,4 +583,8 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 
 [data-bs-theme=dark] .fc .fc-daygrid-day.fc-day-today {
     background-color: #230a32;
+}
+
+[data-bs-theme=dark] .badge-light {
+    color: #7c5f8b;
 }
