@@ -224,5 +224,6 @@
             });
         </script>
         @yield('custom-footer')
+        @stack('custom-footer-scripts')
 	</body>
 </html>

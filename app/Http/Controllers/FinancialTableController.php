@@ -46,6 +46,8 @@ class FinancialTableController extends Controller
         if ($request->filled('wallet_id')) $query->where('financial_transactions.wallet_id', $request->wallet_id);
         if ($request->filled('category_id')) $query->where('financial_transactions.category_id', $request->category_id);
         if ($request->filled('counterparty_type')) $query->where('financial_transactions.counterparty_type', $request->counterparty_type);
+        if ($request->filled('origin_type')) $query->where('financial_transactions.origin_type', $request->origin_type);
+        if ($request->filled('billing_status')) $query->where('financial_transactions.billing_status', $request->billing_status);
         if ($request->filled('date_start')) $query->whereDate('financial_transactions.date', '>=', $request->date_start);
         if ($request->filled('date_end')) $query->whereDate('financial_transactions.date', '<=', $request->date_end);
 
@@ -53,7 +55,10 @@ class FinancialTableController extends Controller
 
         return DataTables::of($query)
             ->addColumn('date', fn ($row) => date('d/m/Y', strtotime($row->date)))
+            ->addColumn('due_date', fn ($row) => $row->due_date ? date('d/m/Y', strtotime($row->due_date)) : '-')
             ->addColumn('wallet_name', fn ($row) => '<span class="badge badge-light text-gray-700">' . e($row->wallet_name ?? '-') . '</span>')
+            ->addColumn('origin_type', fn ($row) => ucfirst($row->origin_type ?? 'avulsa'))
+            ->addColumn('billing_status', fn ($row) => ucfirst($row->billing_status ?? 'pendente'))
             ->addColumn('amount', function ($row) {
                 $color = $row->type === 'entrada' ? 'text-success' : 'text-danger';
                 return '<span class="fw-bold ' . $color . '">R$ ' . number_format((float) $row->amount, 2, ',', '.') . '</span>';

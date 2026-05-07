@@ -9,6 +9,7 @@
                 <thead>
                     <tr class="fw-bold fs-6 text-gray-800 px-7">
                         <th>Nome</th>
+                        <th>Duração</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -34,6 +35,7 @@
         order: [[0, 'asc']],
         columns: [
             { data: 'name' },
+            { data: 'duration' },
             { data: 'status' },
             { data: 'actions', orderable: false, searchable: false }
         ]

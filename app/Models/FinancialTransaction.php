@@ -11,17 +11,25 @@ class FinancialTransaction extends Model
 
     protected $casts = [
         'date' => 'date',
+        'due_date' => 'date',
+        'paid_at' => 'datetime',
     ];
 
     protected $fillable = [
         'type',
+        'origin_type',
+        'billing_status',
         'name',
         'wallet_id',
         'category_id',
         'client_id',
+        'client_contract_id',
+        'reference_period',
         'counterparty_type',
         'counterparty_id',
         'date',
+        'due_date',
+        'paid_at',
         'amount',
         'description',
         'status',

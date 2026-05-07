@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Contract extends Model
@@ -17,6 +18,10 @@ class Contract extends Model
      */
     protected $fillable = [
         'name',
+        'period_in_months',
+        'duration_in_months',
+        'wallet_id',
+        'category_id',
         'status',
         'filed_by',
         'created_by',
@@ -29,5 +34,15 @@ class Contract extends Model
     public function author(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'created_by');
+    }
+
+    public function wallet(): BelongsTo
+    {
+        return $this->belongsTo(FinancialWallet::class, 'wallet_id');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(FinancialCategory::class, 'category_id');
     }
 }

@@ -40,6 +40,24 @@
                     @endforeach
                 </select>
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Origem</label>
+                <select id="origin_type" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Todas">
+                    <option value=""></option>
+                    <option value="recorrente">Recorrente</option>
+                    <option value="avulsa">Avulsa</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Status da cobrança</label>
+                <select id="billing_status" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Todos">
+                    <option value=""></option>
+                    <option value="pendente">Pendente</option>
+                    <option value="pago">Pago</option>
+                    <option value="vencido">Vencido</option>
+                    <option value="cancelado">Cancelado</option>
+                </select>
+            </div>
         </div>
     </div>
 </div>
@@ -50,7 +68,10 @@
             <thead>
                 <tr class="fw-bold fs-6 text-gray-800 px-7">
                     <th>Data</th>
+                    <th>Vencimento</th>
                     <th>Nome</th>
+                    <th>Origem</th>
+                    <th>Status</th>
                     <th>Carteira</th>
                     <th>Categoria</th>
                     <th>Favorecido</th>
@@ -141,12 +162,17 @@
                 data.type = $('#type').val();
                 data.wallet_id = $('#wallet_id').val();
                 data.category_id = $('#category_id').val();
+                data.origin_type = $('#origin_type').val();
+                data.billing_status = $('#billing_status').val();
             }
         },
         order: [[0, 'desc']],
         columns: [
             { data: 'date' },
+            { data: 'due_date' },
             { data: 'name' },
+            { data: 'origin_type' },
+            { data: 'billing_status' },
             { data: 'wallet_name' },
             { data: 'category_name' },
             { data: 'counterparty_name' },

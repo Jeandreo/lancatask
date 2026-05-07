@@ -76,11 +76,6 @@
                            <div  class="menu-item" >
                               <a class="menu-link" href="{{ route('contracts.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Tipos de contrato</span></a>
                            </div>
-                           @if (Auth::user()->isAdmin())
-                           <div  class="menu-item" >
-                              <a class="menu-link" href="{{ route('financial.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Financeiro</span></a>
-                           </div>
-                           @endif
                             {{-- <div class="menu-item">
                                 <a class="menu-link" href="{{ route('configs.google.auth') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Autenticação Google</span></a>
                             </div> --}}
@@ -110,6 +105,16 @@
                            </div>
                         </div>
                      </div>
+                     @if (Auth::user()->isAdmin())
+                     <div class="menu-item">
+                        <a class="menu-link" href="{{ route('financial.index') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-wallet fs-4"></i>
+                            </span>
+                            <span class="menu-title">Financeiro</span>
+                        </a>
+                     </div>
+                     @endif
                      @endif
                      @if (Auth::user()->groupProjects()->count())
                      <div class="p-2 rounded draggable-sidebar-zone" style="background: rgba(0, 0, 0, 0.2)">

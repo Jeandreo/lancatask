@@ -84,6 +84,11 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/adicionar',           [ClientController::class, 'store'])->name('store');
             Route::get('/editar/{id}',          [ClientController::class, 'edit'])->name('edit');
             Route::put('/editar/{id}',          [ClientController::class, 'update'])->name('update');
+            Route::post('/preview-contrato',    [ClientController::class, 'contractPreview'])->name('contract.preview');
+            Route::post('/{id}/contratos',      [ClientController::class, 'storeClientContract'])->name('contract.store');
+            Route::post('/{id}/contratos/{clientContractId}/encerrar', [ClientController::class, 'closeClientContract'])->name('contract.close');
+            Route::post('/cobrancas/{id}/status', [ClientController::class, 'toggleBillingStatus'])->name('billing.status');
+            Route::post('/cobrancas/{id}/avulsa', [ClientController::class, 'addAdhocBilling'])->name('billing.adhoc');
             Route::get('/desabilitar/{id}',     [ClientController::class, 'destroy'])->name('destroy');
             Route::get('/apagar/{id}',          [ClientController::class, 'delete'])->name('delete');
         });

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use App\Models\Client;
+use App\Models\FinancialCategory;
+use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -38,9 +40,17 @@ class ContractController extends Controller
      */
     public function create()
     {
+        $wallets = FinancialWallet::where('status', true)->orderBy('name', 'ASC')->get();
+        $categories = FinancialCategory::where('status', true)
+            ->where('type', 'entrada')
+            ->orderBy('name', 'ASC')
+            ->get();
 
         // RENDER VIEW
-        return view('pages.contracts.create');
+        return view('pages.contracts.create')->with([
+            'wallets' => $wallets,
+            'categories' => $categories,
+        ]);
     }
 
     /**
@@ -51,9 +61,16 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'duration_in_months' => 'required|integer|min:1',
+            'wallet_id' => 'required|exists:financial_wallets,id',
+            'category_id' => 'required|exists:financial_categories,id',
+        ]);
 
         // GET FORM DATA
         $data = $request->all();
+        $data['period_in_months'] = 1;
 
         // CREATED BY
         $data['created_by'] = Auth::id();
@@ -77,6 +94,11 @@ class ContractController extends Controller
     {
         // GET ALL DATA
         $content = $this->repository->find($id);
+        $wallets = FinancialWallet::where('status', true)->orderBy('name', 'ASC')->get();
+        $categories = FinancialCategory::where('status', true)
+            ->where('type', 'entrada')
+            ->orderBy('name', 'ASC')
+            ->get();
 
         // VERIFY IF EXISTS
         if(!$content) return redirect()->back();
@@ -84,6 +106,8 @@ class ContractController extends Controller
         // GENERATES DISPLAY WITH DATA
         return view('pages.contracts.edit')->with([
             'content' => $content,
+            'wallets' => $wallets,
+            'categories' => $categories,
         ]);
     }
 
@@ -96,6 +120,12 @@ class ContractController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'duration_in_months' => 'required|integer|min:1',
+            'wallet_id' => 'required|exists:financial_wallets,id',
+            'category_id' => 'required|exists:financial_categories,id',
+        ]);
 
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id))
@@ -103,6 +133,7 @@ class ContractController extends Controller
 
         // GET FORM DATA
         $data = $request->all();
+        $data['period_in_months'] = 1;
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();

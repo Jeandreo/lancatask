@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Client extends Model
@@ -34,6 +35,7 @@ class Client extends Model
         'tiktok',
         'contract_id',
         'contract_value',
+        'payment_day',
         'phone',
         'start_date',
         'end_date',
@@ -65,5 +67,10 @@ class Client extends Model
     public function contract(): HasOne
     {
         return $this->hasOne(Contract::class, 'id', 'contract_id');
+    }
+
+    public function clientContracts(): HasMany
+    {
+        return $this->hasMany(ClientContract::class, 'client_id');
     }
 }

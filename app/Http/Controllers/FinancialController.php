@@ -44,11 +44,15 @@ class FinancialController extends Controller
         $data = $request->validate([
             'type' => 'required|in:entrada,debito',
             'name' => 'required|string|max:255',
+            'origin_type' => 'nullable|in:recorrente,avulsa',
+            'billing_status' => 'nullable|in:pendente,pago,vencido,cancelado',
             'wallet_id' => 'required|exists:financial_wallets,id',
             'category_id' => 'required|exists:financial_categories,id',
             'counterparty_type' => 'nullable|in:client,user',
             'counterparty_id' => 'nullable|integer',
             'date' => 'required|date',
+            'due_date' => 'nullable|date',
+            'paid_at' => 'nullable|date',
             'amount' => 'required',
             'description' => 'nullable|string',
         ]);
@@ -74,6 +78,9 @@ class FinancialController extends Controller
         $data['client_id'] = ($data['counterparty_type'] ?? null) === 'client'
             ? ($data['counterparty_id'] ?? null)
             : null;
+        $data['origin_type'] = $data['origin_type'] ?? 'avulsa';
+        $data['billing_status'] = $data['billing_status'] ?? 'pendente';
+        $data['due_date'] = $data['due_date'] ?? $data['date'];
 
         $data['amount'] = (float) str_replace([',', ' '], ['.', ''], preg_replace('/[^\d,\.]/', '', (string) $data['amount']));
         $data['created_by'] = Auth::id();
@@ -125,11 +132,15 @@ class FinancialController extends Controller
         $data = $request->validate([
             'type' => 'required|in:entrada,debito',
             'name' => 'required|string|max:255',
+            'origin_type' => 'nullable|in:recorrente,avulsa',
+            'billing_status' => 'nullable|in:pendente,pago,vencido,cancelado',
             'wallet_id' => 'required|exists:financial_wallets,id',
             'category_id' => 'required|exists:financial_categories,id',
             'counterparty_type' => 'nullable|in:client,user',
             'counterparty_id' => 'nullable|integer',
             'date' => 'required|date',
+            'due_date' => 'nullable|date',
+            'paid_at' => 'nullable|date',
             'amount' => 'required',
             'description' => 'nullable|string',
         ]);
@@ -155,6 +166,9 @@ class FinancialController extends Controller
         $data['client_id'] = ($data['counterparty_type'] ?? null) === 'client'
             ? ($data['counterparty_id'] ?? null)
             : null;
+        $data['origin_type'] = $data['origin_type'] ?? 'avulsa';
+        $data['billing_status'] = $data['billing_status'] ?? 'pendente';
+        $data['due_date'] = $data['due_date'] ?? $data['date'];
 
         $data['amount'] = (float) str_replace([',', ' '], ['.', ''], preg_replace('/[^\d,\.]/', '', (string) $data['amount']));
         $data['updated_by'] = Auth::id();
