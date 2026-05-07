@@ -106,13 +106,25 @@
                         </div>
                      </div>
                      @if (Auth::user()->isAdmin())
-                     <div class="menu-item">
-                        <a class="menu-link" href="{{ route('financial.index') }}">
+                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                        <span class="menu-link">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-wallet fs-4"></i>
                             </span>
                             <span class="menu-title">Financeiro</span>
-                        </a>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <div class="menu-sub menu-sub-accordion">
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{ route('financial.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Lançamentos</span></a>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{ route('financial.wallets.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Carteiras</span></a>
+                            </div>
+                            <div class="menu-item">
+                                <a class="menu-link" href="{{ route('financial.categories.index') }}"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Categorias</span></a>
+                            </div>
+                        </div>
                      </div>
                      @endif
                      @endif

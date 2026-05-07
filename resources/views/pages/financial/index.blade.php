@@ -138,8 +138,6 @@
 <div class="mt-5 d-flex gap-2 flex-wrap">
     <button type="button" class="btn btn-success btn-sm text-uppercase fw-bolder" id="btnAddFinancialIncome">Adicionar receita</button>
     <button type="button" class="btn btn-danger btn-sm text-uppercase fw-bolder" id="btnAddFinancialExpense">Adicionar despesa</button>
-    <a href="{{ route('financial.wallets.index') }}"><label class="btn btn-light-primary btn-sm text-uppercase fw-bolder">Carteiras</label></a>
-    <a href="{{ route('financial.categories.index') }}"><label class="btn btn-light-primary btn-sm text-uppercase fw-bolder">Categorias</label></a>
 </div>
 @endsection
 
