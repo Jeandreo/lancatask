@@ -45,7 +45,13 @@
                                         <td>{{ optional($clientContract->start_date)->format('d/m/Y') }}</td>
                                         <td>{{ optional($clientContract->end_date)->format('d/m/Y') ?: '-' }}</td>
                                         <td>R$ {{ number_format($clientContract->amount, 2, ',', '.') }}</td>
-                                        <td>{{ $clientContract->duration_in_months }} mês(es)</td>
+                                        <td>
+                                            @if($clientContract->contract && $clientContract->contract->is_open_ended)
+                                                <span class="badge badge-light-primary">Sem fim</span>
+                                            @else
+                                                {{ $clientContract->duration_in_months }} mês(es)
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($clientContract->status)
                                                 <span class="badge badge-light-success">Ativo</span>
@@ -96,6 +102,7 @@
                                 @forelse($billings as $billing)
                                     @php
                                         $isPaid = $billing->billing_status === 'pago';
+                                        $isVirtual = !empty($billing->is_virtual);
                                         $badge = 'badge-light-warning';
 
                                         if ($billing->billing_status === 'pago') {
@@ -109,7 +116,12 @@
                                     <tr>
                                         <td>{{ optional($billing->due_date)->format('d/m/Y') ?: optional($billing->date)->format('d/m/Y') }}</td>
                                         <td>{{ $billing->reference_period ?: '-' }}</td>
-                                        <td>{{ ucfirst($billing->origin_type ?: 'avulsa') }}</td>
+                                        <td>
+                                            {{ ucfirst($billing->origin_type ?: 'avulsa') }}
+                                            @if($isVirtual)
+                                                <span class="badge badge-light-primary ms-2">Projetada</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $billing->name }}</td>
                                         <td>R$ {{ number_format($billing->amount, 2, ',', '.') }}</td>
                                         <td><span class="badge {{ $badge }}">{{ ucfirst($billing->billing_status ?: 'pendente') }}</span></td>
@@ -117,6 +129,11 @@
                                             <form action="{{ route('clients.billing.status', $billing->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <input type="hidden" name="status" value="{{ $isPaid ? 'pendente' : 'pago' }}">
+                                                @if($isVirtual)
+                                                    <input type="hidden" name="is_virtual" value="1">
+                                                    <input type="hidden" name="client_contract_id" value="{{ $billing->client_contract_id }}">
+                                                    <input type="hidden" name="reference_period" value="{{ $billing->reference_period }}">
+                                                @endif
                                                 <button type="submit" class="btn btn-sm {{ $isPaid ? 'btn-light-warning' : 'btn-light-success' }}">
                                                     {{ $isPaid ? 'Marcar como pendente' : 'Marcar como pago' }}
                                                 </button>
@@ -258,12 +275,20 @@
                 amount: amount,
                 start_date: startDate,
             }).done(function (response) {
+                let durationText = response.is_open_ended ? 'Sem fim' : (response.duration_in_months + ' mês(es)');
+                let projectionText = '';
+                if (response.is_open_ended) {
+                    projectionText = `<p class=\"mb-0\"><strong>Visualização inicial:</strong> ${response.projection_window} competências projetadas</p>`;
+                }
+
                 $('#contract-preview-content').html(`
                     <p><strong>Contrato:</strong> ${response.contract_name}</p>
-                    <p><strong>Duração:</strong> ${response.duration_in_months} mês(es)</p>
+                    <p><strong>Duração:</strong> ${durationText}</p>
+                    <p><strong>Geração:</strong> ${response.generation_text}</p>
                     <p><strong>Data de início:</strong> ${response.start_date}</p>
                     <p><strong>Valor:</strong> ${response.amount}</p>
-                    <p class="mb-0"><strong>Transações que serão geradas:</strong> ${response.total_transactions}</p>
+                    <p><strong>Transações que serão geradas:</strong> ${response.total_transactions}</p>
+                    ${projectionText}
                 `);
                 $('#contract-preview-content')
                     .removeClass('d-none alert-light-danger')

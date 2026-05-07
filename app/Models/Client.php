@@ -33,8 +33,6 @@ class Client extends Model
         'linkedin',
         'youtube',
         'tiktok',
-        'contract_id',
-        'contract_value',
         'payment_day',
         'phone',
         'start_date',
@@ -61,14 +59,6 @@ class Client extends Model
     {
         return $this->hasOne(User::class, 'id', 'created_by');
     }
-    /**
-     * Get the creator associated with the tasks.
-     */
-    public function contract(): HasOne
-    {
-        return $this->hasOne(Contract::class, 'id', 'contract_id');
-    }
-
     public function clientContracts(): HasMany
     {
         return $this->hasMany(ClientContract::class, 'client_id');

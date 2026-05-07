@@ -11,6 +11,10 @@ class Contract extends Model
 {
     use HasFactory;
     protected $table = 'contracts';
+
+    protected $casts = [
+        'is_open_ended' => 'boolean',
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -20,6 +24,7 @@ class Contract extends Model
         'name',
         'period_in_months',
         'duration_in_months',
+        'is_open_ended',
         'wallet_id',
         'category_id',
         'status',

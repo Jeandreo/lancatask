@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contract;
-use App\Models\Client;
 use App\Models\FinancialCategory;
 use App\Models\FinancialWallet;
 use Illuminate\Http\Request;
@@ -61,16 +60,29 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'duration_in_months' => 'required|integer|min:1',
+            'duration_in_months' => 'nullable|integer|min:1',
+            'is_open_ended' => 'nullable|boolean',
             'wallet_id' => 'required|exists:financial_wallets,id',
             'category_id' => 'required|exists:financial_categories,id',
         ]);
 
+        $isOpenEnded = $request->boolean('is_open_ended');
+
+        if (!$isOpenEnded && empty($validated['duration_in_months'])) {
+            return redirect()->back()->withInput()->withErrors([
+                'duration_in_months' => 'A duração em meses é obrigatória para contratos com prazo.',
+            ]);
+        }
+
         // GET FORM DATA
         $data = $request->all();
         $data['period_in_months'] = 1;
+        $data['is_open_ended'] = $isOpenEnded;
+        if ($isOpenEnded) {
+            $data['duration_in_months'] = null;
+        }
 
         // CREATED BY
         $data['created_by'] = Auth::id();
@@ -120,12 +132,21 @@ class ContractController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'duration_in_months' => 'required|integer|min:1',
+            'duration_in_months' => 'nullable|integer|min:1',
+            'is_open_ended' => 'nullable|boolean',
             'wallet_id' => 'required|exists:financial_wallets,id',
             'category_id' => 'required|exists:financial_categories,id',
         ]);
+
+        $isOpenEnded = $request->boolean('is_open_ended');
+
+        if (!$isOpenEnded && empty($validated['duration_in_months'])) {
+            return redirect()->back()->withInput()->withErrors([
+                'duration_in_months' => 'A duração em meses é obrigatória para contratos com prazo.',
+            ]);
+        }
 
         // VERIFY IF EXISTS
         if(!$content = $this->repository->find($id))
@@ -134,6 +155,10 @@ class ContractController extends Controller
         // GET FORM DATA
         $data = $request->all();
         $data['period_in_months'] = 1;
+        $data['is_open_ended'] = $isOpenEnded;
+        if ($isOpenEnded) {
+            $data['duration_in_months'] = null;
+        }
 
         // UPDATE BY
         $data['updated_by'] = Auth::id();
@@ -179,11 +204,6 @@ class ContractController extends Controller
         }
 
         DB::transaction(function () use ($content) {
-            Client::where('contract_id', $content->id)->update([
-                'contract_id' => null,
-                'updated_by' => Auth::id(),
-            ]);
-
             $content->delete();
         });
 

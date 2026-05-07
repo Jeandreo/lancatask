@@ -10,13 +10,17 @@ class ContractTableController extends Controller
 {
     public function processing(Request $request)
     {
-        $query = Contract::query()->select(['id', 'name', 'duration_in_months', 'status'])
+        $query = Contract::query()->select(['id', 'name', 'duration_in_months', 'is_open_ended', 'status'])
             ->orderBy('status', 'desc')
             ->orderBy('id', 'desc');
 
         return DataTables::of($query)
             ->addColumn('name', fn ($row) => '<a href="' . route('contracts.edit', $row->id) . '" class="text-gray-700 text-hover-primary fw-bold fs-6">' . e($row->name) . '</a>')
             ->addColumn('duration', function ($row) {
+                if ($row->is_open_ended) {
+                    return '<span class="badge badge-light-primary">Sem fim</span>';
+                }
+
                 if (empty($row->duration_in_months)) {
                     return '<span class="badge badge-light">-</span>';
                 }

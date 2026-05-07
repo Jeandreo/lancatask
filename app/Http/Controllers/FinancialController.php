@@ -3,15 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\ClientContract;
 use App\Models\FinancialCategory;
 use App\Models\FinancialTransaction;
 use App\Models\FinancialWallet;
 use App\Models\User;
+use App\Services\ClientContractBillingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FinancialController extends Controller
 {
+    private $billingService;
+
+    public function __construct(ClientContractBillingService $billingService)
+    {
+        $this->billingService = $billingService;
+    }
+
     private function ensureAdmin(): void
     {
         if (!Auth::user() || !Auth::user()->isAdmin()) {
@@ -214,6 +223,37 @@ class FinancialController extends Controller
         }
 
         return response()->json([]);
+    }
+
+    public function materializeProjectedBilling(Request $request)
+    {
+        $this->ensureAdmin();
+        $request->validate([
+            'client_contract_id' => 'required|integer',
+            'reference_period' => 'required|string|size:7',
+        ]);
+
+        $clientContract = ClientContract::with(['contract', 'client'])
+            ->where('id', $request->client_contract_id)
+            ->where('status', true)
+            ->first();
+
+        if (!$clientContract) {
+            return response()->json([
+                'message' => 'Contrato vinculado não encontrado para materializar a cobrança.',
+            ], 422);
+        }
+
+        $this->billingService->materializeReferencePeriod(
+            $clientContract,
+            $request->reference_period,
+            Auth::id(),
+            'pago'
+        );
+
+        return response()->json([
+            'message' => 'Cobrança projetada materializada e marcada como paga com sucesso.',
+        ]);
     }
 
     public function wallets()

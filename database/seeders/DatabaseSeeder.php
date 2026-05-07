@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Agenda;
 use App\Models\AgendaMember;
 use App\Models\Client;
+use App\Models\ClientContract;
 use App\Models\Comment;
 use App\Models\Contract;
 use App\Models\FinancialCategory;
@@ -209,6 +210,9 @@ class DatabaseSeeder extends Seeder
             'Plano Anual',
         ])->map(fn (string $name) => Contract::create([
             'name' => $name,
+            'period_in_months' => 1,
+            'duration_in_months' => null,
+            'is_open_ended' => true,
             'created_by' => $admin->id,
         ]));
 
@@ -218,19 +222,33 @@ class DatabaseSeeder extends Seeder
                 'person_type' => $faker->randomElement(['PF', 'PJ']),
                 'document' => $faker->numerify('###########'),
                 'email' => $faker->unique()->safeEmail(),
-                'contract_id' => $contracts->random()->id,
-                'contract_value' => (string) $faker->randomFloat(2, 997, 9997),
+                'payment_day' => $faker->numberBetween(1, 28),
                 'phone' => $faker->numerify('(##) #####-####'),
                 'start_date' => now()->subDays(rand(1, 120)),
                 'end_date' => now()->addDays(rand(30, 365)),
                 'zip' => $faker->numerify('#####-###'),
                 'street' => $faker->streetName(),
-                'number' => (string) $faker->numberBetween(1, 9999),
+                'number' => $faker->numberBetween(1, 9999),
                 'complement' => $faker->optional()->secondaryAddress(),
                 'neighborhood' => $faker->citySuffix(),
                 'city' => $faker->city(),
                 'state' => $faker->stateAbbr(),
                 'observations' => $faker->optional()->paragraph(),
+                'created_by' => $admin->id,
+            ]);
+        });
+
+        $clientContracts = $clients->map(function (Client $client) use ($contracts, $faker, $admin) {
+            $contract = $contracts->random();
+
+            return ClientContract::create([
+                'client_id' => $client->id,
+                'contract_id' => $contract->id,
+                'amount' => $faker->randomFloat(2, 997, 9997),
+                'start_date' => now()->subMonths(rand(1, 4))->startOfMonth()->toDateString(),
+                'period_in_months' => 1,
+                'duration_in_months' => null,
+                'status' => true,
                 'created_by' => $admin->id,
             ]);
         });
@@ -245,8 +263,8 @@ class DatabaseSeeder extends Seeder
         ]));
 
         $categories = collect([
-            ['name' => 'Receita de Contrato', 'type' => 'entrada'],
-            ['name' => 'Receita Extra', 'type' => 'entrada'],
+            ['name' => 'Receita Recorrente de Contrato', 'type' => 'entrada'],
+            ['name' => 'Receita Avulsa', 'type' => 'entrada'],
             ['name' => 'Tráfego Pago', 'type' => 'debito'],
             ['name' => 'Ferramentas', 'type' => 'debito'],
             ['name' => 'Equipe/Freelancer', 'type' => 'debito'],
@@ -272,6 +290,20 @@ class DatabaseSeeder extends Seeder
                 $counterpartyId = $allUsers->random()->id;
             }
 
+            $originType = 'avulsa';
+            $clientContractId = null;
+            $referencePeriod = null;
+
+            if ($type === 'entrada' && $counterpartyType === 'client' && $faker->boolean(70)) {
+                $contractLink = $clientContracts->where('client_id', $clientId)->first();
+
+                if ($contractLink) {
+                    $originType = 'recorrente';
+                    $clientContractId = $contractLink->id;
+                    $referencePeriod = now()->subMonths(rand(0, 6))->format('Y-m');
+                }
+            }
+
             FinancialTransaction::create([
                 'type' => $type,
                 'name' => $type === 'entrada'
@@ -280,8 +312,11 @@ class DatabaseSeeder extends Seeder
                 'wallet_id' => $wallets->random()->id,
                 'category_id' => $category->id,
                 'client_id' => $clientId,
+                'client_contract_id' => $clientContractId,
+                'reference_period' => $referencePeriod,
                 'counterparty_type' => $counterpartyType,
                 'counterparty_id' => $counterpartyId,
+                'origin_type' => $originType,
                 'date' => now()->subDays(rand(0, 120))->toDateString(),
                 'amount' => $faker->randomFloat(2, 90, 15000),
                 'description' => $faker->optional()->sentence(),

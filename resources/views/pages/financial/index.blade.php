@@ -58,6 +58,13 @@
                     <option value="cancelado">Cancelado</option>
                 </select>
             </div>
+            <div class="col-md-4">
+                <label class="form-label">Projeções</label>
+                <select id="show_virtual" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Selecione">
+                    <option value="1" selected>Mostrar projetadas</option>
+                    <option value="0">Ocultar projetadas</option>
+                </select>
+            </div>
         </div>
     </div>
 </div>
@@ -164,6 +171,7 @@
                 data.category_id = $('#category_id').val();
                 data.origin_type = $('#origin_type').val();
                 data.billing_status = $('#billing_status').val();
+                data.show_virtual = $('#show_virtual').val();
             }
         },
         order: [[0, 'desc']],
@@ -287,6 +295,31 @@
             loadCounterpartyOptions(response.counterparty_type || '', response.counterparty_id || null, 'counterparty_id_' + suffix);
 
             modal.show();
+        });
+    });
+
+    $(document).on('click', '.js-financial-materialize', function (e) {
+        e.preventDefault();
+
+        const clientContractId = $(this).data('client-contract-id');
+        const referencePeriod = $(this).data('reference-period');
+
+        if (!clientContractId || !referencePeriod) {
+            return;
+        }
+
+        $.post("{{ route('financial.materialize.projected') }}", {
+            _token: "{{ csrf_token() }}",
+            client_contract_id: clientContractId,
+            reference_period: referencePeriod
+        }).done(function () {
+            table.ajax.reload();
+        }).fail(function (xhr) {
+            let message = 'Não foi possível materializar a cobrança projetada.';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            }
+            alert(message);
         });
     });
 

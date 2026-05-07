@@ -118,6 +118,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/editar/{id}', [FinancialController::class, 'update'])->name('update');
             Route::get('/desabilitar/{id}', [FinancialController::class, 'destroy'])->name('destroy');
             Route::get('/apagar/{id}', [FinancialController::class, 'delete'])->name('delete');
+            Route::post('/materializar-projetada', [FinancialController::class, 'materializeProjectedBilling'])->name('materialize.projected');
 
             Route::get('/carteiras', [FinancialController::class, 'wallets'])->name('wallets.index');
             Route::get('/carteiras/adicionar', [FinancialController::class, 'walletsCreate'])->name('wallets.create');

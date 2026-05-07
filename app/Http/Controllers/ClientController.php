@@ -14,6 +14,7 @@ use App\Models\Project;
 use App\Models\ProjectType;
 use App\Models\Status;
 use App\Services\ClientContractBillingService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -147,12 +148,27 @@ class ClientController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        $billings = FinancialTransaction::where('client_id', $content->id)
+        $realBillings = FinancialTransaction::where('client_id', $content->id)
             ->where('type', 'entrada')
             ->orderBy('due_date', 'ASC')
             ->orderBy('date', 'ASC')
             ->limit(200)
             ->get();
+
+        $virtualBillings = $this->billingService->getVirtualTransactionsForClient($content->id);
+        $billings = $realBillings->concat($virtualBillings)
+            ->sortBy(function ($item) {
+                if (!empty($item->due_date)) {
+                    return Carbon::parse($item->due_date)->timestamp;
+                }
+
+                if (!empty($item->date)) {
+                    return Carbon::parse($item->date)->timestamp;
+                }
+
+                return 0;
+            })
+            ->values();
 
         $wallets = FinancialWallet::where('status', true)->orderBy('name', 'ASC')->get();
         $categories = FinancialCategory::where('status', true)
@@ -236,7 +252,7 @@ class ClientController extends Controller
             'amount' => $amountValue,
             'start_date' => $request->start_date,
             'period_in_months' => 1,
-            'duration_in_months' => $contract->duration_in_months,
+            'duration_in_months' => $contract->is_open_ended ? null : $contract->duration_in_months,
             'status' => true,
             'created_by' => Auth::id(),
         ]);
@@ -284,19 +300,20 @@ class ClientController extends Controller
             return response()->json(['message' => 'Contrato inválido.'], 422);
         }
 
-        $duration = max($contract->duration_in_months, 1);
-        $total = $duration;
-
-        if ($total < 1) {
-            $total = 1;
-        }
+        $isOpenEnded = $contract->is_open_ended;
+        $duration = $contract->duration_in_months;
+        $total = $isOpenEnded ? 12 : $contract->duration_in_months;
+        $generationText = $isOpenEnded ? 'Contínua (sem fim)' : 'Limitada';
 
         return response()->json([
             'contract_name' => $contract->name,
             'duration_in_months' => $duration,
+            'is_open_ended' => $isOpenEnded,
+            'generation_text' => $generationText,
             'amount' => $request->amount,
             'start_date' => $request->start_date ?: now()->format('d/m/Y'),
             'total_transactions' => $total,
+            'projection_window' => 12,
         ]);
     }
 
@@ -304,7 +321,30 @@ class ClientController extends Controller
     {
         $request->validate([
             'status' => 'required|in:pendente,pago',
+            'is_virtual' => 'nullable|in:1',
+            'client_contract_id' => 'nullable|integer',
+            'reference_period' => 'nullable|string|size:7',
         ]);
+
+        if ($request->input('is_virtual') === '1') {
+            $clientContract = ClientContract::with(['contract', 'client'])
+                ->where('id', $request->client_contract_id)
+                ->where('status', true)
+                ->first();
+
+            if (!$clientContract) {
+                return redirect()->back()->with('message', 'Contrato da cobrança projetada não encontrado.');
+            }
+
+            $this->billingService->materializeReferencePeriod(
+                $clientContract,
+                $request->reference_period,
+                Auth::id(),
+                $request->status
+            );
+
+            return redirect()->back()->with('message', 'Cobrança projetada materializada com sucesso.');
+        }
 
         $transaction = FinancialTransaction::where('id', $id)
             ->where('type', 'entrada')
