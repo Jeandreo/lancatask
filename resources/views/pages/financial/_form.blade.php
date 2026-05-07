@@ -51,7 +51,7 @@
         </select>
     </div>
     <div class="col-md-4 mb-4">
-        <label class="form-label fw-bold">Favorecido é:</label>
+        <label class="form-label fw-bold">Pessoa/Empresa é:</label>
         <select class="form-select form-select-solid" name="counterparty_type" id="{{ $counterpartyTypeId }}" data-control="select2" data-allow-clear="true" data-placeholder="Opcional">
             <option value=""></option>
             <option value="client" @selected(old('counterparty_type', $content->counterparty_type ?? '') === 'client')>Cliente</option>
@@ -59,7 +59,7 @@
         </select>
     </div>
     <div class="col-md-4 mb-4">
-        <label class="form-label fw-bold">Favorecido:</label>
+        <label class="form-label fw-bold">Pessoa/Empresa:</label>
         <select class="form-select form-select-solid" name="counterparty_id" id="{{ $counterpartyIdId }}" data-control="select2" data-allow-clear="true" data-placeholder="Selecione"></select>
     </div>
 

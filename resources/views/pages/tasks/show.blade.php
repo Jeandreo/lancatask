@@ -80,7 +80,7 @@
                 </div>
                 <div class="h-150px p-3">
                     @if ($task->status != 0)
-                    <form action="" method="POST" class="position-relative ck-tiny">
+                    <form action="" method="POST" class="position-relative ck-tiny text-gray-700">
                         @csrf
                         <div class="pt-0" data-bs-theme="dark">
                             <textarea name="text" placeholder="Algum comentário sobre essa tarefa?" class="load-editor"></textarea>

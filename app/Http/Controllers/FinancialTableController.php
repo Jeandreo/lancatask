@@ -45,12 +45,7 @@ class FinancialTableController extends Controller
                 return $row;
             });
 
-        $showVirtual = $request->input('show_virtual', '1') !== '0';
-        $virtualRows = collect();
-
-        if ($showVirtual) {
-            $virtualRows = $this->billingService->getVirtualTransactionsForFinancial();
-        }
+        $virtualRows = $this->billingService->getVirtualTransactionsForFinancial();
 
         $allRows = $realRows->concat($virtualRows);
         $filteredRows = $allRows->filter(function ($row) use ($request) {
@@ -70,24 +65,13 @@ class FinancialTableController extends Controller
                 return false;
             }
 
-            if ($request->filled('origin_type') && $row->origin_type !== $request->origin_type) {
-                return false;
-            }
-
             if ($request->filled('billing_status') && $row->billing_status !== $request->billing_status) {
                 return false;
             }
 
-            if ($request->filled('date_start')) {
-                $currentDate = !empty($row->due_date) ? Carbon::parse($row->due_date)->toDateString() : Carbon::parse($row->date)->toDateString();
-                if ($currentDate < $request->date_start) {
-                    return false;
-                }
-            }
-
-            if ($request->filled('date_end')) {
-                $currentDate = !empty($row->due_date) ? Carbon::parse($row->due_date)->toDateString() : Carbon::parse($row->date)->toDateString();
-                if ($currentDate > $request->date_end) {
+            if ($request->filled('filter_month')) {
+                $currentDate = !empty($row->due_date) ? Carbon::parse($row->due_date) : Carbon::parse($row->date);
+                if ($currentDate->format('Y-m') !== $request->filter_month) {
                     return false;
                 }
             }
@@ -115,13 +99,48 @@ class FinancialTableController extends Controller
             }
 
             return true;
-        })->sortByDesc(function ($row) {
-            if (!empty($row->due_date)) {
-                return Carbon::parse($row->due_date)->timestamp;
-            }
+        });
 
-            return Carbon::parse($row->date)->timestamp;
-        })->values();
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
+        $orderColumnKey = 'date';
+
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data', 'date');
+        }
+
+        $extractors = [
+            'date' => function ($row) {
+                if (!empty($row->date)) {
+                    return Carbon::parse($row->date)->timestamp;
+                }
+                return 0;
+            },
+            'due_date' => function ($row) {
+                if (!empty($row->due_date)) {
+                    return Carbon::parse($row->due_date)->timestamp;
+                }
+                return 0;
+            },
+            'name' => fn ($row) => mb_strtolower($row->name ?? ''),
+            'origin_type' => fn ($row) => mb_strtolower($row->origin_type ?? ''),
+            'billing_status' => fn ($row) => mb_strtolower($row->billing_status ?? ''),
+            'wallet_name' => fn ($row) => mb_strtolower($row->wallet_name ?? ''),
+            'category_name' => fn ($row) => mb_strtolower($row->category_name ?? ''),
+            'counterparty_name' => fn ($row) => mb_strtolower($row->counterparty_name ?? ''),
+            'amount' => fn ($row) => $row->amount ?? 0,
+        ];
+
+        if (!array_key_exists($orderColumnKey, $extractors)) {
+            $orderColumnKey = 'date';
+        }
+
+        $sortFn = $extractors[$orderColumnKey];
+        if ($orderDirection === 'desc') {
+            $filteredRows = $filteredRows->sortByDesc($sortFn)->values();
+        } else {
+            $filteredRows = $filteredRows->sortBy($sortFn)->values();
+        }
 
         $totalRecords = $allRows->count();
         $totalFiltered = $filteredRows->count();
@@ -143,15 +162,33 @@ class FinancialTableController extends Controller
         $rows = $filteredRows->slice($start, $length)->map(function ($row) {
             $date = !empty($row->date) ? Carbon::parse($row->date)->format('d/m/Y') : '-';
             $dueDate = !empty($row->due_date) ? Carbon::parse($row->due_date)->format('d/m/Y') : '-';
-            $originType = '<span class="text-gray-700 fw-medium">' . ucfirst($row->origin_type ?? 'avulsa') . '</span>';
+            $billingStatusRaw = $row->billing_status ?? 'pendente';
+            $billingStatus = ucfirst($billingStatusRaw);
+            $billingStatusClass = 'badge-light';
 
-            if (!empty($row->is_virtual)) {
-                $originType .= ' <span class="badge badge-light-primary ms-1">Projetada</span>';
+            if ($billingStatusRaw === 'pendente') {
+                $billingStatusClass = 'badge-light-warning';
             }
 
-            $billingStatus = ucfirst($row->billing_status ?? 'pendente');
+            if ($billingStatusRaw === 'pago') {
+                $billingStatusClass = 'badge-light-success';
+            }
+
+            if ($billingStatusRaw === 'vencido') {
+                $billingStatusClass = 'badge-light-danger';
+            }
+
+            if ($billingStatusRaw === 'cancelado') {
+                $billingStatusClass = 'badge-light-dark';
+            }
             $color = $row->type === 'entrada' ? 'text-success' : 'text-danger';
             $amount = '<span class="fw-bold ' . $color . '">R$ ' . number_format($row->amount, 2, ',', '.') . '</span>';
+            if (!empty($row->is_virtual)) {
+                $name = '<span class="text-gray-900 fw-bold">' . e($row->name) . '</span>';
+                $name .= ' <i class="fas fa-redo-alt text-primary ms-1" title="Recorrente"></i>';
+            } else {
+                $name = '<a href="#" class="text-gray-900 fw-bold text-hover-primary js-financial-edit" data-url="' . route('financial.edit', $row->id) . '" data-update-url="' . route('financial.update', $row->id) . '">' . e($row->name) . '</a>';
+            }
 
             $actions = '<div class="d-flex align-items-center icons-table">';
             if (!empty($row->is_virtual)) {
@@ -166,9 +203,8 @@ class FinancialTableController extends Controller
                 'id' => $row->id,
                 'date' => '<span class="text-gray-700 fw-medium">' . $date . '</span>',
                 'due_date' => '<span class="text-gray-600 fw-medium">' . $dueDate . '</span>',
-                'name' => '<span class="text-gray-900 fw-bold">' . e($row->name) . '</span>',
-                'origin_type' => $originType,
-                'billing_status' => '<span class="text-gray-700 fw-semibold">' . e($billingStatus) . '</span>',
+                'name' => $name,
+                'billing_status' => '<span class="badge ' . $billingStatusClass . ' fw-semibold">' . e($billingStatus) . '</span>',
                 'wallet_name' => '<span class="badge badge-light text-gray-700 fw-semibold">' . e($row->wallet_name ?? '-') . '</span>',
                 'category_name' => '<span class="text-gray-700 fw-medium">' . e($row->category_name ?? '-') . '</span>',
                 'counterparty_name' => '<span class="text-gray-800 fw-semibold">' . e($row->counterparty_name ?? '-') . '</span>',

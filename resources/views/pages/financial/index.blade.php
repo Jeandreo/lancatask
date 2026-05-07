@@ -6,15 +6,7 @@
 <div class="card mb-4">
     <div class="card-body">
         <div class="row g-3 align-items-end" id="section-filters">
-            <div class="col-md-4">
-                <label class="form-label">Período inicial</label>
-                <input type="date" class="form-control form-control-solid" id="date_start">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Período final</label>
-                <input type="date" class="form-control form-control-solid" id="date_end">
-            </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-3">
                 <label class="form-label">Tipo</label>
                 <select id="type" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Todos">
                     <option value=""></option>
@@ -22,7 +14,7 @@
                     <option value="debito">Débito</option>
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-3">
                 <label class="form-label">Carteira</label>
                 <select id="wallet_id" class="form-select form-select-solid" data-control="select2" data-placeholder="Todas">
                     <option value=""></option>
@@ -31,7 +23,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-3">
                 <label class="form-label">Categoria</label>
                 <select id="category_id" class="form-select form-select-solid" data-control="select2" data-placeholder="Todas">
                     <option value=""></option>
@@ -40,15 +32,7 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">Origem</label>
-                <select id="origin_type" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Todas">
-                    <option value=""></option>
-                    <option value="recorrente">Recorrente</option>
-                    <option value="avulsa">Avulsa</option>
-                </select>
-            </div>
-            <div class="col-md-4">
+            <div class="col-12 col-md-6 col-lg-3">
                 <label class="form-label">Status da cobrança</label>
                 <select id="billing_status" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Todos">
                     <option value=""></option>
@@ -58,30 +42,32 @@
                     <option value="cancelado">Cancelado</option>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label">Projeções</label>
-                <select id="show_virtual" class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Selecione">
-                    <option value="1" selected>Mostrar projetadas</option>
-                    <option value="0">Ocultar projetadas</option>
-                </select>
-            </div>
         </div>
     </div>
 </div>
 
 <div class="card">
-    <div class="card-body">
+    <div class="card-header border-0 pt-6 justify-content-center">
+        <div class="d-flex align-items-center gap-3">
+            <button type="button" class="btn btn-icon btn-light-primary btn-sm" id="btnMonthPrev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <h3 class="card-title fw-bold text-gray-900 mb-0" id="currentMonthLabel"></h3>
+            <button type="button" class="btn btn-icon btn-light-primary btn-sm" id="btnMonthNext">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body pt-0">
         <table id="datatables" class="table table-dark-header table-striped table-row-bordered gy-2 gs-2 gx-0 border align-middle no-footer">
             <thead>
                 <tr class="fw-bold fs-6 text-gray-800 px-7">
-                    <th>Data</th>
                     <th>Vencimento</th>
                     <th>Nome</th>
-                    <th>Origem</th>
+                    <th>Pessoa/Empresa</th>
                     <th>Status</th>
                     <th>Carteira</th>
                     <th>Categoria</th>
-                    <th>Favorecido</th>
                     <th>Valor</th>
                     <th>Ações</th>
                 </tr>
@@ -111,6 +97,7 @@
                     @include('pages.financial._form')
                 </div>
                 <div class="modal-footer">
+                    <span class="text-gray-600 fw-medium me-auto d-none" id="financialIncomeCreatedAtLabel"></span>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-info btn-active-success" id="financialIncomeSubmit">Cadastrar receita</button>
                 </div>
@@ -139,6 +126,7 @@
                     @include('pages.financial._form')
                 </div>
                 <div class="modal-footer">
+                    <span class="text-gray-600 fw-medium me-auto d-none" id="financialExpenseCreatedAtLabel"></span>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger btn-active-danger" id="financialExpenseSubmit">Cadastrar despesa</button>
                 </div>
@@ -158,40 +146,67 @@
 @section('custom-footer')
 @parent
 <script>
+    let selectedMonth = new Date();
+    selectedMonth.setDate(1);
+
+    function getMonthFilter() {
+        const year = selectedMonth.getFullYear();
+        const month = String(selectedMonth.getMonth() + 1).padStart(2, '0');
+        return year + '-' + month;
+    }
+
+    function renderMonthLabel() {
+        const monthLabel = selectedMonth.toLocaleDateString('pt-BR', {
+            month: 'long',
+            year: 'numeric'
+        });
+
+        $('#currentMonthLabel').text(monthLabel.charAt(0).toUpperCase() + monthLabel.slice(1));
+    }
+
     var table = $('#datatables').DataTable({
         serverSide: true,
         processing: true,
         ajax: {
             url: "{{ route('financial.processing') }}",
             data: function(data) {
-                data.date_start = $('#date_start').val();
-                data.date_end = $('#date_end').val();
+                data.filter_month = getMonthFilter();
                 data.type = $('#type').val();
                 data.wallet_id = $('#wallet_id').val();
                 data.category_id = $('#category_id').val();
-                data.origin_type = $('#origin_type').val();
                 data.billing_status = $('#billing_status').val();
-                data.show_virtual = $('#show_virtual').val();
             }
         },
-        order: [[0, 'desc']],
+        order: [[0, 'asc']],
         columns: [
-            { data: 'date' },
             { data: 'due_date' },
             { data: 'name' },
-            { data: 'origin_type' },
+            { data: 'counterparty_name' },
             { data: 'billing_status' },
             { data: 'wallet_name' },
             { data: 'category_name' },
-            { data: 'counterparty_name' },
             { data: 'amount' },
             { data: 'actions', orderable: false, searchable: false }
         ]
     });
 
-    $('#section-filters input, #section-filters select').on('change', function() {
+    $('#section-filters select').on('change', function() {
         table.ajax.reload();
     });
+
+    $('#btnMonthPrev').on('click', function () {
+        selectedMonth.setMonth(selectedMonth.getMonth() - 1);
+        renderMonthLabel();
+        table.ajax.reload();
+    });
+
+    $('#btnMonthNext').on('click', function () {
+        selectedMonth.setMonth(selectedMonth.getMonth() + 1);
+        renderMonthLabel();
+        table.ajax.reload();
+    });
+
+    renderMonthLabel();
 
     const incomeModal = new bootstrap.Modal(document.getElementById('financialIncomeModal'));
     const expenseModal = new bootstrap.Modal(document.getElementById('financialExpenseModal'));
@@ -243,6 +258,25 @@
         filterCategoriesByType(formId, type);
         $('#' + counterpartyTypeId).val('').trigger('change');
         loadCounterpartyOptions('', null, counterpartyIdId);
+
+        const createdAtLabel = formId === 'financialIncomeForm'
+            ? $('#financialIncomeCreatedAtLabel')
+            : $('#financialExpenseCreatedAtLabel');
+
+        createdAtLabel.text('').addClass('d-none');
+    }
+
+    function setCreatedAtLabel(formId, createdAt) {
+        const createdAtLabel = formId === 'financialIncomeForm'
+            ? $('#financialIncomeCreatedAtLabel')
+            : $('#financialExpenseCreatedAtLabel');
+
+        if (!createdAt) {
+            createdAtLabel.text('').addClass('d-none');
+            return;
+        }
+
+        createdAtLabel.text('Criada em: ' + createdAt).removeClass('d-none');
     }
 
     function bindCounterparty(typeId, fieldId) {
@@ -293,6 +327,7 @@
             $('#' + formId + ' textarea[name="description"]').val(response.description || '');
             $('#counterparty_type_' + suffix).val(response.counterparty_type || '').trigger('change');
             loadCounterpartyOptions(response.counterparty_type || '', response.counterparty_id || null, 'counterparty_id_' + suffix);
+            setCreatedAtLabel(formId, response.created_at || '');
 
             modal.show();
         });

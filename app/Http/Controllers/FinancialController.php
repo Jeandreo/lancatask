@@ -120,6 +120,7 @@ class FinancialController extends Controller
                 'counterparty_type' => $content->counterparty_type,
                 'counterparty_id' => $content->counterparty_id,
                 'date' => optional($content->date)->format('Y-m-d'),
+                'created_at' => optional($content->created_at)->format('d/m/Y H:i'),
                 'amount' => number_format((float) $content->amount, 2, '.', ''),
                 'description' => $content->description,
             ]);

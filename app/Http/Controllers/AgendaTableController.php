@@ -10,9 +10,24 @@ class AgendaTableController extends Controller
 {
     public function processing(Request $request)
     {
-        $query = Agenda::query()->select(['id', 'name', 'date_start', 'date_end', 'hour_start', 'hour_end', 'status'])
-            ->orderBy('status', 'desc')
-            ->orderBy('id', 'desc');
+        $query = Agenda::query()->select(['id', 'name', 'date_start', 'date_end', 'hour_start', 'hour_end', 'status']);
+
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
+
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data');
+            $column = match ($orderColumnKey) {
+                'name' => 'name',
+                'date' => 'date_start',
+                'status' => 'status',
+                default => 'id',
+            };
+
+            $query->orderBy($column, $orderDirection);
+        } else {
+            $query->orderBy('status', 'desc')->orderBy('id', 'desc');
+        }
 
         return DataTables::of($query)
             ->addColumn('name', fn ($row) => '<span class="text-gray-900 fw-bold fs-6">' . e($row->name) . '</span>')

@@ -16,9 +16,25 @@ class UserTableController extends Controller
         $query = User::query()
             ->with('position:id,name')
             ->whereIn('status', [0, 1, 2])
-            ->select(['id', 'name', 'role', 'position_id', 'status'])
-            ->orderBy('status', 'desc')
-            ->orderBy('id', 'desc');
+            ->select(['id', 'name', 'role', 'position_id', 'status']);
+
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
+
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data');
+            $column = match ($orderColumnKey) {
+                'name' => 'name',
+                'group' => 'role',
+                'position' => 'position_id',
+                'status' => 'status',
+                default => 'id',
+            };
+
+            $query->orderBy($column, $orderDirection);
+        } else {
+            $query->orderBy('status', 'desc')->orderBy('id', 'desc');
+        }
 
         return DataTables::of($query)
             ->addColumn('name', fn ($row) => '<a href="' . route('users.edit', $row->id) . '" class="text-gray-700 fw-bold text-hover-primary fs-6"><img src="' . findImage('users/photos/' . $row->id . '.jpg') . '" class="w-30px h-30px rounded me-2 object-fit-cover">' . e($row->name) . '</a>')

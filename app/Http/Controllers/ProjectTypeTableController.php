@@ -10,9 +10,23 @@ class ProjectTypeTableController extends Controller
 {
     public function processing(Request $request)
     {
-        $query = ProjectType::query()->select(['id', 'name', 'status'])
-            ->orderBy('status', 'desc')
-            ->orderBy('id', 'desc');
+        $query = ProjectType::query()->select(['id', 'name', 'status']);
+
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
+
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data');
+            $column = match ($orderColumnKey) {
+                'name' => 'name',
+                'status' => 'status',
+                default => 'id',
+            };
+
+            $query->orderBy($column, $orderDirection);
+        } else {
+            $query->orderBy('status', 'desc')->orderBy('id', 'desc');
+        }
 
         return DataTables::of($query)
             ->addColumn('name', fn ($row) => '<a href="' . route('projects.types.edit', $row->id) . '" class="text-gray-700 text-hover-primary fw-bold fs-6">' . e($row->name) . '</a>')

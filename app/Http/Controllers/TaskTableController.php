@@ -21,8 +21,6 @@ class TaskTableController extends Controller
             $query->where('tasks.name', 'like', "%{$data['searchBy']}%");
         }
 
-        $query->orderBy('tasks.status', 'desc')->orderBy('tasks.id', 'desc');
-
         if (!empty($data['order'])) {
             $direction = $request->order[0]['dir'];
             $orderThis = $request->order_by;
@@ -37,6 +35,8 @@ class TaskTableController extends Controller
                 default => 'tasks.id',
             };
             $query->orderBy($column, $direction);
+        } else {
+            $query->orderBy('tasks.status', 'desc')->orderBy('tasks.id', 'desc');
         }
 
         if (isset($data['projects'])) {

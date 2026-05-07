@@ -10,9 +10,24 @@ class ContractTableController extends Controller
 {
     public function processing(Request $request)
     {
-        $query = Contract::query()->select(['id', 'name', 'duration_in_months', 'is_open_ended', 'status'])
-            ->orderBy('status', 'desc')
-            ->orderBy('id', 'desc');
+        $query = Contract::query()->select(['id', 'name', 'duration_in_months', 'is_open_ended', 'status']);
+
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
+
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data');
+            $column = match ($orderColumnKey) {
+                'name' => 'name',
+                'duration' => 'duration_in_months',
+                'status' => 'status',
+                default => 'id',
+            };
+
+            $query->orderBy($column, $orderDirection);
+        } else {
+            $query->orderBy('status', 'desc')->orderBy('id', 'desc');
+        }
 
         return DataTables::of($query)
             ->addColumn('name', fn ($row) => '<a href="' . route('contracts.edit', $row->id) . '" class="text-gray-700 text-hover-primary fw-bold fs-6">' . e($row->name) . '</a>')

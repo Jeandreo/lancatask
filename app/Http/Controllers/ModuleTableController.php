@@ -10,9 +10,24 @@ class ModuleTableController extends Controller
 {
     public function processing(Request $request)
     {
-        $query = Module::query()->with(['project:id,name', 'tasks:id,module_id'])->select(['id', 'name', 'project_id', 'status'])
-            ->orderBy('status', 'desc')
-            ->orderBy('id', 'desc');
+        $query = Module::query()->with(['project:id,name', 'tasks:id,module_id'])->select(['id', 'name', 'project_id', 'status']);
+
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
+
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data');
+            $column = match ($orderColumnKey) {
+                'name' => 'name',
+                'project' => 'project_id',
+                'status' => 'status',
+                default => 'id',
+            };
+
+            $query->orderBy($column, $orderDirection);
+        } else {
+            $query->orderBy('status', 'desc')->orderBy('id', 'desc');
+        }
 
         return DataTables::of($query)
             ->addColumn('name', fn ($row) => '<a href="' . route('projects.show', $row->project_id) . '" class="text-gray-700 text-hover-primary fw-bold fs-6">' . e($row->name) . '</a>')

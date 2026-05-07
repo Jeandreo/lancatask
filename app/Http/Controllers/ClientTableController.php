@@ -59,11 +59,12 @@ class ClientTableController extends Controller
             $query->where('active_contract.contract_id', $request->contract_id);
         }
 
-        $query->orderBy('clients.status', 'desc')->orderBy('clients.id', 'desc');
+        $orderColumnIndex = filter_var($request->input('order.0.column'), FILTER_VALIDATE_INT);
+        $orderDirection = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
 
-        if ($request->filled('order_by') && $request->has('order.0.dir')) {
-            $direction = $request->input('order.0.dir') === 'desc' ? 'desc' : 'asc';
-            $column = match ($request->order_by) {
+        if ($orderColumnIndex !== false) {
+            $orderColumnKey = $request->input('columns.' . $orderColumnIndex . '.data');
+            $column = match ($orderColumnKey) {
                 'name' => 'clients.name',
                 'contract' => 'contracts.name',
                 'value' => 'active_contract.amount',
@@ -72,7 +73,9 @@ class ClientTableController extends Controller
                 default => 'clients.id',
             };
 
-            $query->orderBy($column, $direction);
+            $query->orderBy($column, $orderDirection);
+        } else {
+            $query->orderBy('clients.status', 'desc')->orderBy('clients.id', 'desc');
         }
 
         return DataTables::of($query)
