@@ -99,7 +99,7 @@
                 <div class="modal-footer">
                     <span class="text-gray-600 fw-medium me-auto d-none" id="financialIncomeCreatedAtLabel"></span>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-info btn-active-success" id="financialIncomeSubmit">Cadastrar receita</button>
+                    <button type="submit" class="btn btn-success btn-active-success" id="financialIncomeSubmit">Cadastrar receita</button>
                 </div>
             </form>
         </div>
@@ -256,6 +256,8 @@
         filterCategoriesByType(formId, type);
         $('#' + counterpartyTypeId).val('').trigger('change');
         loadCounterpartyOptions('', null, counterpartyIdId);
+        const today = new Date().toISOString().slice(0, 10);
+        $('#' + formId + ' input[name="date"]').val(today);
 
         const createdAtLabel = formId === 'financialIncomeForm'
             ? $('#financialIncomeCreatedAtLabel')
@@ -329,6 +331,18 @@
 
             modal.show();
         });
+    });
+
+    $(document).on('change', '#financialIncomeForm input[name=\"due_date\"], #financialExpenseForm input[name=\"due_date\"]', function () {
+        const form = $(this).closest('form');
+        const dueDate = $(this).val();
+        if (dueDate) {
+            form.find('input[name=\"date\"]').val(dueDate);
+            return;
+        }
+
+        const today = new Date().toISOString().slice(0, 10);
+        form.find('input[name=\"date\"]').val(today);
     });
 
     $(document).on('click', '.js-financial-materialize', function (e) {
