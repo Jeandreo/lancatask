@@ -24,26 +24,36 @@ use App\Models\User;
 use App\Models\UserPosition;
 use App\Models\UserPreferrence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        $faker = fake('pt_BR');
+        $now = now();
 
-        // Usuário "sistema" para resolver dependência de FK created_by em users.
-        $systemUser = User::create([
+        $this->clearDomainTables();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('users')->insert([
+            'id' => 1,
             'name' => 'Sistema',
             'role' => 'Administrador',
             'position_id' => 1,
             'email' => 'sistema@lancatask.local',
+            'email_verified_at' => $now,
             'password' => Hash::make('password'),
+            'sidebar' => true,
+            'sounds' => true,
+            'status' => true,
             'created_by' => 1,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        $systemUser = User::find(1);
 
         $positions = [
             'Administrador',
@@ -66,274 +76,559 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $admin = User::factory()->create([
+        $admin = User::create([
             'name' => 'João Pedro',
             'role' => 'Administrador',
             'position_id' => 1,
             'email' => 'joaopedroottolini@gmail.com',
+            'email_verified_at' => $now,
             'password' => Hash::make('Chicleteroxo@#25'),
             'created_by' => $systemUser->id,
         ]);
 
-        $secondAdmin = User::factory()->create([
+        $secondAdmin = User::create([
             'name' => 'Jeandreo',
             'role' => 'Administrador',
             'position_id' => 1,
             'email' => 'jeandreofur@gmail.com',
+            'email_verified_at' => $now,
             'password' => Hash::make('jean1010'),
             'created_by' => $admin->id,
         ]);
 
-        $teamUsers = User::factory(6)->create([
-            'created_by' => $admin->id,
-            'role' => 'Usuário',
+        $teamUsers = [];
+        $teamUsers[] = User::create([
+            'name' => 'Maria Eduarda',
+            'role' => 'Gerente',
             'position_id' => 2,
-        ])->each(function (User $user) {
-            $user->update([
-                'role' => fake()->randomElement(['Gerente', 'Usuário']),
-                'position_id' => fake()->numberBetween(2, 11),
-            ]);
-        });
-
-        $allUsers = collect([$admin, $secondAdmin])->merge($teamUsers)->values();
-
-        $projectTypes = collect([
-            'Lançamentos',
-            'Times',
-            'Gestão',
-        ])->map(fn (string $name) => ProjectType::create([
-            'name' => $name,
+            'email' => 'maria@lancatask.local',
+            'email_verified_at' => $now,
+            'password' => Hash::make('password'),
             'created_by' => $admin->id,
-        ]));
+        ]);
+        $teamUsers[] = User::create([
+            'name' => 'Carlos Henrique',
+            'role' => 'Gerente',
+            'position_id' => 3,
+            'email' => 'carlos@lancatask.local',
+            'email_verified_at' => $now,
+            'password' => Hash::make('password'),
+            'created_by' => $admin->id,
+        ]);
+        $teamUsers[] = User::create([
+            'name' => 'Ana Paula',
+            'role' => 'Usuário',
+            'position_id' => 4,
+            'email' => 'ana@lancatask.local',
+            'email_verified_at' => $now,
+            'password' => Hash::make('password'),
+            'created_by' => $admin->id,
+        ]);
+        $teamUsers[] = User::create([
+            'name' => 'Lucas Martins',
+            'role' => 'Usuário',
+            'position_id' => 8,
+            'email' => 'lucas@lancatask.local',
+            'email_verified_at' => $now,
+            'password' => Hash::make('password'),
+            'created_by' => $admin->id,
+        ]);
+        $teamUsers[] = User::create([
+            'name' => 'Bruna Costa',
+            'role' => 'Usuário',
+            'position_id' => 9,
+            'email' => 'bruna@lancatask.local',
+            'email_verified_at' => $now,
+            'password' => Hash::make('password'),
+            'created_by' => $admin->id,
+        ]);
 
-        $projectsData = [
-            ['name' => 'Lançamento Evergreen 2026', 'type_index' => 0, 'type_is' => 'time'],
-            ['name' => 'Operação Comercial', 'type_index' => 1, 'type_is' => 'time'],
-            ['name' => 'Rotina Pessoal', 'type_index' => 2, 'type_is' => 'pessoal'],
-        ];
-
-        $projects = collect($projectsData)->map(function (array $projectData) use ($projectTypes, $admin, $faker) {
-            return Project::create([
-                'name' => $projectData['name'],
-                'type_id' => $projectTypes[$projectData['type_index']]->id,
-                'type_is' => $projectData['type_is'],
-                'description' => $faker->sentence(),
-                'start' => now()->subDays(rand(10, 45)),
-                'end' => now()->addDays(rand(30, 120)),
-                'created_by' => $admin->id,
-            ]);
-        });
-
-        foreach ($projects as $project) {
-            foreach ($allUsers as $user) {
-                ProjectUser::create([
-                    'user_id' => $user->id,
-                    'project_id' => $project->id,
-                ]);
-            }
-
-            $statuses = collect([
-                ['name' => 'A Fazer', 'color' => '#009ef7', 'order' => 1, 'done' => false],
-                ['name' => 'Em andamento', 'color' => '#79bc17', 'order' => 2, 'done' => false],
-                ['name' => 'Concluído', 'color' => '#282c43', 'order' => 3, 'done' => true],
-            ])->map(fn (array $status) => Status::create([
-                'name' => $status['name'],
-                'color' => $status['color'],
-                'project_id' => $project->id,
-                'order' => $status['order'],
-                'done' => $status['done'],
-                'created_by' => $admin->id,
-            ]));
-
-            $modules = collect([
-                ['name' => 'Planejamento', 'color' => '#674EA7'],
-                ['name' => 'Execução', 'color' => '#0B5394'],
-                ['name' => 'Pós-venda', 'color' => '#38761D'],
-            ])->map(function (array $moduleData, int $index) use ($project, $admin) {
-                return Module::create([
-                    'name' => $moduleData['name'],
-                    'project_id' => $project->id,
-                    'color' => $moduleData['color'],
-                    'order' => $index + 1,
-                    'created_by' => $admin->id,
-                ]);
-            });
-
-            foreach ($allUsers as $user) {
-                foreach ($modules as $module) {
-                    ModuleOrder::create([
-                        'order' => $module->order,
-                        'user_id' => $user->id,
-                        'module_id' => $module->id,
-                        'project_id' => $project->id,
-                    ]);
-                }
-            }
-
-            foreach ($modules as $module) {
-                $tasks = Task::factory(rand(4, 7))->create([
-                    'module_id' => $module->id,
-                    'status_id' => $statuses->random()->id,
-                    'created_by' => $admin->id,
-                ]);
-
-                foreach ($tasks as $task) {
-                    $participants = $allUsers->random(rand(1, min(3, $allUsers->count())));
-
-                    foreach ($participants as $participant) {
-                        TaskParticipant::create([
-                            'user_id' => $participant->id,
-                            'task_id' => $task->id,
-                        ]);
-                    }
-
-                    Comment::create([
-                        'task_id' => $task->id,
-                        'text' => $faker->sentence(12),
-                        'created_by' => $participants->first()->id,
-                    ]);
-
-                    TaskHistoric::create([
-                        'task_id' => $task->id,
-                        'action' => 'created',
-                        'previous_key' => null,
-                        'key' => (string) $task->status_id,
-                        'created_by' => $admin->id,
-                    ]);
-                }
-            }
+        $allUsers = collect([
+            $systemUser,
+            $admin,
+            $secondAdmin,
+        ]);
+        foreach ($teamUsers as $teamUser) {
+            $allUsers->push($teamUser);
         }
 
-        $contracts = collect([
-            'Plano Mensal',
-            'Plano Trimestral',
-            'Plano Anual',
-        ])->map(fn (string $name) => Contract::create([
-            'name' => $name,
-            'period_in_months' => 1,
-            'duration_in_months' => null,
-            'is_open_ended' => true,
-            'created_by' => $admin->id,
-        ]));
+        $wallets = $this->seedFinancialWallets($admin);
+        $categories = $this->seedFinancialCategories($admin);
+        $contracts = $this->seedContracts($admin, $wallets, $categories);
+        $clients = $this->seedClients($admin);
+        $clientContracts = $this->seedClientContracts($admin, $clients, $contracts);
+        $projects = $this->seedProjects($admin, $allUsers, $clients);
 
-        $clients = collect(range(1, 6))->map(function () use ($faker, $contracts, $admin) {
-            return Client::create([
-                'name' => $faker->name(),
-                'person_type' => $faker->randomElement(['PF', 'PJ']),
-                'document' => $faker->numerify('###########'),
-                'email' => $faker->unique()->safeEmail(),
-                'payment_day' => $faker->numberBetween(1, 28),
-                'phone' => $faker->numerify('(##) #####-####'),
-                'start_date' => now()->subDays(rand(1, 120)),
-                'end_date' => now()->addDays(rand(30, 365)),
-                'zip' => $faker->numerify('#####-###'),
-                'street' => $faker->streetName(),
-                'number' => $faker->numberBetween(1, 9999),
-                'complement' => $faker->optional()->secondaryAddress(),
-                'neighborhood' => $faker->citySuffix(),
-                'city' => $faker->city(),
-                'state' => $faker->stateAbbr(),
-                'observations' => $faker->optional()->paragraph(),
+        $this->seedFinancialTransactions($admin, $allUsers, $clients, $clientContracts, $wallets, $categories);
+        $this->seedSessions($allUsers);
+        $this->seedAgendas($admin, $allUsers, $clients);
+        $this->seedSidebarPreferences($allUsers, $projects);
+    }
+
+    private function clearDomainTables(): void
+    {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $tables = [
+            'agendas_member',
+            'agendas',
+            'comments',
+            'financial_transactions',
+            'client_contracts',
+            'clients',
+            'contracts',
+            'financial_categories',
+            'financial_wallets',
+            'modules_order',
+            'projects_users',
+            'tasks_historics',
+            'tasks_participants',
+            'tasks',
+            'statuses',
+            'modules',
+            'projects',
+            'projects_types',
+            'user_preferrences',
+            'sessions',
+            'users_positions',
+            'users',
+        ];
+
+        foreach ($tables as $table) {
+            DB::table($table)->truncate();
+        }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+    }
+
+    private function seedFinancialWallets(User $admin)
+    {
+        $walletNames = [
+            'Carteira Padrão',
+            'Conta Corrente',
+            'Reserva',
+            'Cartão Corporativo',
+        ];
+
+        $wallets = collect();
+
+        foreach ($walletNames as $walletName) {
+            $wallet = FinancialWallet::create([
+                'name' => $walletName,
+                'status' => true,
                 'created_by' => $admin->id,
             ]);
-        });
+            $wallets->put($walletName, $wallet);
+        }
 
-        $clientContracts = $clients->map(function (Client $client) use ($contracts, $faker, $admin) {
-            $contract = $contracts->random();
+        return $wallets;
+    }
 
-            return ClientContract::create([
+    private function seedFinancialCategories(User $admin)
+    {
+        $categoryData = [
+            ['name' => 'Receita Recorrente de Contrato', 'type' => 'entrada'],
+            ['name' => 'Receita Avulsa', 'type' => 'entrada'],
+            ['name' => 'Consultoria', 'type' => 'entrada'],
+            ['name' => 'Tráfego Pago', 'type' => 'debito'],
+            ['name' => 'Ferramentas', 'type' => 'debito'],
+            ['name' => 'Equipe/Freelancer', 'type' => 'debito'],
+            ['name' => 'Infraestrutura', 'type' => 'debito'],
+        ];
+
+        $categories = collect();
+
+        foreach ($categoryData as $categoryItem) {
+            $category = FinancialCategory::create([
+                'name' => $categoryItem['name'],
+                'type' => $categoryItem['type'],
+                'status' => true,
+                'created_by' => $admin->id,
+            ]);
+            $categories->put($category->name, $category);
+        }
+
+        return $categories;
+    }
+
+    private function seedContracts(User $admin, $wallets, $categories)
+    {
+        $contractData = [
+            ['name' => 'Plano Starter', 'amount' => 1200],
+            ['name' => 'Plano Growth', 'amount' => 3500],
+            ['name' => 'Plano Scale', 'amount' => 7800],
+            ['name' => 'Plano Enterprise', 'amount' => 12500],
+        ];
+
+        $contracts = collect();
+
+        foreach ($contractData as $contractItem) {
+            $contract = Contract::create([
+                'name' => $contractItem['name'],
+                'period_in_months' => 1,
+                'duration_in_months' => null,
+                'is_open_ended' => true,
+                'wallet_id' => $wallets->get('Conta Corrente')->id,
+                'category_id' => $categories->get('Receita Recorrente de Contrato')->id,
+                'status' => true,
+                'created_by' => $admin->id,
+            ]);
+
+            $contract->seed_amount = $contractItem['amount'];
+            $contracts->push($contract);
+        }
+
+        return $contracts;
+    }
+
+    private function seedClients(User $admin)
+    {
+        $clientData = [
+            ['name' => 'Aurora Digital Ltda', 'document' => '11222333000144', 'email' => 'financeiro@auroradigital.local', 'city' => 'Curitiba', 'state' => 'PR'],
+            ['name' => 'Clínica Bela Vita', 'document' => '22333444000155', 'email' => 'contato@belavita.local', 'city' => 'São Paulo', 'state' => 'SP'],
+            ['name' => 'Escola Novos Passos', 'document' => '33444555000166', 'email' => 'admin@novospassos.local', 'city' => 'Florianópolis', 'state' => 'SC'],
+            ['name' => 'Instituto Horizonte', 'document' => '44555666000177', 'email' => 'gestao@horizonte.local', 'city' => 'Porto Alegre', 'state' => 'RS'],
+            ['name' => 'Loja Casa Norte', 'document' => '55666777000188', 'email' => 'financeiro@casanorte.local', 'city' => 'Belo Horizonte', 'state' => 'MG'],
+            ['name' => 'Mentoria Alfa', 'document' => '66777888000199', 'email' => 'suporte@mentoriaalfa.local', 'city' => 'Rio de Janeiro', 'state' => 'RJ'],
+        ];
+
+        $clients = collect();
+
+        foreach ($clientData as $index => $clientItem) {
+            $client = Client::create([
+                'name' => $clientItem['name'],
+                'person_type' => 'PJ',
+                'document' => $clientItem['document'],
+                'email' => $clientItem['email'],
+                'website' => 'https://example.com',
+                'instagram' => '@' . strtolower(str_replace(' ', '', $clientItem['name'])),
+                'phone' => '(41) 99999-10' . str_pad($index, 2, '0', STR_PAD_LEFT),
+                'payment_day' => 10 + $index,
+                'start_date' => now()->subMonths(6 - $index)->startOfMonth(),
+                'end_date' => null,
+                'zip' => '80000-000',
+                'street' => 'Rua das Operações',
+                'number' => 100 + $index,
+                'complement' => 'Sala ' . (200 + $index),
+                'neighborhood' => 'Centro',
+                'city' => $clientItem['city'],
+                'state' => $clientItem['state'],
+                'observations' => 'Cliente criado pelo seeder oficial do ambiente local.',
+                'status' => true,
+                'created_by' => $admin->id,
+            ]);
+
+            $clients->push($client);
+        }
+
+        return $clients;
+    }
+
+    private function seedClientContracts(User $admin, $clients, $contracts)
+    {
+        $clientContracts = collect();
+
+        foreach ($clients as $index => $client) {
+            $contract = $contracts->get($index % $contracts->count());
+
+            $clientContract = ClientContract::create([
                 'client_id' => $client->id,
                 'contract_id' => $contract->id,
-                'amount' => $faker->randomFloat(2, 997, 9997),
-                'start_date' => now()->subMonths(rand(1, 4))->startOfMonth()->toDateString(),
+                'amount' => $contract->seed_amount,
+                'start_date' => now()->subMonths(5 - $index)->startOfMonth(),
+                'end_date' => null,
                 'period_in_months' => 1,
                 'duration_in_months' => null,
                 'status' => true,
                 'created_by' => $admin->id,
             ]);
-        });
 
-        $wallets = collect([
-            'Conta Corrente',
-            'Reserva',
-            'Cartão Corporativo',
-        ])->map(fn (string $name) => FinancialWallet::create([
-            'name' => $name,
-            'created_by' => $admin->id,
-        ]));
+            $clientContracts->push($clientContract);
+        }
 
-        $categories = collect([
-            ['name' => 'Receita Recorrente de Contrato', 'type' => 'entrada'],
-            ['name' => 'Receita Avulsa', 'type' => 'entrada'],
-            ['name' => 'Tráfego Pago', 'type' => 'debito'],
-            ['name' => 'Ferramentas', 'type' => 'debito'],
-            ['name' => 'Equipe/Freelancer', 'type' => 'debito'],
-        ])->map(fn (array $data) => FinancialCategory::create([
-            'name' => $data['name'],
-            'type' => $data['type'],
-            'created_by' => $admin->id,
-        ]));
+        return $clientContracts;
+    }
 
-        foreach (range(1, 30) as $i) {
-            $type = $faker->randomElement(['entrada', 'debito']);
-            $category = $categories->where('type', $type)->random();
+    private function seedProjects(User $admin, $allUsers, $clients)
+    {
+        $projectTypes = collect();
+        $projectTypeNames = [
+            'Lançamentos',
+            'Times',
+            'Gestão',
+        ];
 
-            $counterpartyType = $faker->randomElement(['client', 'user', null]);
-            $counterpartyId = null;
-            $clientId = null;
-
-            if ($counterpartyType === 'client') {
-                $client = $clients->random();
-                $counterpartyId = $client->id;
-                $clientId = $client->id;
-            } elseif ($counterpartyType === 'user') {
-                $counterpartyId = $allUsers->random()->id;
-            }
-
-            $originType = 'avulsa';
-            $clientContractId = null;
-            $referencePeriod = null;
-
-            if ($type === 'entrada' && $counterpartyType === 'client' && $faker->boolean(70)) {
-                $contractLink = $clientContracts->where('client_id', $clientId)->first();
-
-                if ($contractLink) {
-                    $originType = 'recorrente';
-                    $clientContractId = $contractLink->id;
-                    $referencePeriod = now()->subMonths(rand(0, 6))->format('Y-m');
-                }
-            }
-
-            FinancialTransaction::create([
-                'type' => $type,
-                'name' => $type === 'entrada'
-                    ? 'Recebimento ' . $faker->word()
-                    : 'Pagamento ' . $faker->word(),
-                'wallet_id' => $wallets->random()->id,
-                'category_id' => $category->id,
-                'client_id' => $clientId,
-                'client_contract_id' => $clientContractId,
-                'reference_period' => $referencePeriod,
-                'counterparty_type' => $counterpartyType,
-                'counterparty_id' => $counterpartyId,
-                'origin_type' => $originType,
-                'date' => now()->subDays(rand(0, 120))->toDateString(),
-                'amount' => $faker->randomFloat(2, 90, 15000),
-                'description' => $faker->optional()->sentence(),
-                'status' => $faker->boolean(85),
+        foreach ($projectTypeNames as $projectTypeName) {
+            $projectType = ProjectType::create([
+                'name' => $projectTypeName,
+                'status' => true,
                 'created_by' => $admin->id,
+            ]);
+            $projectTypes->put($projectTypeName, $projectType);
+        }
+
+        $projectData = [
+            ['name' => 'Lançamento Evergreen 2026', 'type' => 'Lançamentos', 'type_is' => 'time', 'client_index' => 0],
+            ['name' => 'Operação Comercial', 'type' => 'Times', 'type_is' => 'time', 'client_index' => 1],
+            ['name' => 'Implantação CRM', 'type' => 'Gestão', 'type_is' => 'time', 'client_index' => 2],
+            ['name' => 'Rotina Pessoal', 'type' => 'Gestão', 'type_is' => 'pessoal', 'client_index' => null],
+        ];
+
+        $projects = collect();
+
+        foreach ($projectData as $index => $projectItem) {
+            $clientId = null;
+            if ($projectItem['client_index'] !== null) {
+                $clientId = $clients->get($projectItem['client_index'])->id;
+            }
+
+            $project = Project::create([
+                'name' => $projectItem['name'],
+                'type_id' => $projectTypes->get($projectItem['type'])->id,
+                'type_is' => $projectItem['type_is'],
+                'client_id' => $clientId,
+                'description' => 'Projeto criado pelo seeder para demonstração operacional.',
+                'start' => now()->subDays(30 + ($index * 7)),
+                'end' => now()->addDays(45 + ($index * 12)),
+                'status' => true,
+                'created_by' => $admin->id,
+            ]);
+
+            $projects->push($project);
+            $this->seedProjectStructure($admin, $allUsers, $project, $index);
+        }
+
+        return $projects;
+    }
+
+    private function seedProjectStructure(User $admin, $allUsers, Project $project, int $projectIndex): void
+    {
+        foreach ($allUsers as $user) {
+            ProjectUser::create([
+                'user_id' => $user->id,
+                'project_id' => $project->id,
             ]);
         }
 
-        $agendas = collect([
-            ['name' => 'Reunião semanal de time', 'color' => '#0ea5e9', 'general' => true],
-            ['name' => 'Call com clientes', 'color' => '#22c55e', 'general' => false],
-        ])->map(function (array $agendaData) use ($admin) {
-            return Agenda::create([
-                'name' => $agendaData['name'],
+        $statusData = [
+            ['name' => 'A Fazer', 'color' => '#009EF7', 'order' => 1, 'done' => false],
+            ['name' => 'Em andamento', 'color' => '#79BC17', 'order' => 2, 'done' => false],
+            ['name' => 'Concluído', 'color' => '#282C43', 'order' => 3, 'done' => true],
+        ];
+
+        $statuses = collect();
+        foreach ($statusData as $statusItem) {
+            $status = Status::create([
+                'name' => $statusItem['name'],
+                'color' => $statusItem['color'],
+                'project_id' => $project->id,
+                'order' => $statusItem['order'],
+                'done' => $statusItem['done'],
+                'status' => true,
+                'created_by' => $admin->id,
+            ]);
+            $statuses->put($status->name, $status);
+        }
+
+        $moduleData = [
+            ['name' => 'Planejamento', 'color' => '#674EA7'],
+            ['name' => 'Execução', 'color' => '#0B5394'],
+            ['name' => 'Pós-venda', 'color' => '#38761D'],
+        ];
+
+        foreach ($moduleData as $moduleIndex => $moduleItem) {
+            $module = Module::create([
+                'name' => $moduleItem['name'],
+                'project_id' => $project->id,
+                'color' => $moduleItem['color'],
+                'order' => $moduleIndex + 1,
+                'status' => true,
+                'created_by' => $admin->id,
+            ]);
+
+            foreach ($allUsers as $user) {
+                ModuleOrder::create([
+                    'order' => $module->order,
+                    'user_id' => $user->id,
+                    'module_id' => $module->id,
+                    'project_id' => $project->id,
+                ]);
+            }
+
+            $this->seedTasks($admin, $allUsers, $statuses, $module, $projectIndex, $moduleIndex);
+        }
+    }
+
+    private function seedTasks(User $admin, $allUsers, $statuses, Module $module, int $projectIndex, int $moduleIndex): void
+    {
+        $taskNames = [
+            'Definir cronograma macro',
+            'Revisar briefing do cliente',
+            'Criar materiais da campanha',
+            'Configurar automações',
+            'Validar página de vendas',
+            'Preparar relatório semanal',
+        ];
+
+        foreach ($taskNames as $taskIndex => $taskName) {
+            $checked = $taskIndex === 5;
+            $status = $checked
+                ? $statuses->get('Concluído')
+                : $statuses->get($taskIndex % 2 === 0 ? 'A Fazer' : 'Em andamento');
+
+            $task = Task::create([
+                'module_id' => $module->id,
+                'status_id' => $status->id,
+                'checked' => $checked,
+                'checked_at' => $checked ? now()->subDays($taskIndex) : null,
+                'order' => $taskIndex + 1,
+                'priority' => $taskIndex % 3,
+                'date' => now()->addDays($taskIndex - 2),
+                'date_start' => now()->addDays($taskIndex - 2)->toDateString(),
+                'date_end' => now()->addDays($taskIndex + 3)->toDateString(),
+                'name' => $taskName . ' - ' . $module->name,
+                'description' => 'Tarefa de demonstração criada pelo seeder.',
+                'status' => true,
+                'created_by' => $admin->id,
+                'updated_at' => now()->subHours(($projectIndex * 8) + ($moduleIndex * 2) + $taskIndex),
+            ]);
+
+            $firstParticipant = $allUsers->get(($taskIndex + $moduleIndex) % $allUsers->count());
+            $secondParticipant = $allUsers->get(($taskIndex + $moduleIndex + 1) % $allUsers->count());
+
+            TaskParticipant::create([
+                'user_id' => $firstParticipant->id,
+                'task_id' => $task->id,
+            ]);
+            TaskParticipant::create([
+                'user_id' => $secondParticipant->id,
+                'task_id' => $task->id,
+            ]);
+
+            Comment::create([
+                'task_id' => $task->id,
+                'text' => 'Comentário inicial gerado para demonstrar o histórico da tarefa.',
+                'created_by' => $firstParticipant->id,
+            ]);
+
+            TaskHistoric::create([
+                'task_id' => $task->id,
+                'action' => 'created',
+                'previous_key' => null,
+                'key' => $status->id,
+                'created_by' => $admin->id,
+            ]);
+        }
+    }
+
+    private function seedFinancialTransactions(User $admin, $allUsers, $clients, $clientContracts, $wallets, $categories): void
+    {
+        $startMonth = now()->copy()->startOfYear();
+
+        foreach (range(0, 11) as $monthIndex) {
+            $referenceDate = $startMonth->copy()->addMonths($monthIndex)->day(10);
+            $referencePeriod = $referenceDate->format('Y-m');
+
+            foreach ($clientContracts as $contractIndex => $clientContract) {
+                $client = $clients->firstWhere('id', $clientContract->client_id);
+
+                FinancialTransaction::create([
+                    'type' => 'entrada',
+                    'origin_type' => 'recorrente',
+                    'billing_status' => $monthIndex <= now()->month - 1 ? 'pago' : 'pendente',
+                    'name' => 'Mensalidade ' . $client->name,
+                    'wallet_id' => $wallets->get('Conta Corrente')->id,
+                    'category_id' => $categories->get('Receita Recorrente de Contrato')->id,
+                    'client_id' => $client->id,
+                    'client_contract_id' => $clientContract->id,
+                    'reference_period' => $referencePeriod,
+                    'counterparty_type' => 'client',
+                    'counterparty_id' => $client->id,
+                    'date' => $referenceDate->toDateString(),
+                    'due_date' => $referenceDate->toDateString(),
+                    'paid_at' => $monthIndex <= now()->month - 1 ? $referenceDate->copy()->addDays(2) : null,
+                    'amount' => $clientContract->amount,
+                    'description' => 'Cobrança recorrente gerada pelo seeder.',
+                    'status' => true,
+                    'created_by' => $admin->id,
+                ]);
+
+                if ($contractIndex >= 2) {
+                    continue;
+                }
+
+                $expenseCategory = $contractIndex === 0
+                    ? $categories->get('Tráfego Pago')
+                    : $categories->get('Ferramentas');
+
+                FinancialTransaction::create([
+                    'type' => 'debito',
+                    'origin_type' => 'avulsa',
+                    'billing_status' => $monthIndex <= now()->month - 1 ? 'pago' : 'pendente',
+                    'name' => $contractIndex === 0 ? 'Investimento em mídia' : 'Licenças de software',
+                    'wallet_id' => $wallets->get('Cartão Corporativo')->id,
+                    'category_id' => $expenseCategory->id,
+                    'counterparty_type' => 'user',
+                    'counterparty_id' => $allUsers->get($contractIndex + 1)->id,
+                    'date' => $referenceDate->copy()->addDays(5)->toDateString(),
+                    'due_date' => $referenceDate->copy()->addDays(5)->toDateString(),
+                    'paid_at' => $monthIndex <= now()->month - 1 ? $referenceDate->copy()->addDays(6) : null,
+                    'amount' => $contractIndex === 0 ? 850 + ($monthIndex * 35) : 420 + ($monthIndex * 20),
+                    'description' => 'Despesa operacional gerada pelo seeder.',
+                    'status' => true,
+                    'created_by' => $admin->id,
+                ]);
+            }
+        }
+
+        FinancialTransaction::create([
+            'type' => 'entrada',
+            'origin_type' => 'avulsa',
+            'billing_status' => 'pago',
+            'name' => 'Consultoria estratégica',
+            'wallet_id' => $wallets->get('Reserva')->id,
+            'category_id' => $categories->get('Consultoria')->id,
+            'counterparty_type' => 'client',
+            'counterparty_id' => $clients->first()->id,
+            'client_id' => $clients->first()->id,
+            'date' => now()->subDays(12)->toDateString(),
+            'due_date' => now()->subDays(12)->toDateString(),
+            'paid_at' => now()->subDays(10),
+            'amount' => 6800,
+            'description' => 'Receita avulsa para diversificar os gráficos.',
+            'status' => true,
+            'created_by' => $admin->id,
+        ]);
+    }
+
+    private function seedSessions($allUsers): void
+    {
+        foreach ($allUsers as $index => $user) {
+            DB::table('sessions')->insert([
+                'id' => 'seed-session-' . $user->id,
+                'user_id' => $user->id,
+                'ip_address' => '127.0.0.' . ($index + 1),
+                'user_agent' => 'Seeder Browser',
+                'payload' => '',
+                'last_activity' => now()->subMinutes($index * 17)->timestamp,
+            ]);
+        }
+    }
+
+    private function seedAgendas(User $admin, $allUsers, $clients): void
+    {
+        $agendaData = [
+            ['name' => 'Reunião semanal de time', 'color' => '#0EA5E9', 'general' => true],
+            ['name' => 'Call com clientes', 'color' => '#22C55E', 'general' => false],
+            ['name' => 'Revisão financeira', 'color' => '#F59E0B', 'general' => true],
+        ];
+
+        foreach ($agendaData as $index => $agendaItem) {
+            $agenda = Agenda::create([
+                'name' => $agendaItem['name'],
                 'description' => 'Agenda criada automaticamente no seeder para testes.',
-                'general' => $agendaData['general'],
-                'date_start' => now()->toDateString(),
+                'general' => $agendaItem['general'],
+                'date_start' => now()->addDays($index)->toDateString(),
                 'date_end' => now()->addMonth()->toDateString(),
                 'hour_start' => '09:00:00',
                 'hour_end' => '10:00:00',
@@ -341,39 +636,39 @@ class DatabaseSeeder extends Seeder
                 'frequency' => 'weekly',
                 'week_days' => '1,3,5',
                 'duration' => '01:00:00',
-                'color' => $agendaData['color'],
+                'color' => $agendaItem['color'],
+                'status' => true,
                 'created_by' => $admin->id,
             ]);
-        });
 
-        foreach ($agendas as $agenda) {
-            foreach ($allUsers->random(3) as $member) {
+            foreach ($allUsers->take(3) as $member) {
                 AgendaMember::create([
                     'type' => 'user',
                     'member_id' => $member->id,
                     'agenda_id' => $agenda->id,
+                    'status' => true,
                 ]);
             }
 
             AgendaMember::create([
                 'type' => 'client',
-                'member_id' => $clients->random()->id,
+                'member_id' => $clients->get($index % $clients->count())->id,
                 'agenda_id' => $agenda->id,
+                'status' => true,
             ]);
         }
+    }
 
+    private function seedSidebarPreferences($allUsers, $projects): void
+    {
         foreach ($allUsers as $user) {
-            UserPreferrence::create([
-                'type' => 'sidebarGroupOrder',
-                'value' => (string) $projectTypes->random()->id,
-                'created_by' => $user->id,
-            ]);
-
-            UserPreferrence::create([
-                'type' => 'sidebarProjectsOrder',
-                'value' => (string) $projects->random()->id,
-                'created_by' => $user->id,
-            ]);
+            foreach ($projects as $project) {
+                UserPreferrence::create([
+                    'type' => 'sidebarProjectsOrder',
+                    'value' => $project->id,
+                    'created_by' => $user->id,
+                ]);
+            }
         }
     }
 }

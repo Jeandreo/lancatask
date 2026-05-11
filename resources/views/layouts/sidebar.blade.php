@@ -16,13 +16,23 @@
             <div id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
                 <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
                     <div class="menu-item">
-                        <a class="menu-link active" href="{{ route('dashboard.index') }}">
+                        <a class="menu-link @if(request()->routeIs('dashboard.index')) active @endif" href="{{ route('dashboard.index') }}">
                             <span class="menu-icon">
                                 <i class="fa-solid fa-house fs-4"></i>
                             </span>
                             <span class="menu-title">Minhas Tarefas</span>
                         </a>
                     </div>
+                    @if (Auth::user()->isAdmin())
+                    <div class="menu-item">
+                        <a class="menu-link @if(request()->routeIs('dashboard.admin')) active @endif" href="{{ route('dashboard.admin') }}">
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-chart-line fs-4"></i>
+                            </span>
+                            <span class="menu-title">Dashboard Admin</span>
+                        </a>
+                    </div>
+                    @endif
                     <div class="menu-item">
                         <a class="menu-link" href="{{ route('agenda.index') }}">
                             <span class="menu-icon">

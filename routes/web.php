@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::name('dashboard.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
+        Route::get('/dashboard-administrativo', [DashboardController::class, 'admin'])->name('admin')->middleware('admin');
     });
 
     // Lançamentos
@@ -282,7 +283,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Autenticação com o Google
-Route::get('/google/callback', [GoogleController::class, 'callback'])->name('google.callback');
+Route::get('/api/auth/callback/google', [GoogleController::class, 'callback'])->name('google.callback');
 
 
 

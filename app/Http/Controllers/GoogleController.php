@@ -11,9 +11,8 @@ class GoogleController extends Controller
 {
     public function getClient(): Google_Client
     {
-        // dd(route('google.callback'));
         $client = new Google_Client();
-        $client->setAuthConfig(storage_path(env('GOOGLE_CREDENTIAL_APP')));
+        $client->setAuthConfig(config('google-calendar.auth_profiles.oauth.credentials_json'));
         $client->setAccessType('offline');
         $client->setPrompt('consent');
         $client->setScopes([
@@ -25,15 +24,14 @@ class GoogleController extends Controller
 
     public function redirect()
     {
-        $credentials = env('GOOGLE_CREDENTIAL_APP');
-        $credentialsPath = $credentials ? storage_path($credentials) : null;
+        $credentialsPath = config('google-calendar.auth_profiles.oauth.credentials_json');
 
-        if (!$credentialsPath || !file_exists($credentialsPath)) {
+        if (!file_exists($credentialsPath)) {
             return redirect()->back()->with([
                 'google_credentials_missing' => true,
                 'type' => 'warning',
                 'title' => 'Google Agenda',
-                'message' => 'Arquivo de credenciais não encontrado. Configure o GOOGLE_CREDENTIAL_APP no .env e adicione o JSON em storage.',
+                'message' => 'Arquivo de credenciais não encontrado. Adicione o JSON em storage/app/google-calendar/oauth-credentials.json.',
             ]);
         }
 
@@ -50,8 +48,7 @@ class GoogleController extends Controller
 
             $token = $client->fetchAccessTokenWithAuthCode(request('code'));
 
-            // Salva o token
-            Storage::disk('local')->put('google/calendar_token.json', json_encode($token));
+            Storage::disk('local')->put('google-calendar/oauth-token.json', json_encode($token));
 
             return redirect()->route('dashboard.index')->with([
                 'message' => 'Calendário conectado com sucesso!',
